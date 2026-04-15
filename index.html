@@ -34,10 +34,21 @@
             overflow-x: hidden;
         }
 
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.4;
+        }
+
         .bg-grid {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-image: 
+            background-image:
                 linear-gradient(rgba(0, 163, 224, 0.04) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(0, 163, 224, 0.04) 1px, transparent 1px);
             background-size: 40px 40px;
@@ -113,7 +124,7 @@
         nav {
             position: sticky;
             top: 0;
-            background: rgba(10, 10, 15, 0.8);
+            background: rgba(10, 10, 15, 0.85);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border-color);
             z-index: 100;
@@ -181,6 +192,10 @@
             text-align: center;
             max-width: 1000px;
             margin: 0 auto;
+            background: rgba(10, 10, 15, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 32px;
+            border: 1px solid var(--border-color);
         }
 
         .badge {
@@ -294,6 +309,7 @@
             padding: 100px 24px;
             position: relative;
             z-index: 10;
+            background: rgba(10, 10, 15, 0.6);
         }
 
         .section-header {
@@ -385,6 +401,7 @@
             padding: 100px 24px;
             position: relative;
             z-index: 10;
+            background: rgba(10, 10, 15, 0.6);
         }
 
         .features-grid {
@@ -434,7 +451,7 @@
 
         .tokens {
             padding: 100px 24px;
-            background: var(--bg-secondary);
+            background: rgba(13, 21, 32, 0.85);
             position: relative;
             z-index: 10;
         }
@@ -484,6 +501,7 @@
             padding: 100px 24px;
             position: relative;
             z-index: 10;
+            background: rgba(10, 10, 15, 0.6);
         }
 
         .steps {
@@ -529,6 +547,7 @@
             text-align: center;
             position: relative;
             z-index: 10;
+            background: rgba(10, 10, 15, 0.7);
         }
 
         .cta-box {
@@ -563,7 +582,7 @@
         }
 
         footer {
-            background: var(--bg-secondary);
+            background: rgba(13, 21, 32, 0.9);
             border-top: 1px solid var(--border-color);
             padding: 60px 24px 40px;
             position: relative;
@@ -651,29 +670,7 @@
 <body>
     <div class="bg-grid"></div>
     <div class="bg-glow"></div>
-
-    <div class="ticker">
-        <div class="ticker-content">
-            <span class="ticker-item">0x7a2f...9e4d → tGLM5 · tokenized AI · $1,250 USDC</span>
-            <span class="ticker-item">0x3b8c...2a1f → tOpus46 · tAI mint · 500k tokens</span>
-            <span class="ticker-item">0x9d4e...7c3b → tSonnet4 · tokenized AI · $5,000 USDC</span>
-            <span class="ticker-item">0x1f5a...8e2d → tGPT5 · tAI liquidate · CR 142%</span>
-            <span class="ticker-item">0x6c9b...4f7a → tGLM5 · tokenized inference · σ = 0.94</span>
-            <span class="ticker-item">0x2e8d...5b1c → tOpus46 · tAI settlement · $42.50 USDC</span>
-            <span class="ticker-item">0x4a7f...9e2b → tSonnet4 · tokenized AI · $2,100 USDC</span>
-            <span class="ticker-item">0x8b3c...1d5f → tGPT5 · tAI redeem · 1.2M tokens</span>
-            <span class="ticker-item">0x5e9a...7c4d → tGLM5 · tAI fallback · x402</span>
-            <span class="ticker-item">0x7a2f...9e4d → tGLM5 · tokenized AI · $1,250 USDC</span>
-            <span class="ticker-item">0x3b8c...2a1f → tOpus46 · tAI mint · 500k tokens</span>
-            <span class="ticker-item">0x9d4e...7c3b → tSonnet4 · tokenized AI · $5,000 USDC</span>
-            <span class="ticker-item">0x1f5a...8e2d → tGPT5 · tAI liquidate · CR 142%</span>
-            <span class="ticker-item">0x6c9b...4f7a → tGLM5 · tokenized inference · σ = 0.94</span>
-            <span class="ticker-item">0x2e8d...5b1c → tOpus46 · tAI settlement · $42.50 USDC</span>
-            <span class="ticker-item">0x4a7f...9e2b → tSonnet4 · tokenized AI · $2,100 USDC</span>
-            <span class="ticker-item">0x8b3c...1d5f → tGPT5 · tAI redeem · 1.2M tokens</span>
-            <span class="ticker-item">0x5e9a...7c4d → tGLM5 · tAI fallback · x402</span>
-        </div>
-    </div>
+    <canvas id="matrix-canvas"></canvas>
 
     <nav>
         <div class="nav-container">
@@ -953,5 +950,91 @@
             </div>
         </div>
     </footer>
+
+<script>
+// Matrix Rain Effect for tAI Markets
+const canvas = document.getElementById('matrix-canvas');
+const ctx = canvas.getContext('2d');
+
+// Set canvas size
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+// tAI token data for the matrix
+const tokenData = [
+    'tGLM5', 'tOpus46', 'tSonnet4', 'tGPT5',
+    '$1,250', '$5,000', '$2,100', '$42.50',
+    '1.2M', '500k', 'MINT', 'BURN',
+    'COLLATERAL', 'REDEEM', 'tAI', 'TOKENIZED',
+    '0x7a2f', '0x3b8c', '0x9d4e', '0x1f5a',
+    '150% CR', 'σ=0.94', 'x402', 'USDC'
+];
+
+const fontSize = 14;
+let columns = Math.floor(canvas.width / fontSize);
+const drops = [];
+
+// Initialize drops
+for (let i = 0; i < columns; i++) {
+    drops[i] = Math.random() * -100; // Start at random heights above screen
+}
+
+// Colors for glow effect
+const glowColors = ['#00a3e0', '#0077b3', '#4db8ff', '#00d4ff'];
+
+function draw() {
+    // Semi-transparent black for trail effect
+    ctx.fillStyle = 'rgba(10, 10, 15, 0.05)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    ctx.font = fontSize + 'px JetBrains Mono';
+    
+    for (let i = 0; i < drops.length; i++) {
+        // Pick random token data
+        const text = tokenData[Math.floor(Math.random() * tokenData.length)];
+        
+        // Calculate position
+        const x = i * fontSize;
+        const y = drops[i] * fontSize;
+        
+        // Glow effect for leading character
+        if (drops[i] * fontSize > 0 && drops[i] * fontSize < canvas.height) {
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = glowColors[Math.floor(Math.random() * glowColors.length)];
+            ctx.fillStyle = '#ffffff';
+            ctx.fillText(text, x, y);
+            
+            // Reset shadow for trail
+            ctx.shadowBlur = 0;
+        }
+        
+        // Trail characters with fading opacity
+        for (let j = 1; j < 8; j++) {
+            const trailY = y - (j * fontSize);
+            if (trailY > 0 && trailY < canvas.height) {
+                const opacity = 1 - (j * 0.12);
+                const trailText = tokenData[Math.floor(Math.random() * tokenData.length)];
+                ctx.fillStyle = `rgba(0, 163, 224, ${opacity * 0.6})`;
+                ctx.fillText(trailText, x, trailY);
+            }
+        }
+        
+        // Move drop down
+        drops[i]++;
+        
+        // Reset drop when it goes off screen (with randomness)
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+            drops[i] = -5 - Math.random() * 20;
+        }
+    }
+}
+
+// Animation loop
+setInterval(draw, 50);
+</script>
 </body>
 </html>

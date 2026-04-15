@@ -3,25 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>tAI Markets — The World's First Clearing House for AI Inference</title>
-    <meta name="description" content="Transform AI computation into tradeable, collateralized financial assets. CDP/CCP clearing house for decentralized AI inference.">
+    <title>tAI Markets — Tokenized AI (tAI): The Economic Unit for Superintelligence</title>
+    <meta name="description" content="Pioneering tokenized AI (tAI). Transform scarce AI computation into accessible, tradeable financial assets. Equalizing access to superintelligence.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-primary: #0a0a0f;
-            --bg-secondary: #12121a;
-            --bg-tertiary: #1a1a25;
-            --accent-primary: #00d4aa;
-            --accent-secondary: #00a884;
-            --accent-glow: rgba(0, 212, 170, 0.15);
+            --bg-secondary: #0d1520;
+            --bg-tertiary: #111b2b;
+            --accent-primary: #00a3e0;
+            --accent-secondary: #0077b3;
+            --accent-glow: rgba(0, 163, 224, 0.15);
             --text-primary: #ffffff;
-            --text-secondary: #a0a0b0;
-            --text-muted: #6b6b7b;
-            --border-color: #2a2a3a;
-            --gradient-start: #00d4aa;
-            --gradient-end: #00a884;
+            --text-secondary: #a8c5e0;
+            --text-muted: #6b8cae;
+            --border-color: #1a3a5c;
+            --gradient-start: #00a3e0;
+            --gradient-end: #0077b3;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -38,9 +38,9 @@
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background-image: 
-                linear-gradient(rgba(0, 212, 170, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 212, 170, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
+                linear-gradient(rgba(0, 163, 224, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 163, 224, 0.04) 1px, transparent 1px);
+            background-size: 40px 40px;
             pointer-events: none;
             z-index: 0;
         }
@@ -61,33 +61,53 @@
         }
 
         .ticker {
-            background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border-color);
-            padding: 8px 0;
+            background: transparent;
+            border-bottom: none;
+            padding: 0;
             overflow: hidden;
-            position: relative;
-            z-index: 10;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 1;
+            pointer-events: none;
         }
 
         .ticker-content {
             display: flex;
-            animation: scroll 30s linear infinite;
+            animation: matrix-scroll 20s linear infinite;
             white-space: nowrap;
+            opacity: 0.6;
+            font-size: 11px;
+            letter-spacing: 0.5px;
         }
 
         .ticker-item {
-            padding: 0 24px;
+            padding: 4px 0;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            color: var(--text-secondary);
+            font-size: 11px;
+            color: rgba(0, 163, 224, 0.5);
+            display: block;
+            animation: matrix-fade 3s ease-in-out infinite;
+            text-shadow: 0 0 10px rgba(0, 163, 224, 0.3);
         }
 
-        .ticker-item .address { color: var(--accent-primary); }
-        .ticker-item .value { color: var(--text-primary); }
+        .ticker-item:nth-child(odd) { animation-delay: 0.5s; }
+        .ticker-item:nth-child(even) { animation-delay: 1s; }
+        .ticker-item .address { color: rgba(0, 163, 224, 0.7); }
+        .ticker-item .value { color: rgba(0, 163, 224, 0.9); }
 
         @keyframes scroll {
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
+        }
+
+        @keyframes matrix-scroll {
+            0% { transform: translateY(-100%) translateX(0); }
+            100% { transform: translateY(100%) translateX(-30%); }
+        }
+
+        @keyframes matrix-fade {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
         }
 
         nav {
@@ -634,32 +654,32 @@
 
     <div class="ticker">
         <div class="ticker-content">
-            <span class="ticker-item"><span class="address">0x7a2f...9e4d</span> → tGLM5 · mint · <span class="value">$1,250 USDC</span> collateral</span>
-            <span class="ticker-item"><span class="address">0x3b8c...2a1f</span> → tOpus46 · redeem · <span class="value">500k</span> tokens</span>
-            <span class="ticker-item"><span class="address">0x9d4e...7c3b</span> → tSonnet4 · mint · <span class="value">$5,000 USDC</span> collateral</span>
-            <span class="ticker-item"><span class="address">0x1f5a...8e2d</span> → tGPT5 · liquidate · <span class="value">CR 142%</span></span>
-            <span class="ticker-item"><span class="address">0x6c9b...4f7a</span> → tGLM5 · routing · <span class="value">σ = 0.94</span> provider</span>
-            <span class="ticker-item"><span class="address">0x2e8d...5b1c</span> → tOpus46 · settlement · <span class="value">$42.50 USDC</span> fee</span>
-            <span class="ticker-item"><span class="address">0x4a7f...9e2b</span> → tSonnet4 · mint · <span class="value">$2,100 USDC</span> collateral</span>
-            <span class="ticker-item"><span class="address">0x8b3c...1d5f</span> → tGPT5 · redeem · <span class="value">1.2M</span> tokens</span>
-            <span class="ticker-item"><span class="address">0x5e9a...7c4d</span> → tGLM5 · PLR · <span class="value">x402</span> fallback</span>
-            <span class="ticker-item"><span class="address">0x7a2f...9e4d</span> → tGLM5 · mint · <span class="value">$1,250 USDC</span> collateral</span>
-            <span class="ticker-item"><span class="address">0x3b8c...2a1f</span> → tOpus46 · redeem · <span class="value">500k</span> tokens</span>
-            <span class="ticker-item"><span class="address">0x9d4e...7c3b</span> → tSonnet4 · mint · <span class="value">$5,000 USDC</span> collateral</span>
-            <span class="ticker-item"><span class="address">0x1f5a...8e2d</span> → tGPT5 · liquidate · <span class="value">CR 142%</span></span>
-            <span class="ticker-item"><span class="address">0x6c9b...4f7a</span> → tGLM5 · routing · <span class="value">σ = 0.94</span> provider</span>
-            <span class="ticker-item"><span class="address">0x2e8d...5b1c</span> → tOpus46 · settlement · <span class="value">$42.50 USDC</span> fee</span>
-            <span class="ticker-item"><span class="address">0x4a7f...9e2b</span> → tSonnet4 · mint · <span class="value">$2,100 USDC</span> collateral</span>
-            <span class="ticker-item"><span class="address">0x8b3c...1d5f</span> → tGPT5 · redeem · <span class="value">1.2M</span> tokens</span>
-            <span class="ticker-item"><span class="address">0x5e9a...7c4d</span> → tGLM5 · PLR · <span class="value">x402</span> fallback</span>
+            <span class="ticker-item">0x7a2f...9e4d → tGLM5 · tokenized AI · $1,250 USDC</span>
+            <span class="ticker-item">0x3b8c...2a1f → tOpus46 · tAI mint · 500k tokens</span>
+            <span class="ticker-item">0x9d4e...7c3b → tSonnet4 · tokenized AI · $5,000 USDC</span>
+            <span class="ticker-item">0x1f5a...8e2d → tGPT5 · tAI liquidate · CR 142%</span>
+            <span class="ticker-item">0x6c9b...4f7a → tGLM5 · tokenized inference · σ = 0.94</span>
+            <span class="ticker-item">0x2e8d...5b1c → tOpus46 · tAI settlement · $42.50 USDC</span>
+            <span class="ticker-item">0x4a7f...9e2b → tSonnet4 · tokenized AI · $2,100 USDC</span>
+            <span class="ticker-item">0x8b3c...1d5f → tGPT5 · tAI redeem · 1.2M tokens</span>
+            <span class="ticker-item">0x5e9a...7c4d → tGLM5 · tAI fallback · x402</span>
+            <span class="ticker-item">0x7a2f...9e4d → tGLM5 · tokenized AI · $1,250 USDC</span>
+            <span class="ticker-item">0x3b8c...2a1f → tOpus46 · tAI mint · 500k tokens</span>
+            <span class="ticker-item">0x9d4e...7c3b → tSonnet4 · tokenized AI · $5,000 USDC</span>
+            <span class="ticker-item">0x1f5a...8e2d → tGPT5 · tAI liquidate · CR 142%</span>
+            <span class="ticker-item">0x6c9b...4f7a → tGLM5 · tokenized inference · σ = 0.94</span>
+            <span class="ticker-item">0x2e8d...5b1c → tOpus46 · tAI settlement · $42.50 USDC</span>
+            <span class="ticker-item">0x4a7f...9e2b → tSonnet4 · tokenized AI · $2,100 USDC</span>
+            <span class="ticker-item">0x8b3c...1d5f → tGPT5 · tAI redeem · 1.2M tokens</span>
+            <span class="ticker-item">0x5e9a...7c4d → tGLM5 · tAI fallback · x402</span>
         </div>
     </div>
 
     <nav>
         <div class="nav-container">
             <a href="/" class="logo">
-                <div class="logo-icon">t</div>
-                <span>tAI Markets</span>
+                <img src="logo.jpg" alt="tAI Markets" style="height: 40px; width: auto; border-radius: 8px;">
+                <span style="font-weight: 700; font-size: 24px; background: linear-gradient(135deg, var(--accent-primary), #4db8ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">tAI Markets</span>
             </a>
             <div class="nav-links">
                 <a href="#architecture">Architecture</a>
@@ -674,12 +694,12 @@
     <section class="hero">
         <div class="badge">
             <span class="badge-dot"></span>
-            Testnet Live on Mantle Sepolia
+            Pioneering tokenized AI (tAI)
         </div>
-        <h1>The World's First Clearing House for AI Inference</h1>
+        <h1>The Economic Unit for Superintelligence</h1>
         <p class="hero-subtitle">
-            Transform AI computation into tradeable, collateralized financial assets. 
-            tAI Markets operates as a decentralized CCP, standing between AI providers and consumers to guarantee settlement.
+            Tokenized AI (tAI) is the new paradigm — transforming scarce computation into accessible, 
+            tradeable financial assets. Our global mission is to equalize access and availability for AI inference worldwide.
         </p>
         <div class="hero-cta">
             <a href="#" class="btn btn-primary">Launch App →</a>
@@ -707,9 +727,9 @@
 
     <section class="architecture" id="architecture">
         <div class="section-header">
-            <div class="section-label">Protocol Architecture</div>
-            <h2 class="section-title">CDP/CCP Clearing House</h2>
-            <p class="section-desc">A decentralized Central Counterparty that standardizes, collateralizes, and guarantees AI inference settlement.</p>
+            <div class="section-label">Tokenized AI Infrastructure</div>
+            <h2 class="section-title">The tAI Protocol</h2>
+            <p class="section-desc">Tokenized AI (tAI) transforms scarce computation into accessible financial assets. A decentralized clearing house for the AI economy.</p>
         </div>
         <div class="arch-diagram">
             <div class="arch-layer">
@@ -772,9 +792,9 @@
 
     <section class="features" id="features">
         <div class="section-header">
-            <div class="section-label">Key Features</div>
-            <h2 class="section-title">Built for the AI Economy</h2>
-            <p class="section-desc">Every component designed to bridge decentralized finance with AI compute.</p>
+            <div class="section-label">Why Tokenized AI</div>
+            <h2 class="section-title">The New Paradigm</h2>
+            <p class="section-desc">tAI makes AI computation accessible, tradeable, and globally available. The infrastructure for superintelligence.</p>
         </div>
         <div class="features-grid">
             <div class="feature-card">
@@ -812,9 +832,9 @@
 
     <section class="tokens" id="tokens">
         <div class="section-header">
-            <div class="section-label">Token Models</div>
-            <h2 class="section-title">Standard Inference Tokens (SITs)</h2>
-            <p class="section-desc">Each model class has its own tradeable, collateralized token representing 1 million output tokens.</p>
+            <div class="section-label">Tokenized AI Models</div>
+            <h2 class="section-title">tAI Token Suite</h2>
+            <p class="section-desc">Each AI model becomes a tradeable tAI token. Collateralized, liquid, and globally accessible.</p>
         </div>
         <div class="tokens-grid">
             <div class="token-card">
@@ -880,8 +900,8 @@
 
     <section class="cta-section">
         <div class="cta-box">
-            <h2>Start Building on tAI Markets</h2>
-            <p>Join the first decentralized clearing house for AI inference. Deploy your own tModel tokens or integrate with existing ones.</p>
+            <h2>Join the Tokenized AI Revolution</h2>
+            <p>Be part of the tAI paradigm shift. Build on the infrastructure that's making superintelligence accessible to everyone, everywhere.</p>
             <div class="hero-cta">
                 <a href="#" class="btn btn-primary">Launch App →</a>
                 <a href="https://github.com/tAI-Markets/tAI-contracts" class="btn btn-secondary">Read Documentation ↗</a>
@@ -893,10 +913,10 @@
         <div class="footer-content">
             <div class="footer-brand">
                 <a href="/" class="logo">
-                    <div class="logo-icon">t</div>
-                    <span>tAI Markets</span>
+                    <img src="logo.jpg" alt="tAI Markets" style="height: 32px; width: auto; border-radius: 6px;">
+                    <span style="font-weight: 700; background: linear-gradient(135deg, var(--accent-primary), #4db8ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">tAI Markets</span>
                 </a>
-                <p>The world's first clearing house for AI inference. Transforming compute into collateralized financial assets on-chain.</p>
+                <p>Pioneering tokenized AI (tAI). Equalizing access to superintelligence through decentralized financial infrastructure.</p>
             </div>
             <div class="footer-links">
                 <h4>Product</h4>

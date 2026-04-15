@@ -42,7 +42,7 @@
             height: 100%;
             z-index: 1;
             pointer-events: none;
-            opacity: 0.4;
+            opacity: 0.5;
         }
 
         .bg-grid {
@@ -124,11 +124,10 @@
         nav {
             position: sticky;
             top: 0;
-            background: rgba(10, 10, 15, 0.85);
+            background: rgba(10, 10, 15, 0.75);
             backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-color);
             z-index: 100;
-            padding: 16px 0;
+            padding: 20px 0;
         }
 
         .nav-container {
@@ -188,14 +187,10 @@
         .hero {
             position: relative;
             z-index: 10;
-            padding: 120px 24px 80px;
+            padding: 160px 48px 120px;
             text-align: center;
-            max-width: 1000px;
-            margin: 0 auto;
-            background: rgba(10, 10, 15, 0.7);
-            backdrop-filter: blur(10px);
-            border-radius: 32px;
-            border: 1px solid var(--border-color);
+            max-width: 900px;
+            margin: 60px auto;
         }
 
         .badge {
@@ -341,15 +336,13 @@
         .arch-diagram {
             max-width: 1000px;
             margin: 0 auto;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
+            background: rgba(13, 21, 32, 0.4);
             border-radius: 24px;
             padding: 40px;
         }
 
         .arch-layer {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
+            background: rgba(17, 27, 43, 0.6);
             border-radius: 16px;
             padding: 24px;
             margin-bottom: 16px;
@@ -373,15 +366,14 @@
         }
 
         .arch-component {
-            background: var(--bg-primary);
-            border: 1px solid var(--border-color);
+            background: rgba(10, 10, 15, 0.5);
             border-radius: 12px;
             padding: 20px;
             transition: all 0.2s;
         }
 
         .arch-component:hover {
-            border-color: var(--accent-primary);
+            background: rgba(17, 27, 43, 0.8);
             transform: translateY(-2px);
         }
 
@@ -413,15 +405,14 @@
         }
 
         .feature-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
+            background: rgba(13, 21, 32, 0.5);
             border-radius: 20px;
             padding: 32px;
             transition: all 0.3s;
         }
 
         .feature-card:hover {
-            border-color: var(--accent-primary);
+            background: rgba(17, 27, 43, 0.7);
             transform: translateY(-4px);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
@@ -465,8 +456,7 @@
         }
 
         .token-card {
-            background: var(--bg-primary);
-            border: 1px solid var(--border-color);
+            background: rgba(10, 10, 15, 0.5);
             border-radius: 16px;
             padding: 28px;
             text-align: center;
@@ -474,7 +464,7 @@
         }
 
         .token-card:hover {
-            border-color: var(--accent-primary);
+            background: rgba(17, 27, 43, 0.8);
             transform: scale(1.02);
         }
 
@@ -553,20 +543,11 @@
         .cta-box {
             max-width: 800px;
             margin: 0 auto;
-            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
-            border: 1px solid var(--border-color);
+            background: rgba(13, 21, 32, 0.5);
             border-radius: 32px;
             padding: 60px 40px;
             position: relative;
             overflow: hidden;
-        }
-
-        .cta-box::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
         }
 
         .cta-box h2 {
@@ -974,7 +955,7 @@ const tokenData = [
     '150% CR', 'σ=0.94', 'x402', 'USDC'
 ];
 
-const fontSize = 14;
+const fontSize = 16;
 let columns = Math.floor(canvas.width / fontSize);
 const drops = [];
 
@@ -987,8 +968,8 @@ for (let i = 0; i < columns; i++) {
 const glowColors = ['#00a3e0', '#0077b3', '#4db8ff', '#00d4ff'];
 
 function draw() {
-    // Semi-transparent black for trail effect
-    ctx.fillStyle = 'rgba(10, 10, 15, 0.05)';
+    // Semi-transparent black for trail effect - slower fade
+    ctx.fillStyle = 'rgba(10, 10, 15, 0.03)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
     ctx.font = fontSize + 'px JetBrains Mono';
@@ -1023,18 +1004,18 @@ function draw() {
             }
         }
         
-        // Move drop down
-        drops[i]++;
+        // Move drop down slower
+        drops[i] += 0.5;
         
         // Reset drop when it goes off screen (with randomness)
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-            drops[i] = -5 - Math.random() * 20;
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.98) {
+            drops[i] = -10 - Math.random() * 30;
         }
     }
 }
 
-// Animation loop
-setInterval(draw, 50);
+// Animation loop - slower for readability
+setInterval(draw, 120);
 </script>
 </body>
 </html>

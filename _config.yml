@@ -1,0 +1,25 @@
+# Jekyll configuration for GitHub Pages
+title: tAI Markets
+description: The World's First Clearing House for AI Inference
+url: https://tAI-Markets.github.io
+baseurl: ""
+
+# GitHub Pages settings
+theme: minima
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+
+# Exclude files from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - .git
+  - .github
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+permalink: pretty

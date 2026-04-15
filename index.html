@@ -187,10 +187,50 @@
         .hero {
             position: relative;
             z-index: 10;
-            padding: 160px 48px 120px;
+            padding: 140px 64px 100px;
             text-align: center;
             max-width: 900px;
-            margin: 60px auto;
+            margin: 40px auto;
+            background: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+        }
+
+        .terminal-container {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(0, 163, 224, 0.3);
+            border-radius: 8px;
+            padding: 12px 20px;
+            margin-bottom: 32px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            color: var(--accent-primary);
+        }
+
+        .terminal-prompt {
+            color: var(--accent-primary);
+            opacity: 0.8;
+        }
+
+        .terminal-text {
+            color: #fff;
+        }
+
+        .terminal-cursor {
+            display: inline-block;
+            width: 10px;
+            height: 18px;
+            background: var(--accent-primary);
+            animation: blink 1s infinite;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
         }
 
         .badge {
@@ -304,7 +344,7 @@
             padding: 100px 24px;
             position: relative;
             z-index: 10;
-            background: rgba(10, 10, 15, 0.6);
+            background: rgba(10, 10, 15, 0.88);
         }
 
         .section-header {
@@ -393,7 +433,7 @@
             padding: 100px 24px;
             position: relative;
             z-index: 10;
-            background: rgba(10, 10, 15, 0.6);
+            background: rgba(10, 10, 15, 0.88);
         }
 
         .features-grid {
@@ -442,7 +482,7 @@
 
         .tokens {
             padding: 100px 24px;
-            background: rgba(13, 21, 32, 0.85);
+            background: rgba(10, 10, 15, 0.92);
             position: relative;
             z-index: 10;
         }
@@ -491,7 +531,7 @@
             padding: 100px 24px;
             position: relative;
             z-index: 10;
-            background: rgba(10, 10, 15, 0.6);
+            background: rgba(10, 10, 15, 0.88);
         }
 
         .steps {
@@ -537,7 +577,7 @@
             text-align: center;
             position: relative;
             z-index: 10;
-            background: rgba(10, 10, 15, 0.7);
+            background: rgba(10, 10, 15, 0.9);
         }
 
         .cta-box {
@@ -669,6 +709,11 @@
     </nav>
 
     <section class="hero">
+        <div class="terminal-container">
+            <span class="terminal-prompt">$</span>
+            <span class="terminal-text" id="typed"></span>
+            <span class="terminal-cursor"></span>
+        </div>
         <div class="badge">
             <span class="badge-dot"></span>
             Pioneering tokenized AI (tAI)
@@ -1016,6 +1061,44 @@ function draw() {
 
 // Animation loop - slower for readability
 setInterval(draw, 120);
+
+// Terminal typing animation
+const terminalTexts = ['tGLM5', 'tOpus46', 'tMimoV2pro', 'tSonnet46', 'tMiniMaxM27'];
+let textIndex = 0;
+let charIndex = 0;
+let isDeleting = false;
+let typingSpeed = 50;
+const typedElement = document.getElementById('typed');
+
+function type() {
+    const currentText = terminalTexts[textIndex];
+    
+    if (isDeleting) {
+        typedElement.textContent = currentText.substring(0, charIndex - 1);
+        charIndex--;
+        typingSpeed = 30; // Faster when deleting
+    } else {
+        typedElement.textContent = currentText.substring(0, charIndex + 1);
+        charIndex++;
+        typingSpeed = 50; // Normal typing speed
+    }
+    
+    if (!isDeleting && charIndex === currentText.length) {
+        // Finished typing, pause before deleting
+        isDeleting = true;
+        typingSpeed = 1000;
+    } else if (isDeleting && charIndex === 0) {
+        // Finished deleting, move to next text
+        isDeleting = false;
+        textIndex = (textIndex + 1) % terminalTexts.length;
+        typingSpeed = 300; // Pause before typing next
+    }
+    
+    setTimeout(type, typingSpeed);
+}
+
+// Start typing animation
+type();
 </script>
 </body>
 </html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Licensing — tAI Markets</title>
+    <meta name="description" content="tAI Markets is commercial source-available software (BUSL-1.1). Free evaluation on testnets; production licensing for providers and enterprises.">
+    <style>
+        :root {
+            --bg: #050a07; --panel: #0a1410; --border: #1a2f24; --text: #d4e8dc;
+            --muted: #6b8f7c; --accent: #00ff9d; --accent2: #00c8ff; --warn: #ffd166;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: var(--bg); color: var(--text);
+            font-family: 'SF Mono', 'Fira Code', ui-monospace, Menlo, monospace;
+            padding: 32px 24px; max-width: 1100px; margin: 0 auto; line-height: 1.6;
+        }
+        a { color: var(--accent2); text-decoration: none; }
+        header { margin-bottom: 28px; }
+        header .back { font-size: 12px; color: var(--muted); }
+        h1 { font-size: 26px; margin: 8px 0; }
+        h1 .dot { color: var(--accent); }
+        .sub { color: var(--muted); font-size: 13px; max-width: 760px; }
+        .tiers { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin: 26px 0; }
+        .tier { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 22px; display: flex; flex-direction: column; }
+        .tier.hot { border-color: var(--accent); }
+        .tier .name { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+        .tier .price { font-size: 26px; font-weight: 700; margin: 10px 0 2px; }
+        .tier .price small { font-size: 12px; color: var(--muted); font-weight: 400; }
+        .tier ul { list-style: none; margin: 14px 0 18px; flex: 1; }
+        .tier li { font-size: 13px; padding: 5px 0 5px 18px; position: relative; color: var(--text); }
+        .tier li::before { content: "▸"; position: absolute; left: 0; color: var(--accent); }
+        .tier li.no::before { content: "·"; color: var(--muted); }
+        .tier li.no { color: var(--muted); }
+        .cta { display: block; text-align: center; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: 700; border: 1px solid var(--accent); color: var(--accent); }
+        .cta.primary { background: var(--accent); color: #04140c; }
+        .cta:hover { filter: brightness(1.15); }
+        .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 22px; margin: 18px 0; }
+        .panel h2 { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+        .panel p, .panel li { font-size: 13px; color: var(--text); }
+        .panel ul { margin: 8px 0 0 18px; }
+        .panel li { padding: 3px 0; }
+        .fine { color: var(--muted); font-size: 12px; }
+        .fine b { color: var(--text); }
+        footer { margin-top: 28px; color: var(--muted); font-size: 11px; }
+    </style>
+</head>
+<body>
+<header>
+    <a class="back" href="/">← tai.markets</a>
+    <h1><span class="dot">●</span> LICENSING &amp; PRICING</h1>
+    <p class="sub">
+        tAI Markets is <b>commercial source-available software</b> (BUSL-1.1 + additional use grant):
+        read the code, deploy on testnets, and evaluate free. Production operation — mainnet
+        clearing, paid settlement services — requires a license. The agent SDK (ABIs, types, demo) is MIT.
+    </p>
+</header>
+
+<div class="tiers">
+    <div class="tier">
+        <div class="name">Evaluation</div>
+        <div class="price">Free <small>/ 90 days</small></div>
+        <ul>
+            <li>Testnet + local deployment</li>
+            <li>Full protocol + gateway features</li>
+            <li>Commercial evaluation allowed</li>
+            <li>Community support</li>
+            <li class="no">No mainnet production</li>
+            <li class="no">No SLA</li>
+        </ul>
+        <a class="cta" href="mailto:licensing@tai.markets?subject=Evaluation%20License%20request">Start evaluation →</a>
+    </div>
+    <div class="tier hot">
+        <div class="name">Provider</div>
+        <div class="price">$— <small>/ mo + flow share</small></div>
+        <ul>
+            <li>Mainnet production operation</li>
+            <li>One production provider identity</li>
+            <li>Forward-contract facility access</li>
+            <li>Business-hours support</li>
+            <li>Fee share above included volume</li>
+        </ul>
+        <a class="cta primary" href="mailto:licensing@tai.markets?subject=Provider%20License%20request">Apply for Provider →</a>
+    </div>
+    <div class="tier">
+        <div class="name">Enterprise / Integration</div>
+        <div class="price">Custom</div>
+        <ul>
+            <li>Unlimited scale, white-label</li>
+            <li>Custom settlement rails (x402 / MPP)</li>
+            <li>Oracle + SLA feed integration</li>
+            <li>24×7 support, response SLAs</li>
+            <li>Design-partner roadmap access</li>
+        </ul>
+        <a class="cta" href="mailto:licensing@tai.markets?subject=Enterprise%20License%20request">Talk to us →</a>
+    </div>
+</div>
+
+<div class="panel">
+    <h2>What's open vs. licensed</h2>
+    <ul>
+        <li><b>MIT (open):</b> SDK rim — contract ABIs, shared types, agent demo, dashboard widgets. Integrate freely, forever.</li>
+        <li><b>BUSL-1.1 (source-available):</b> protocol core (clearing house contracts) and gateway server. Read, fork, test on testnets; production requires a license.</li>
+        <li><b>Automatic:</b> the code converts to Apache-2.0 at each release's 4-year change date, per standard BUSL terms.</li>
+    </ul>
+</div>
+
+<div class="panel">
+    <h2>Protocol economics (independent of licensing)</h2>
+    <p>Every redemption settled through the clearing house pays a <b>5% settlement fee to the DAO treasury</b> —
+    enforceable on-chain, identical for every participant. Provider collateral sits in per-provider vaults at
+    ≥150%. The commercial license covers operating the software; the protocol fee is the network's own revenue.</p>
+</div>
+
+<p class="fine"><b>Note:</b> tier pricing is finalized per deployment during evaluation. Agreement templates:
+Evaluation and Provider terms are published in the repository (<i>docs/EVALUATION-LICENSE.md</i>,
+<i>docs/COMMERCIAL-LICENSE.md</i>) — counsel-reviewed versions govern.</p>
+
+<footer>
+    © 2026 tAI Markets · BUSL-1.1 with additional use grant · "tAI Markets", "tModel" are trademarks ·
+    <a href="/">tai.markets</a> · <a href="/demo/">live dashboard</a> ·
+    <a href="https://github.com/tAI-Markets/tAI-contracts">source ↗</a>
+</footer>
+</body>
+</html>

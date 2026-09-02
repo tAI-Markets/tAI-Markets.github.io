@@ -1,21 +1,178 @@
-/* tAI Markets brand → Docusaurus theme tokens (see site/DESIGN-SYSTEM.md) */
+/* ============================================================
+   tAI Markets Docs — GitBook-style light reading experience
+   Brand: tai.markets blue (#00a3e0) · dark navbar · light content
+   See site/DESIGN-SYSTEM.md for the full design system.
+   ============================================================ */
+
 :root {
-  --ifm-color-primary: #00a3e0;
-  --ifm-color-primary-dark: #0093ca;
-  --ifm-color-primary-darker: #008abf;
-  --ifm-color-primary-darkest: #0077b3;
-  --ifm-color-primary-light: #0fb3f0;
-  --ifm-color-primary-lighter: #18bcf8;
-  --ifm-color-primary-lightest: #3ecbfa;
-  --ifm-background-color: #0a0a0f;
-  --ifm-font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --ifm-code-font-size: 90%;
-  --ifm-heading-font-weight: 700;
+    --ifm-color-primary: #00a3e0;
+    --ifm-color-primary-dark: #0093ca;
+    --ifm-color-primary-darker: #008abf;
+    --ifm-color-primary-darkest: #0077b3;
+    --ifm-color-primary-light: #0fb3f0;
+    --ifm-color-primary-lighter: #18bcf8;
+    --ifm-color-primary-lightest: #3ecbfa;
+
+    /* GitBook-like light reading surfaces */
+    --ifm-background-color: #ffffff;
+    --ifm-background-surface-color: #f7f9fb;
+    --ifm-font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --ifm-font-size-base: 16px;
+    --ifm-line-height-base: 1.75;
+    --ifm-heading-font-weight: 700;
+    --ifm-heading-margin-bottom: 1.2rem;
+    --ifm-navbar-height: 4rem;
+    --ifm-navbar-padding-horizontal: 1.5rem;
+    --ifm-menu-color: #44546a;
+    --ifm-menu-color-active: #00a3e0;
+    --ifm-toc-border-color: #e6ebf1;
+    --ifm-table-border-color: #e6ebf1;
+    --ifm-code-background: #f0f4f8;
+    --ifm-footer-background-color: #0a0a0f;
+    --ifm-footer-title-color: #a8c5e0;
+    --ifm-footer-link-color: #6b8cae;
+
+    /* Brand surfaces */
+    --tai-bg-primary: #0a0a0f;
+    --tai-bg-secondary: #0d1520;
+    --tai-border: #1a3a5c;
+    --tai-text-secondary: #a8c5e0;
+    --tai-text-muted: #6b8cae;
+    --tai-gradient: linear-gradient(135deg, #00a3e0, #0077b3);
 }
 
-[data-theme='dark'] {
-  --ifm-background-color: #0a0a0f;
-  --ifm-background-surface-color: #0d1520;
+/* ── Dark brand navbar (matches tai.markets nav) ── */
+.navbar {
+    background: var(--tai-bg-primary);
+    box-shadow: none;
+    border-bottom: 1px solid var(--tai-border);
+    height: var(--ifm-navbar-height);
+}
+.navbar__title {
+    color: #fff;
+    font-weight: 700;
+    font-size: 17px;
+}
+.navbar__logo { height: 34px; border-radius: 8px; margin-right: 10px; }
+.navbar__link {
+    color: var(--tai-text-secondary);
+    font-weight: 500;
+    font-size: 14px;
+}
+.navbar__link:hover { color: #fff; }
+.navbar__link--active { color: #fff; }
+.navbar__items--right .navbar__link { color: var(--tai-text-muted); }
+.navbar__items--right .navbar__link:hover { color: #fff; }
+
+/* ── Light content area (GitBook readability) ── */
+.main-wrapper { background: #fff; }
+article {
+    max-width: 46rem;
+    font-size: 16px;
+    color: #1f2d3d;
+}
+article h1 {
+    font-size: 2.1rem;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.4rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid #e6ebf1;
+}
+article h2 { font-size: 1.45rem; margin-top: 2.4rem; letter-spacing: -0.01em; }
+article h3 { font-size: 1.15rem; margin-top: 1.8rem; }
+article p, article li { color: #2c3e50; }
+article a { color: var(--ifm-color-primary); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+article strong { color: #16283c; }
+article table {
+    display: table;
+    width: 100%;
+    font-size: 14.5px;
+}
+article th { background: var(--ifm-background-surface-color); font-weight: 600; }
+
+/* ── Code (dark brand blocks on the light page — like GitBook) ── */
+article pre, .theme-code-block {
+    border-radius: 10px;
+    box-shadow: 0 2px 12px rgba(10, 16, 23, 0.12);
+}
+code {
+    background: var(--ifm-code-background);
+    border: 1px solid #e6ebf1;
+    border-radius: 5px;
+    padding: 1.5px 6px;
+    color: #005f87;
+    font-size: 85%;
+}
+pre code { border: none; padding: 0; color: inherit; font-size: 13px; line-height: 1.6; }
+
+/* ── Sidebar (light, GitBook-style) ── */
+.theme-doc-sidebar-container {
+    border-right: 1px solid #e6ebf1;
+    background: #fbfcfd;
+}
+.theme-doc-sidebar-container menu { padding: 1rem 0.75rem 2rem; }
+.menu__link {
+    font-size: 13.5px;
+    border-radius: 7px;
+    padding: 6px 10px;
+    color: #44546a;
+    font-weight: 500;
+}
+.menu__link:hover {
+    background: #eef4f9;
+    color: var(--ifm-color-primary);
+}
+.menu__link--active {
+    background: rgba(0, 163, 224, 0.09);
+    color: var(--ifm-color-primary) !important;
+    font-weight: 600;
+}
+.menu__list-item-collapsible > .menu__link { font-weight: 600; color: #16283c; }
+
+/* ── TOC (right, subtle) ── */
+.table-of-contents { font-size: 13px; }
+.table-of-contents__link { color: #6b7c93; }
+.table-of-contents__link--active, .table-of-contents__link:hover {
+    color: var(--ifm-color-primary);
 }
 
-h1, h2, h3 { letter-spacing: -0.01em; }
+/* ── Admonitions (soft tinted, GitBook-style callouts) ── */
+.admonition {
+    border-radius: 10px;
+    border: none;
+    box-shadow: inset 3px 0 0 var(--ifm-admonition-color, var(--ifm-color-primary));
+    background: #f7fafc;
+    padding: 0.8rem 1rem;
+}
+.admonition p { margin-bottom: 0.4rem; }
+.admonition-note { --ifm-color-primary: #44546a; --ifm-background-color: #f4f6f8; }
+.admonition-tip { --ifm-background-color: #f0f9f4; }
+
+/* ── Pagination + breadcrumbs spacing ── */
+.pagination-nav { margin-top: 3rem; }
+.pagination-nav__link {
+    border-radius: 10px;
+    border-color: #e6ebf1;
+    transition: border-color .2s, box-shadow .2s;
+}
+.pagination-nav__link:hover {
+    border-color: var(--ifm-color-primary);
+    box-shadow: 0 2px 12px rgba(0, 163, 224, 0.1);
+}
+.theme-doc-breadcrumbs { font-size: 12.5px; color: #6b7c93; }
+
+/* ── Footer: dark brand strip ── */
+.footer {
+    background: var(--tai-bg-primary);
+    border-top: 1px solid var(--tai-border);
+}
+.footer .container { color: var(--tai-text-muted); }
+.footer__title { color: var(--tai-text-secondary); font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+.footer__link-item { color: var(--tai-text-muted); font-size: 13.5px; }
+.footer__link-item:hover { color: var(--accent-primary); }
+.footer__copyright { color: var(--tai-text-muted); font-size: 12.5px; }
+
+@media (max-width: 996px) {
+    .navbar__toggle { color: #fff; }
+    .sidebar { background: #fff; }
+}

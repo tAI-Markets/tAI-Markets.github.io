@@ -21,19 +21,28 @@ const config = {
     ],
   ],
   themeConfig: {
+    // (navbar style handled in themeConfig above)
+    colorMode: {
+      defaultMode: 'light',
+      disableSwitch: false,
+      respectPrefersColorScheme: false,
+    },
     navbar: {
       title: 'tAI Markets Docs',
-      logo: { alt: 'tAI Markets', src: '/logo.jpg' },
+      logo: { alt: 'tAI Markets', src: 'logo.jpg' },
+      style: 'dark',
       items: [
         { to: '/', label: 'Concepts', position: 'left' },
         { to: '/api', label: 'API', position: 'left' },
         { to: '/tutorials/originate-tokens', label: 'Tutorials', position: 'left' },
         { href: 'https://tai.markets', label: 'tai.markets', position: 'right' },
         { href: 'https://tai.markets/demo', label: 'Live Demo', position: 'right' },
+        { href: 'https://tai.markets/demo', label: 'Live Demo', position: 'right' },
       ],
     },
     footer: {
-      copyright: `Copyright © ${new Date().getFullYear()} tAI Markets`,
+      style: 'dark',
+      copyright: `Copyright © ${new Date().getFullYear()} tAI Markets — commercial source-available (BUSL-1.1). Built on Tempo.`,
     },
   },
 };

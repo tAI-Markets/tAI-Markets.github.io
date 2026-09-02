@@ -1,0 +1,191 @@
+/* ============================================================
+   tAI Markets — Design System (single source of truth)
+   Extracted from index.html (the brand reference page).
+   EVERY page must link this file and reuse these tokens/components.
+   See DESIGN-SYSTEM.md for the written standards.
+   ============================================================ */
+
+:root {
+    /* Surfaces */
+    --bg-primary: #0a0a0f;
+    --bg-secondary: #0d1520;
+    --bg-tertiary: #111b2b;
+    --border-color: #1a3a5c;
+
+    /* Brand accents (the blue) */
+    --accent-primary: #00a3e0;
+    --accent-secondary: #0077b3;
+    --accent-glow: rgba(0, 163, 224, 0.15);
+    --gradient-start: #00a3e0;
+    --gradient-end: #0077b3;
+
+    /* Text */
+    --text-primary: #ffffff;
+    --text-secondary: #a8c5e0;
+    --text-muted: #6b8cae;
+
+    /* Semantic (use sparingly, only for state) */
+    --semantic-ok: #00a3e0;      /* healthy/positive = brand blue, not green */
+    --semantic-warn: #e0a338;    /* pending / stale */
+    --semantic-error: #e0526b;   /* failure / suspended */
+
+    /* Type */
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    /* Radius scale */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: var(--font-body);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Ambient blue atmosphere (grid + glow) — include the two divs below on every page:
+   <div class="bg-grid"></div><div class="bg-glow"></div> */
+.bg-grid {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-image:
+        linear-gradient(rgba(0, 163, 224, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 163, 224, 0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none; z-index: 0;
+}
+.bg-glow {
+    position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(circle at 50% 50%, var(--accent-glow) 0%, transparent 50%);
+    pointer-events: none; z-index: 0;
+    animation: bg-pulse 8s ease-in-out infinite;
+}
+@keyframes bg-pulse {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.1); }
+}
+
+/* ── Navigation (sticky, blurred, logo + links + gradient CTA) ── */
+.nav {
+    position: sticky; top: 0;
+    background: rgba(10, 10, 15, 0.75);
+    backdrop-filter: blur(20px);
+    z-index: 100; padding: 20px 0;
+}
+.nav-container {
+    max-width: 1200px; margin: 0 auto; padding: 0 24px;
+    display: flex; justify-content: space-between; align-items: center;
+}
+.logo {
+    display: flex; align-items: center; gap: 12px;
+    text-decoration: none; color: var(--text-primary);
+    font-weight: 700; font-size: 20px;
+}
+.logo img { height: 36px; width: auto; border-radius: 8px; }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a {
+    color: var(--text-secondary); text-decoration: none;
+    font-size: 14px; font-weight: 500; transition: color 0.2s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
+.nav-cta {
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    color: var(--bg-primary) !important;
+    padding: 10px 20px; border-radius: var(--radius-sm); font-weight: 600;
+}
+
+/* ── Buttons ── */
+.btn {
+    padding: 16px 32px; border-radius: var(--radius-md);
+    font-size: 16px; font-weight: 600; text-decoration: none;
+    transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-primary {
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    color: var(--bg-primary);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px var(--accent-glow); }
+.btn-secondary {
+    background: var(--bg-tertiary); color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+.btn-secondary:hover { background: var(--bg-secondary); border-color: var(--accent-primary); }
+.btn-sm { padding: 10px 20px; border-radius: var(--radius-sm); font-size: 14px; }
+
+/* ── Sections ── */
+.section-label {
+    font-size: 13px; font-weight: 600; color: var(--accent-primary);
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;
+}
+.section-title { font-size: 42px; font-weight: 700; margin-bottom: 16px; }
+.section-desc { font-size: 18px; color: var(--text-secondary); }
+
+/* ── Cards / panels ── */
+.card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+}
+.card-raised { background: rgba(13, 21, 32, 0.4); border-radius: var(--radius-xl); padding: 40px; }
+
+/* ── Badges ── */
+.badge {
+    display: inline-block; padding: 2px 10px; border-radius: 100px;
+    font-size: 11px; font-weight: 600; border: 1px solid;
+}
+.badge-ok { color: var(--semantic-ok); border-color: var(--semantic-ok); }
+.badge-warn { color: var(--semantic-warn); border-color: var(--semantic-warn); }
+.badge-error { color: var(--semantic-error); border-color: var(--semantic-error); }
+
+/* ── Data (JetBrains Mono ONLY for data/terminal/code) ── */
+.data, table.data td, .data-value { font-family: var(--font-mono); font-size: 13px; }
+
+/* ── Tables ── */
+table.data { width: 100%; border-collapse: collapse; }
+table.data th {
+    color: var(--text-muted); text-align: left; font-weight: 500;
+    padding: 6px; border-bottom: 1px solid var(--border-color);
+    font-size: 12px;
+}
+table.data td { padding: 10px 6px; border-bottom: 1px solid rgba(26, 58, 92, 0.5); }
+table.data tr:last-child td { border-bottom: none; }
+.right { text-align: right; }
+
+/* ── Footer (standard on every page) ── */
+.footer {
+    background: rgba(13, 21, 32, 0.9);
+    border-top: 1px solid var(--border-color);
+    padding: 60px 24px 40px; position: relative; z-index: 10;
+}
+.footer-content {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px;
+}
+.footer-brand { max-width: 300px; }
+.footer-brand .logo { margin-bottom: 16px; }
+.footer-brand img { height: 32px; width: auto; border-radius: 6px; }
+.footer-brand p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+.footer-links h4 { font-size: 14px; font-weight: 600; margin-bottom: 20px; }
+.footer-links ul { list-style: none; }
+.footer-links li { margin-bottom: 12px; }
+.footer-links a { font-size: 14px; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--accent-primary); }
+.footer-bottom {
+    max-width: 1200px; margin: 60px auto 0; padding-top: 40px;
+    border-top: 1px solid var(--border-color);
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 14px; color: var(--text-muted);
+}
+
+@media (max-width: 860px) {
+    .footer-content { grid-template-columns: 1fr; gap: 32px; }
+    .nav-links { gap: 16px; }
+    .section-title { font-size: 32px; }
+}

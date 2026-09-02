@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live Dashboard — tAI Markets</title>
+<meta name="description" content="Live clearing house for AI inference: collateral, oracle prices, provider quality and on-chain settlements — on Tempo, settled in stablecoins.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/theme.css">
+<style>
+    /* Page layout only — all tokens/components come from assets/theme.css */
+    main { position: relative; z-index: 10; max-width: 1180px; margin: 0 auto; padding: 24px; }
+    .page-head { margin-bottom: 24px; }
+    .page-head h1 { font-size: 30px; font-weight: 700; }
+    .page-head h1 .dot { color: var(--accent-primary); }
+    .page-head .sub { color: var(--text-muted); font-size: 13px; margin-top: 6px; }
+    .page-head .sub a { color: var(--accent-primary); text-decoration: none; }
+
+    .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin-bottom: 14px; }
+    .kpi { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 18px; }
+    .kpi .label { color: var(--text-muted); font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; }
+    .kpi .value { font-size: 22px; font-weight: 700; color: var(--accent-primary); }
+    .kpi .note { color: var(--text-muted); font-size: 11px; margin-top: 4px; }
+
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+    .panel { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 20px; min-height: 180px; }
+    .panel h2 { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted); margin-bottom: 14px; font-weight: 600; }
+    .panel.wide { grid-column: 1 / -1; }
+
+    .roadmap { margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--border-color); color: var(--text-muted); font-size: 11px; line-height: 1.7; }
+    .roadmap b { color: var(--accent-primary); font-weight: 600; }
+
+    .feed { max-height: 280px; overflow-y: auto; }
+    .settle { border-bottom: 1px solid rgba(26, 58, 92, 0.5); padding: 10px 4px; font-size: 12px; }
+    .settle .tx { color: var(--accent-primary); text-decoration: none; word-break: break-all; }
+    .settle .meta { color: var(--text-muted); font-size: 11px; margin-top: 3px; }
+    .empty { color: var(--text-muted); font-size: 12px; }
+
+    .statusline { color: var(--text-muted); font-size: 12px; margin: 14px 2px 0; }
+    .pulse { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--accent-primary); margin-right: 6px; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1 } 50% { opacity: .3 } }
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+
+<nav class="nav">
+    <div class="nav-container">
+        <a href="/" class="logo"><img src="/logo.jpg" alt="tAI Markets"></a>
+        <div class="nav-links">
+            <a href="/#architecture">Architecture</a>
+            <a href="/#tokens">Tokens</a>
+            <a href="/licensing.html">Licensing</a>
+            <a href="/docs/">Documentation</a>
+            <a href="https://github.com/tAI-Markets/tAI-contracts" target="_blank">GitHub</a>
+            <a href="/demo/" class="nav-cta">Live Demo</a>
+        </div>
+    </div>
+</nav>
+
+<main>
+    <div class="page-head">
+        <h1><span class="dot">●</span> Live Clearing House Dashboard</h1>
+        <div class="sub">Tempo Moderato testnet (chain 42431) · <a href="https://explore.testnet.tempo.xyz" target="_blank">explorer ↗</a> · gateway <a href="#" id="gateway-link">api.tai.markets</a> · point it elsewhere with <b>?gateway=</b></div>
+    </div>
+
+    <div class="kpis">
+        <div class="kpi"><div class="label">Vault Collateral</div><div class="value" id="kpi-collateral">—</div><div class="note">pathUSD in provider vault</div></div>
+        <div class="kpi"><div class="label">Collateral Ratio</div><div class="value" id="kpi-cr">—</div><div class="note">floor 150% · liquidate 130%</div></div>
+        <div class="kpi"><div class="label">tGLM5 Supply</div><div class="value" id="kpi-supply">—</div><div class="note">1 token = 1M output tokens</div></div>
+        <div class="kpi"><div class="label">Treasury Revenue</div><div class="value" id="kpi-treasury">—</div><div class="note">5% settlement fees collected</div></div>
+        <div class="kpi"><div class="label">Settlements</div><div class="value" id="kpi-settled">—</div><div class="note" id="kpi-inferences">0 inferences served</div></div>
+    </div>
+
+    <div class="grid">
+        <div class="panel">
+            <h2>Index Prices — On-chain vs OpenRouter Spot</h2>
+            <table class="data">
+                <thead><tr><th>Class</th><th>On-chain</th><th class="right">OpenRouter</th><th class="right">Status</th></tr></thead>
+                <tbody id="prices"></tbody>
+            </table>
+            <div class="roadmap"><b>SPOT TODAY → FUTURES NEXT:</b> lock today's index for future inference spend. Forward contracts on tModel are the hedge for the ~$1B/yr of unhedged compute flowing through the AI economy.</div>
+        </div>
+        <div class="panel wide">
+            <h2>Use it from your harness — Claude Code · Codex · ZCode</h2>
+            <table class="data">
+                <thead><tr><th>Model class</th><th>Upstream (OpenRouter top usage)</th><th class="right">≈ Index</th></tr></thead>
+                <tbody>
+                    <tr><td><b>tDeepseekV4F</b></td><td>deepseek/deepseek-v4-flash-0731</td><td class="right">$0.18 /1M</td></tr>
+                    <tr><td><b>tGLM53F</b></td><td>z-ai/glm-5.3-flash</td><td class="right">$0.25 /1M</td></tr>
+                    <tr><td><b>tGPT56L</b></td><td>openai/gpt-5.6-luna</td><td class="right">$1.20 /1M</td></tr>
+                </tbody>
+            </table>
+            <div class="roadmap" style="font-family:var(--font-mono);font-size:11px;white-space:pre-wrap;"># 1. buy credits (x402 USDC via the tai-mcp MCP server)
+claude mcp add tai-mcp -e TAI_BASE_KEY=0x… -- npx -y @tai-markets/mcp
+#    → agent tool: tai_buy_credits {usd: 2}  → tk_ API key, funded
+
+# 2. consume (OpenAI/Anthropic-compatible)
+export ANTHROPIC_BASE_URL="https://api.tai.markets"   # Claude Code
+export ANTHROPIC_AUTH_TOKEN="tk_…"                    # Codex: ~/.codex/config.toml
+export ANTHROPIC_MODEL="tGLM53F"                      # ZCode: apiProviders.tai</div>
+        </div>
+        <div class="panel">
+            <h2>Provider of Record — Quality Board</h2>
+            <table class="data">
+                <thead><tr><th>Provider</th><th>σ service factor</th><th class="right">Status</th></tr></thead>
+                <tbody id="providers"></tbody>
+            </table>
+            <div class="roadmap">SLA enforcement: σ rises on delivery failures; 3 consecutive failures suspend a provider. The PLR backstop buys replacement inference when no provider is available.</div>
+        </div>
+        <div class="panel wide">
+            <h2>Settlement Feed — burns · vault clears · DAO fees</h2>
+            <div class="feed" id="feed"><div class="empty">Awaiting first settlement…</div></div>
+        </div>
+    </div>
+
+    <div class="statusline"><span class="pulse"></span><span id="status">connecting to gateway…</span></div>
+</main>
+
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-brand">
+            <a href="/" class="logo"><img src="/logo.jpg" alt="tAI Markets"></a>
+            <p>The clearing house for AI inference — collateralized, settled on-chain, priced by the live market.</p>
+        </div>
+        <div class="footer-links">
+            <h4>Product</h4>
+            <ul>
+                <li><a href="/#architecture">Architecture</a></li>
+                <li><a href="/#tokens">Tokens</a></li>
+                <li><a href="/licensing.html">Licensing</a></li>
+            </ul>
+        </div>
+        <div class="footer-links">
+            <h4>Live</h4>
+            <ul>
+                <li><a href="https://explore.testnet.tempo.xyz" target="_blank">Tempo Explorer</a></li>
+                <li><a href="https://github.com/tAI-Markets/tAI-contracts" target="_blank">Contracts</a></li>
+            </ul>
+        </div>
+        <div class="footer-links">
+            <h4>Rails</h4>
+            <ul>
+                <li>Tempo — tModel + stablecoin gas</li>
+                <li>x402 — USDC on Base (EIP-3009)</li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2026 tAI Markets. Live on Tempo testnet · settled in stablecoins · x402 &amp; MPP-ready.</p>
+    </div>
+</footer>
+
+<script>
+const GATEWAY = new URLSearchParams(location.search).get('gateway') ?? 'https://api.tai.markets';
+document.getElementById('gateway-link').href = GATEWAY;
+const $ = (id) => document.getElementById(id);
+const fmt = (units, dec = 2) => (Number(units ?? 0) / 1e6).toLocaleString('en-US', { maximumFractionDigits: dec });
+const usd = (v) => '$' + Number(v ?? 0).toLocaleString('en-US', { maximumFractionDigits: 4 });
+
+function render(d) {
+    $('status').textContent = `live · gateway ${GATEWAY} · updated ${new Date(d.updatedAt).toLocaleTimeString()}`;
+    if (d.vault) {
+        $('kpi-collateral').textContent = usd(d.vault.collateral / 1e6);
+        $('kpi-cr').textContent = (d.vault.collateralRatio / 100).toFixed(2) + 'x';
+        $('kpi-cr').style.color = d.vault.collateralRatio >= 150 ? 'var(--accent-primary)' : 'var(--semantic-error)';
+    }
+    if (d.treasuryRevenue !== null && d.treasuryRevenue !== undefined) {
+        $('kpi-treasury').textContent = usd(d.treasuryRevenue / 1e6);
+    }
+    $('kpi-settled').textContent = d.totals?.settled ?? 0;
+    $('kpi-inferences').textContent = `${d.totals?.inferences ?? 0} inferences served`;
+
+    const tb = $('prices'); tb.innerHTML = '';
+    for (const m of d.models ?? []) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td><b>${m.modelClass}</b><div style="color:var(--text-muted);font-size:10px">${m.upstreamModel ?? ''}</div></td>
+            <td class="data-value">${usd(m.onchainPrice)}</td>
+            <td class="right">${m.openrouterSpot ? usd(m.openrouterSpot) : '—'}</td>
+            <td class="right"><span class="badge ${m.priceFresh ? 'badge-ok' : 'badge-warn'}">${m.priceFresh ? 'FRESH' : 'STALE'}</span></td>`;
+        tb.appendChild(tr);
+    }
+
+    const pb = $('providers'); pb.innerHTML = '';
+    const seen = new Set();
+    for (const m of d.models ?? []) {
+        if (!m.provider || seen.has(JSON.stringify(m.provider))) continue;
+        seen.add(JSON.stringify(m.provider));
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>gateway (OpenRouter)</td>
+            <td class="data-value">σ ${m.provider.sigma?.toFixed(2) ?? '—'} · debt ${fmt(m.provider.debt)}</td>
+            <td class="right"><span class="badge ${m.provider.active ? 'badge-ok' : 'badge-error'}">${m.provider.active ? 'ACTIVE' : 'SUSPENDED'}</span></td>`;
+        pb.appendChild(tr);
+    }
+
+    const feed = $('feed');
+    const settlements = (d.recentSettlements ?? []).slice(0, 20);
+    feed.innerHTML = settlements.length ? '' : '<div class="empty">Awaiting first settlement…</div>';
+    for (const s of settlements) {
+        const div = document.createElement('div');
+        div.className = 'settle';
+        div.innerHTML = `
+            <div>${s.explorer ? `<a class="tx" href="${s.explorer}" target="_blank">settlement tx ↗</a>` : (s.txHash ?? '')}
+                <span style="color:var(--accent-primary)"> ${fmt(s.tokenAmount)} ${s.modelClass} burned</span></div>
+            <div class="meta">fee to DAO ${usd((s.fee ?? 0) / 1e6)} · ${new Date(s.at).toLocaleTimeString()}</div>`;
+        feed.appendChild(div);
+    }
+}
+
+async function tick() {
+    try {
+        const d = await (await fetch(GATEWAY + '/v1/stats')).json();
+        render(d);
+    } catch (e) {
+        $('status').textContent = `gateway unreachable at ${GATEWAY} — retrying…`;
+    }
+}
+tick();
+setInterval(tick, 5000);
+</script>
+</body>
+</html>

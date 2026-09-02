@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Licensing — tAI Markets</title>
+    <meta name="description" content="tAI Markets is commercial source-available software (BUSL-1.1). Free evaluation on testnets; production licensing for providers and enterprises.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/theme.css">
+    <style>
+        /* Page layout only — tokens/components from assets/theme.css */
+        main { position: relative; z-index: 10; max-width: 1100px; margin: 0 auto; padding: 32px 24px 60px; }
+        .page-head { margin-bottom: 28px; }
+        .back { font-size: 13px; color: var(--text-muted); text-decoration: none; }
+        .back:hover { color: var(--accent-primary); }
+        h1 { font-size: 34px; font-weight: 700; margin: 10px 0; }
+        h1 .dot { color: var(--accent-primary); }
+        .sub { color: var(--text-secondary); font-size: 15px; max-width: 780px; }
+        .sub b { color: var(--text-primary); }
+
+        .tiers { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin: 30px 0; }
+        .tier { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 28px; display: flex; flex-direction: column; }
+        .tier.hot { border-color: var(--accent-primary); background: rgba(13, 21, 32, 0.6); }
+        .tier .name { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
+        .tier .price { font-size: 28px; font-weight: 700; margin: 12px 0 2px; background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        .tier .price small { font-size: 13px; color: var(--text-muted); font-weight: 400; -webkit-text-fill-color: var(--text-muted); }
+        .tier ul { list-style: none; margin: 16px 0 22px; flex: 1; }
+        .tier li { font-size: 14px; padding: 6px 0 6px 20px; position: relative; color: var(--text-secondary); }
+        .tier li::before { content: "▸"; position: absolute; left: 0; color: var(--accent-primary); }
+        .tier li.no::before { content: "·"; color: var(--text-muted); }
+        .tier li.no { color: var(--text-muted); }
+        .cta { display: block; text-align: center; padding: 12px; border-radius: var(--radius-md); font-size: 14px; font-weight: 600; text-decoration: none; border: 1px solid var(--accent-primary); color: var(--text-primary); transition: all .2s; }
+        .cta.primary { background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end)); color: var(--bg-primary); border: none; }
+        .cta:hover { transform: translateY(-2px); box-shadow: 0 8px 32px var(--accent-glow); }
+
+        .panel { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 28px; margin: 18px 0; }
+        .panel h2 { font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent-primary); margin-bottom: 14px; font-weight: 600; }
+        .panel p, .panel li { font-size: 14px; color: var(--text-secondary); }
+        .panel ul { margin: 10px 0 0 18px; }
+        .panel li { padding: 4px 0; }
+        .panel b { color: var(--text-primary); }
+        .fine { color: var(--text-muted); font-size: 12px; margin-top: 16px; }
+        .fine b { color: var(--text-secondary); }
+    </style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+
+<nav class="nav">
+    <div class="nav-container">
+        <a href="/" class="logo"><img src="/logo.jpg" alt="tAI Markets"></a>
+        <div class="nav-links">
+            <a href="/#architecture">Architecture</a>
+            <a href="/#tokens">Tokens</a>
+            <a href="/licensing.html" class="active">Licensing</a>
+            <a href="https://github.com/tAI-Markets/tAI-contracts" target="_blank">GitHub</a>
+            <a href="/demo/" class="nav-cta">Live Demo</a>
+        </div>
+    </div>
+</nav>
+
+<main>
+    <div class="page-head">
+        <a class="back" href="/">← tai.markets</a>
+        <h1><span class="dot">●</span> Licensing &amp; Pricing</h1>
+        <p class="sub">
+            tAI Markets is <b>commercial source-available software</b> (BUSL-1.1 with an additional
+            use grant): read the code, deploy on testnets, and evaluate free. Production operation —
+            mainnet clearing, paid settlement services — requires a license. The agent SDK (ABIs,
+            types, demo) is MIT.
+        </p>
+    </div>
+
+    <div class="tiers">
+        <div class="tier">
+            <div class="name">Evaluation</div>
+            <div class="price">Free <small>/ 90 days</small></div>
+            <ul>
+                <li>Testnet + local deployment</li>
+                <li>Full protocol + gateway features</li>
+                <li>Commercial evaluation allowed</li>
+                <li>Community support</li>
+                <li class="no">No mainnet production</li>
+                <li class="no">No SLA</li>
+            </ul>
+            <a class="cta" href="mailto:licensing@tai.markets?subject=Evaluation%20License%20request">Start evaluation →</a>
+        </div>
+        <div class="tier hot">
+            <div class="name">Provider</div>
+            <div class="price">Custom <small>/ mo + flow share</small></div>
+            <ul>
+                <li>Mainnet production operation</li>
+                <li>One production provider identity</li>
+                <li>Forward-contract facility access</li>
+                <li>Business-hours support</li>
+                <li>Fee share above included volume</li>
+            </ul>
+            <a class="cta primary" href="mailto:licensing@tai.markets?subject=Provider%20License%20request">Apply for Provider →</a>
+        </div>
+        <div class="tier">
+            <div class="name">Enterprise / Integration</div>
+            <div class="price">Custom</div>
+            <ul>
+                <li>Unlimited scale, white-label</li>
+                <li>Custom settlement rails (x402 / MPP)</li>
+                <li>Oracle + SLA feed integration</li>
+                <li>24×7 support, response SLAs</li>
+                <li>Design-partner roadmap access</li>
+            </ul>
+            <a class="cta" href="mailto:licensing@tai.markets?subject=Enterprise%20License%20request">Talk to us →</a>
+        </div>
+    </div>
+
+    <div class="panel">
+        <h2>What's open vs licensed</h2>
+        <ul>
+            <li><b>MIT (open):</b> SDK rim — contract ABIs, shared types, agent demo, dashboard widgets. Integrate freely, forever.</li>
+            <li><b>BUSL-1.1 (source-available):</b> protocol core (clearing house contracts) and gateway server. Read, fork, test on testnets; production requires a license.</li>
+            <li><b>Automatic:</b> the code converts to Apache-2.0 at each release's 4-year change date, per standard BUSL terms.</li>
+        </ul>
+    </div>
+
+    <div class="panel">
+        <h2>Protocol economics — independent of licensing</h2>
+        <p>Every redemption settled through the clearing house pays a <b>5% settlement fee to the DAO
+        treasury</b> — enforceable on-chain, identical for every participant. Provider collateral sits
+        in per-provider vaults at ≥150%. The commercial license covers operating the software; the
+        protocol fee is the network's own revenue.</p>
+    </div>
+
+    <p class="fine"><b>Note:</b> tier pricing is finalized per deployment during evaluation. Agreement
+    templates are published in the repository (<i>docs/EVALUATION-LICENSE.md</i>,
+    <i>docs/COMMERCIAL-LICENSE.md</i>) — counsel-reviewed versions govern.</p>
+</main>
+
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-brand">
+            <a href="/" class="logo"><img src="/logo.jpg" alt="tAI Markets"></a>
+            <p>Pioneering tokenized AI (tAI). Equalizing access to superintelligence through decentralized financial infrastructure.</p>
+        </div>
+        <div class="footer-links">
+            <h4>Product</h4>
+            <ul>
+                <li><a href="/#architecture">Architecture</a></li>
+                <li><a href="/#tokens">Tokens</a></li>
+                <li><a href="/demo/">Live Demo</a></li>
+            </ul>
+        </div>
+        <div class="footer-links">
+            <h4>Developers</h4>
+            <ul>
+                <li><a href="https://github.com/tAI-Markets/tAI-contracts" target="_blank">GitHub</a></li>
+                <li><a href="mailto:licensing@tai.markets">Licensing</a></li>
+            </ul>
+        </div>
+        <div class="footer-links">
+            <h4>Live</h4>
+            <ul>
+                <li><a href="https://explore.testnet.tempo.xyz" target="_blank">Tempo Explorer</a></li>
+                <li><a href="/demo/">Dashboard</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2026 tAI Markets. Live on Tempo testnet · settled in stablecoins · x402 &amp; MPP-ready.</p>
+    </div>
+</footer>
+</body>
+</html>

@@ -28,7 +28,6 @@ const config = {
       respectPrefersColorScheme: false,
     },
     navbar: {
-      title: 'tAI Markets Docs',
       logo: { alt: 'tAI Markets', src: 'logo.jpg' },
       style: 'dark',
       items: [
@@ -36,8 +35,6 @@ const config = {
         { to: '/api', label: 'API', position: 'left' },
         { to: '/tutorials/originate-tokens', label: 'Tutorials', position: 'left' },
         { href: 'https://tai.markets', label: 'tai.markets', position: 'right' },
-        { href: 'https://tai.markets/demo', label: 'Live Demo', position: 'right' },
-        { href: 'https://tai.markets/demo', label: 'Live Demo', position: 'right' },
       ],
     },
     footer: {

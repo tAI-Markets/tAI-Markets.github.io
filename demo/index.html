@@ -103,7 +103,7 @@
 </footer>
 
 <script>
-const GATEWAY = new URLSearchParams(location.search).get('gateway') ?? 'http://localhost:3001';
+const GATEWAY = new URLSearchParams(location.search).get('gateway') ?? 'https://api.tai.markets';
 const $ = (id) => document.getElementById(id);
 const fmt = (units, dec = 2) => (Number(units ?? 0) / 1e6).toLocaleString('en-US', { maximumFractionDigits: dec });
 const usd = (v) => '$' + Number(v ?? 0).toLocaleString('en-US', { maximumFractionDigits: 4 });

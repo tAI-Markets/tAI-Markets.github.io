@@ -1,0 +1,21 @@
+/* tAI Markets brand → Docusaurus theme tokens (see site/DESIGN-SYSTEM.md) */
+:root {
+  --ifm-color-primary: #00a3e0;
+  --ifm-color-primary-dark: #0093ca;
+  --ifm-color-primary-darker: #008abf;
+  --ifm-color-primary-darkest: #0077b3;
+  --ifm-color-primary-light: #0fb3f0;
+  --ifm-color-primary-lighter: #18bcf8;
+  --ifm-color-primary-lightest: #3ecbfa;
+  --ifm-background-color: #0a0a0f;
+  --ifm-font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --ifm-code-font-size: 90%;
+  --ifm-heading-font-weight: 700;
+}
+
+[data-theme='dark'] {
+  --ifm-background-color: #0a0a0f;
+  --ifm-background-surface-color: #0d1520;
+}
+
+h1, h2, h3 { letter-spacing: -0.01em; }

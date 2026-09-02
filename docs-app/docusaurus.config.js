@@ -28,7 +28,7 @@ const config = {
       respectPrefersColorScheme: false,
     },
     navbar: {
-      logo: { alt: 'tAI Markets', src: 'logo.jpg' },
+      logo: { alt: 'tAI Markets', src: 'logo.jpg?v=2' }, // v2: cache-bust the pre-fix 404 some browsers cached
       style: 'dark',
       items: [
         { to: '/', label: 'Concepts', position: 'left' },

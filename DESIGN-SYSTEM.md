@@ -63,3 +63,10 @@ outside this table without adding them here first.
 
 The green (`#00ff9d`) terminal theme on `demo/` and `licensing.html` (Aug 2026) was a
 divergence — rebuilt onto this system Sep 2026. If you find green accents, they're a regression.
+
+## Asset caching (GitHub Pages)
+
+GH Pages serves static assets with `Cache-Control: max-age=14400` (4h). If you
+replace an asset (logo, images) after a broken deployment, browsers that saw the
+broken state will keep it for up to 4h — **cache-bust by changing the asset URL**
+(e.g. `logo.jpg?v=2`) rather than waiting out the cache.

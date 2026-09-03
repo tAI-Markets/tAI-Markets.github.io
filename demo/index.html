@@ -56,6 +56,16 @@
     .key-line { display: none; margin-top: 12px; padding: 12px; background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: 6px; font-family: var(--font-mono); font-size: 12px; word-break: break-all; }
     .key-line code { color: var(--text-secondary); }
     .key-line .copy { margin-left: 10px; }
+
+    /* Account box (login state) */
+    .acct { margin-bottom: 14px; padding: 12px 14px; background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: 6px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+    .acct .who { font-size: 13px; color: var(--text-secondary); }
+    .acct .who b { color: var(--text-primary); font-weight: 600; }
+    .acct .bal { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); }
+    .acct input { font: inherit; padding: 9px 12px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-secondary); color: var(--text-primary); min-width: 170px; }
+    .acct .linkish { background: none; border: none; color: var(--text-muted); font: inherit; font-size: 12px; cursor: pointer; text-decoration: underline; padding: 0; }
+    .lastmint { display: none; margin-top: 10px; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); }
+    .lastmint a { color: var(--accent-signal); }
 </style>
 </head>
 <body>
@@ -93,6 +103,11 @@
     <div class="grid">
         <div class="panel wide" id="buy-panel">
             <h2>Buy credits — pay with a card</h2>
+            <div class="acct" id="acct-box">
+                <span class="who" id="acct-who">Not signed in</span>
+                <span class="bal" id="acct-bal"></span>
+                <span id="acct-controls"></span>
+            </div>
             <div class="buy-form">
                 <div class="buy-field">
                     <label for="buy-amount">Amount (USD)</label>
@@ -118,6 +133,7 @@
             </div>
             <div class="buy-note" id="buy-note">Card via Stripe. 1 USD = 1 USD of inference credits, redeemable at <b>api.tai.markets</b>. A lock fixes today's index for the tenor — same card, same credits, dated redemption.</div>
             <div class="key-line" id="key-line">Your API key (shown once — store it now): <code id="key-secret"></code><button class="btn btn-secondary btn-sm copy" id="key-copy">Copy</button></div>
+            <div class="lastmint" id="lastmint"></div>
         </div>
         <div class="panel">
             <h2>Index Prices — On-chain vs OpenRouter Spot</h2>
@@ -256,6 +272,17 @@ function render(d) {
             <div class="meta">fee to DAO ${usd((s.fee ?? 0) / 1e6)} · ${new Date(s.at).toLocaleTimeString()}</div>`;
         feed.appendChild(div);
     }
+
+    // Last card mint (Stripe → house-mint → buyer's embedded wallet)
+    const lm = $('lastmint');
+    if (d.lastMint) {
+        lm.style.display = 'block';
+        const tokens = (Number(d.lastMint.tokenAmount) / 1e6).toLocaleString('en-US', { maximumFractionDigits: 0 });
+        lm.innerHTML = `Last card mint: ${usd(d.lastMint.usdMicro / 1e6)} → ${tokens} ${d.lastMint.class} tokens → <a href="https://explore.testnet.tempo.xyz/tx/${d.lastMint.transferTx}" target="_blank">tx ↗</a>${d.pendingMints ? ` · ${d.pendingMints} mint(s) pending collateral` : ''}`;
+    } else if (d.pendingMints) {
+        lm.style.display = 'block';
+        lm.textContent = `${d.pendingMints} card mint(s) pending — vault needs collateral.`;
+    }
 }
 
 async function tick() {
@@ -269,7 +296,130 @@ async function tick() {
 tick();
 setInterval(tick, 5000);
 
-// ── Card door: Stripe Checkout → tk_ credits ──────────────────────────────
+// ── Account door: Privy email/Google, embedded wallet invisible ────────────
+const acctWho = $('acct-who'), acctBal = $('acct-bal'), acctControls = $('acct-controls');
+let privy = null, privyUser = null, account = null;
+
+async function initAccount() {
+    try {
+        const cfg = await (await fetch(GATEWAY + '/v1/auth/config')).json();
+        if (!cfg.configured) { renderSignedOut('Login arrives with the next gateway deploy.'); return; }
+        const mod = await import('https://esm.sh/@privy-io/js-sdk-core@0.72.1');
+        privy = new mod.Privy({ appId: cfg.app_id });
+        window._privyHelpers = mod;
+        // Returning from Google OAuth: ?code&state → finish the login
+        const p = new URLSearchParams(location.search);
+        if (p.get('code') && p.get('state')) {
+            try {
+                await privy.oauth.loginWithCode(p.get('code'), p.get('state'), 'google');
+                history.replaceState({}, '', location.pathname);
+            } catch (e) { console.warn('oauth return failed', e); }
+        }
+        privyUser = await privy.user.get().catch(() => null);
+        if (privyUser) await exchangeSession();
+        else renderSignedOut();
+    } catch (e) {
+        renderSignedOut(`Login unavailable — ${e.message}`);
+    }
+}
+
+function renderSignedOut(note) {
+    acctWho.textContent = 'Not signed in';
+    acctBal.textContent = note ?? '';
+    acctControls.innerHTML = `
+        <input id="acct-email" type="email" placeholder="you@company.com" aria-label="Email">
+        <button class="btn btn-primary btn-sm" id="btn-email">Email me a code</button>
+        <button class="btn btn-secondary btn-sm" id="btn-google">Continue with Google</button>`;
+    $('btn-email').addEventListener('click', emailLogin);
+    $('btn-google').addEventListener('click', googleLogin);
+}
+
+async function emailLogin() {
+    const email = $('acct-email').value.trim();
+    if (!/.+@.+\..+/.test(email)) { acctBal.textContent = 'Enter a valid email address.'; return; }
+    try {
+        $('btn-email').disabled = true; $('btn-email').textContent = 'Sending…';
+        await privy.auth.email.sendCode(email);
+        acctControls.innerHTML = `
+            <input id="acct-code" type="text" inputmode="numeric" placeholder="6-digit code" aria-label="Login code" style="min-width:120px">
+            <button class="btn btn-primary btn-sm" id="btn-verify">Verify</button>`;
+        $('btn-verify').addEventListener('click', () => codeLogin(email));
+        acctBal.textContent = `Code sent to ${email}.`;
+    } catch (e) {
+        acctBal.textContent = `Could not send code — ${e.message}`;
+        renderSignedOut();
+    }
+}
+
+async function codeLogin(email) {
+    try {
+        $('btn-verify').disabled = true; $('btn-verify').textContent = 'Verifying…';
+        privyUser = await privy.auth.email.loginWithCode(email, $('acct-code').value.trim(), 'login-or-sign-up');
+        await exchangeSession();
+    } catch (e) {
+        acctBal.textContent = `Invalid code — ${e.message}`;
+        renderSignedOut();
+    }
+}
+
+async function googleLogin() {
+    try {
+        const { url } = await privy.oauth.generateURL('google', location.origin + location.pathname);
+        location.href = url;
+    } catch (e) {
+        acctBal.textContent = `Google sign-in unavailable — ${e.message}`;
+    }
+}
+
+async function exchangeSession() {
+    // The embedded wallet is invisible: created if absent, address used server-side
+    try {
+        if (!window._privyHelpers.getUserEmbeddedEthereumWallet(privyUser)) {
+            await privy.embeddedWallet.create();
+            privyUser = await privy.user.get();
+        }
+    } catch (e) { console.warn('embedded wallet create failed', e); }
+
+    const token = await privy.getAccessToken();
+    if (!token) { renderSignedOut('Session expired — sign in again.'); return; }
+    const r = await fetch(GATEWAY + '/v1/auth/privy', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ access_token: token }),
+    });
+    const body = await r.json();
+    if (!r.ok) { renderSignedOut(body?.error?.message ?? 'Login failed.'); return; }
+    account = body.account;
+    localStorage.setItem('tai_session', body.session_token);
+    if (body.api_key) localStorage.setItem('tai_key', body.api_key);
+    renderAccount();
+}
+
+function renderAccount() {
+    acctWho.innerHTML = `Signed in — <b>${account?.email ?? 'account'}</b>`;
+    acctControls.innerHTML = `<button class="linkish" id="btn-out">Sign out</button>`;
+    $('btn-out').addEventListener('click', async () => {
+        try { await privy.logout(); } catch {}
+        localStorage.removeItem('tai_session'); localStorage.removeItem('tai_key');
+        account = null; privyUser = null;
+        renderSignedOut();
+    });
+    refreshBalance();
+}
+
+async function refreshBalance() {
+    const session = localStorage.getItem('tai_session');
+    if (!session || !account) return;
+    try {
+        const r = await fetch(GATEWAY + '/v1/account/me', { headers: { Authorization: 'Bearer ' + session } });
+        const me = await r.json();
+        if (!r.ok) return;
+        const k = me.keys?.[0];
+        const lock = k?.lock ? `, ${k.lock.model} locked through ${k.lock.through}` : '';
+        acctBal.textContent = k ? `$${k.credits_usd.toFixed(2)} of credits remaining${lock}` : '';
+    } catch {}
+}
+
+// ── Card door: Stripe Checkout → tk_ credits → t-tokens on-chain ──────────
 const buyBtn = $('buy-btn'), buyNote = $('buy-note'), keyLine = $('key-line');
 $('buy-product').addEventListener('change', (e) => {
     buyBtn.textContent = e.target.value === 'credits' ? 'Buy credits' : 'Lock this price';
@@ -291,6 +441,7 @@ buyBtn.addEventListener('click', async () => {
                 product,
                 class: $('buy-class').value,
                 ...(localStorage.getItem('tai_key') ? { key: localStorage.getItem('tai_key') } : {}),
+                ...(account?.wallet ? { wallet: account.wallet, account_id: account.id } : {}),
             }),
         });
         const body = await r.json();
@@ -311,6 +462,8 @@ buyBtn.addEventListener('click', async () => {
         buyBtn.textContent = $('buy-product').value === 'credits' ? 'Buy credits' : 'Lock this price';
     }
 });
+
+initAccount();
 </script>
 </body>
 </html>

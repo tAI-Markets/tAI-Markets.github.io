@@ -9,6 +9,11 @@ const config = {
   organizationName: 'tAI-Markets',
   projectName: 'tAI-Markets.github.io',
   i18n: { defaultLocale: 'en', locales: ['en'] },
+  favicon: 'img/favicon-48.png',
+  headTags: [
+    { tagName: 'link', attributes: { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/docs/img/favicon-32.png' } },
+    { tagName: 'link', attributes: { rel: 'apple-touch-icon', sizes: '180x180', href: '/docs/img/apple-touch-icon.png' } },
+  ],
   stylesheets: [
     'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap',
   ],
@@ -24,6 +29,9 @@ const config = {
     ],
   ],
   themeConfig: {
+    metadata: [
+      { name: 'apple-mobile-web-app-title', content: 'tAI Markets' },
+    ],
     colorMode: {
       defaultMode: 'light',
       disableSwitch: true,

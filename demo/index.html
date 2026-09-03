@@ -43,6 +43,19 @@
     .empty { color: var(--text-muted); font-size: 12px; font-family: var(--font-mono); }
 
     .statusline { color: var(--text-muted); font-size: 12px; margin: 16px 2px 0; font-family: var(--font-mono); }
+
+    /* Buy panel (page-specific layout; tokens from theme.css) */
+    .buy-form { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; }
+    .buy-field { display: flex; flex-direction: column; gap: 6px; }
+    .buy-field label { color: var(--text-muted); font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; }
+    .buy-field input, .buy-field select {
+        font: inherit; background: var(--bg-primary); color: var(--text-primary);
+        border: 1px solid var(--border-color); border-radius: 6px; padding: 10px 12px; min-width: 140px;
+    }
+    .buy-note { color: var(--text-muted); font-size: 12px; margin-top: 10px; line-height: 1.6; }
+    .key-line { display: none; margin-top: 12px; padding: 12px; background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: 6px; font-family: var(--font-mono); font-size: 12px; word-break: break-all; }
+    .key-line code { color: var(--text-secondary); }
+    .key-line .copy { margin-left: 10px; }
 </style>
 </head>
 <body>
@@ -78,6 +91,34 @@
     </div>
 
     <div class="grid">
+        <div class="panel wide" id="buy-panel">
+            <h2>Buy credits — pay with a card</h2>
+            <div class="buy-form">
+                <div class="buy-field">
+                    <label for="buy-amount">Amount (USD)</label>
+                    <input id="buy-amount" type="number" min="1" max="500" step="1" value="5" inputmode="decimal">
+                </div>
+                <div class="buy-field">
+                    <label for="buy-product">Product</label>
+                    <select id="buy-product">
+                        <option value="credits" selected>Credits — spend anytime</option>
+                        <option value="lock_30">30-day lock — today's index</option>
+                        <option value="lock_90">90-day lock — today's index</option>
+                    </select>
+                </div>
+                <div class="buy-field">
+                    <label for="buy-class">Model</label>
+                    <select id="buy-class">
+                        <option value="tGLM53F" selected>GLM-5.3 Flash</option>
+                        <option value="tDeepseekV4F">DeepSeek V4 Flash</option>
+                        <option value="tGPT56L">GPT-5.6 Luna</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" id="buy-btn">Buy credits</button>
+            </div>
+            <div class="buy-note" id="buy-note">Card via Stripe. 1 USD = 1 USD of inference credits, redeemable at <b>api.tai.markets</b>. A lock fixes today's index for the tenor — same card, same credits, dated redemption.</div>
+            <div class="key-line" id="key-line">Your API key (shown once — store it now): <code id="key-secret"></code><button class="btn btn-secondary btn-sm copy" id="key-copy">Copy</button></div>
+        </div>
         <div class="panel">
             <h2>Index Prices — On-chain vs OpenRouter Spot</h2>
             <table class="data">
@@ -227,6 +268,49 @@ async function tick() {
 }
 tick();
 setInterval(tick, 5000);
+
+// ── Card door: Stripe Checkout → tk_ credits ──────────────────────────────
+const buyBtn = $('buy-btn'), buyNote = $('buy-note'), keyLine = $('key-line');
+$('buy-product').addEventListener('change', (e) => {
+    buyBtn.textContent = e.target.value === 'credits' ? 'Buy credits' : 'Lock this price';
+});
+$('key-copy').addEventListener('click', () => {
+    navigator.clipboard?.writeText($('key-secret').textContent);
+});
+buyBtn.addEventListener('click', async () => {
+    const amount = Number($('buy-amount').value);
+    const product = $('buy-product').value;
+    if (!(amount >= 1 && amount <= 500)) { buyNote.textContent = 'Amount must be between $1 and $500.'; return; }
+    buyBtn.disabled = true; buyBtn.textContent = 'Opening Stripe…';
+    try {
+        const r = await fetch(GATEWAY + '/v1/stripe/checkout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                amount_usd: amount,
+                product,
+                class: $('buy-class').value,
+                ...(localStorage.getItem('tai_key') ? { key: localStorage.getItem('tai_key') } : {}),
+            }),
+        });
+        const body = await r.json();
+        if (!r.ok) {
+            buyNote.textContent = body?.error?.message ?? 'Checkout failed — try again.';
+            return;
+        }
+        if (body.api_key) {
+            localStorage.setItem('tai_key', body.api_key);
+            $('key-secret').textContent = body.api_key;
+            keyLine.style.display = 'block';
+        }
+        location.href = body.checkout_url; // Stripe-hosted page; card never touches us
+    } catch (e) {
+        buyNote.textContent = `Could not reach ${GATEWAY} — ${e.message}`;
+    } finally {
+        buyBtn.disabled = false;
+        buyBtn.textContent = $('buy-product').value === 'credits' ? 'Buy credits' : 'Lock this price';
+    }
+});
 </script>
 </body>
 </html>

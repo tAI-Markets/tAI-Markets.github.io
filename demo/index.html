@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Live Dashboard — tAI Markets</title>
-<meta name="description" content="Live clearing house for AI inference: collateral, oracle prices, provider quality and on-chain settlements — on Tempo, settled in stablecoins.">
+<title>Buy credits — tAI Markets</title>
+<meta name="description" content="Buy inference now. Lock the price. Spend it later. Card in, credits on a tk_ key out — collateralized on Tempo, priced by the live market.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -12,14 +12,52 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16.png?v=3">
 <link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/favicon-48.png?v=3">
 <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png?v=3">
-<link rel="stylesheet" href="/assets/theme.css?v=3">
+<link rel="stylesheet" href="/assets/theme.css?v=4">
 <style>
     /* Page layout only — all tokens/components come from assets/theme.css */
     main { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; padding: 40px 24px 60px; }
-    .page-head { margin-bottom: 28px; }
+    section[hidden] { display: none; }
+    .view { animation: viewfade 0.2s ease; }
+    @keyframes viewfade { from { opacity: 0; } to { opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) { .view { animation: none; } }
+
+    .hero { max-width: 760px; }
+    .hero .section-label { margin-bottom: 14px; }
+    .hero h1 { font-size: 40px; font-weight: 600; letter-spacing: -0.02em; color: var(--text-primary); line-height: 1.15; margin-bottom: 14px; }
+    .hero .sub { color: var(--text-muted); font-size: 17px; line-height: 1.6; max-width: 620px; }
+    .flow-preview { margin: 28px 0 30px; padding: 0; list-style: none; max-width: 620px; }
+    .flow-preview li { display: flex; gap: 14px; padding: 14px 0; border-top: 1px solid var(--border-color); align-items: baseline; }
+    .flow-preview li:last-child { border-bottom: 1px solid var(--border-color); }
+    .flow-preview .n { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); min-width: 18px; }
+    .flow-preview b { font-weight: 600; color: var(--text-primary); margin-right: 8px; }
+    .flow-preview span.d { color: var(--text-muted); font-size: 14px; }
+    .signin-box { margin-top: 26px; padding: 20px; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; max-width: 620px; }
+    .signin-box .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .signin-box .note { color: var(--text-muted); font-size: 12px; margin-top: 10px; font-family: var(--font-mono); }
+
+    .page-head { margin-bottom: 20px; }
     .page-head h1 { font-size: 30px; font-weight: 600; letter-spacing: -0.02em; color: var(--text-primary); }
     .page-head .sub { color: var(--text-muted); font-size: 13px; margin-top: 6px; }
     .page-head .sub a { color: var(--accent-signal); text-decoration: none; }
+
+    .acct { margin-bottom: 16px; padding: 12px 14px; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 6px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+    .acct .who { font-size: 13px; color: var(--text-secondary); }
+    .acct .who b { color: var(--text-primary); font-weight: 600; }
+    .acct .linkish { background: none; border: none; color: var(--text-muted); font: inherit; font-size: 12px; cursor: pointer; text-decoration: underline; padding: 0; }
+
+    .buy-form { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; }
+    .buy-field { display: flex; flex-direction: column; gap: 6px; }
+    .buy-field label { color: var(--text-muted); font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; }
+    .buy-note { color: var(--text-muted); font-size: 12px; margin-top: 12px; line-height: 1.6; }
+    .proof { color: var(--text-muted); font-size: 12px; font-family: var(--font-mono); margin-top: 8px; }
+    .proof a { color: var(--accent-signal); text-decoration: none; }
+    .key-line { display: none; margin-top: 12px; padding: 12px; background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: 6px; font-family: var(--font-mono); font-size: 12px; word-break: break-all; }
+    .key-line code { color: var(--text-secondary); }
+
+    .bal-value { font-size: 34px; font-weight: 600; letter-spacing: -0.02em; color: var(--text-primary); margin: 6px 0 2px; }
+    .bal-lock { color: var(--text-muted); font-size: 13px; font-family: var(--font-mono); margin-bottom: 16px; }
+    .pay-status { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); margin: 10px 0; }
+    .panel-mid { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; padding: 24px; max-width: 680px; }
 
     .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 14px; }
     .kpi { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; padding: 18px; box-shadow: 0 1px 2px rgba(17,17,16,0.04); }
@@ -32,7 +70,6 @@
     .panel { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; padding: 22px; min-height: 160px; }
     .panel h2 { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--text-muted); margin-bottom: 16px; font-weight: 500; }
     .panel.wide { grid-column: 1 / -1; }
-
     .roadmap { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border-color); color: var(--text-muted); font-size: 12px; line-height: 1.7; }
     .roadmap b { color: var(--text-secondary); font-weight: 600; }
 
@@ -43,29 +80,8 @@
     .empty { color: var(--text-muted); font-size: 12px; font-family: var(--font-mono); }
 
     .statusline { color: var(--text-muted); font-size: 12px; margin: 16px 2px 0; font-family: var(--font-mono); }
-
-    /* Buy panel (page-specific layout; tokens from theme.css) */
-    .buy-form { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; }
-    .buy-field { display: flex; flex-direction: column; gap: 6px; }
-    .buy-field label { color: var(--text-muted); font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; }
-    .buy-field input, .buy-field select {
-        font: inherit; background: var(--bg-primary); color: var(--text-primary);
-        border: 1px solid var(--border-color); border-radius: 6px; padding: 10px 12px; min-width: 140px;
-    }
-    .buy-note { color: var(--text-muted); font-size: 12px; margin-top: 10px; line-height: 1.6; }
-    .key-line { display: none; margin-top: 12px; padding: 12px; background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: 6px; font-family: var(--font-mono); font-size: 12px; word-break: break-all; }
-    .key-line code { color: var(--text-secondary); }
-    .key-line .copy { margin-left: 10px; }
-
-    /* Account box (login state) */
-    .acct { margin-bottom: 14px; padding: 12px 14px; background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: 6px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
-    .acct .who { font-size: 13px; color: var(--text-secondary); }
-    .acct .who b { color: var(--text-primary); font-weight: 600; }
-    .acct .bal { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); }
-    .acct input { font: inherit; padding: 9px 12px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-secondary); color: var(--text-primary); min-width: 170px; }
-    .acct .linkish { background: none; border: none; color: var(--text-muted); font: inherit; font-size: 12px; cursor: pointer; text-decoration: underline; padding: 0; }
-    .lastmint { display: none; margin-top: 10px; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); }
-    .lastmint a { color: var(--accent-signal); }
+    .crosslink { margin-top: 18px; color: var(--text-muted); font-size: 13px; }
+    .crosslink a { color: var(--accent-signal); text-decoration: none; }
 </style>
 </head>
 <body>
@@ -81,79 +97,91 @@
             <a href="/licensing.html">Licensing</a>
             <a href="/docs/">Documentation</a>
             <a href="https://github.com/tAI-Markets/tAI-contracts" target="_blank">GitHub</a>
-            <a href="/demo/" class="nav-cta">Live Demo</a>
+            <a href="#/desk">Live desk</a>
         </div>
     </div>
 </nav>
 
 <main>
-    <div class="page-head">
-        <h1><span class="live-dot"></span>Live Clearing House</h1>
-        <div class="sub">Tempo Moderato testnet (chain 42431) · <a href="https://explore.testnet.tempo.xyz" target="_blank">explorer ↗</a> · gateway <a href="#" id="gateway-link">api.tai.markets</a> · point it elsewhere with <b>?gateway=</b></div>
-    </div>
+    <div class="steps" id="stepper" aria-label="Progress"></div>
 
-    <div class="kpis">
-        <div class="kpi"><div class="label">Vault Collateral</div><div class="value" id="kpi-collateral">—</div><div class="note">pathUSD in provider vault</div></div>
-        <div class="kpi"><div class="label">Collateral Ratio</div><div class="value" id="kpi-cr">—</div><div class="note">floor 150% · liquidate 130%</div></div>
-        <div class="kpi"><div class="label">tGLM5 Supply</div><div class="value" id="kpi-supply">—</div><div class="note">1 token = 1M output tokens</div></div>
-        <div class="kpi"><div class="label">Treasury Revenue</div><div class="value" id="kpi-treasury">—</div><div class="note">5% settlement fees collected</div></div>
-        <div class="kpi"><div class="label">Settlements</div><div class="value" id="kpi-settled">—</div><div class="note" id="kpi-inferences">0 inferences served</div></div>
-    </div>
+    <!-- ── Step 1: Start ─────────────────────────────────────────────────── -->
+    <section id="view-start" class="view">
+        <div class="hero">
+            <div class="section-label">tAI MARKETS — CLEARING HOUSE FOR MODEL INFERENCE</div>
+            <h1>Buy inference now.<br>Lock the price. Spend it later.</h1>
+            <div class="sub">Pay with a card. Credits land on a <b>tk_</b> key priced by the live market, collateralized on Tempo. Point Claude Code, Codex or ZCode at <b>api.tai.markets</b> and spend them like any other API.</div>
+        </div>
+        <ol class="flow-preview">
+            <li><span class="n">1</span><span><b>Sign in</b><span class="d">email or Google — a wallet is created invisibly, no seed phrase</span></span></li>
+            <li><span class="n">2</span><span><b>Buy credits</b><span class="d">or lock today's index for 30/90 days — same card, dated redemption</span></span></li>
+            <li><span class="n">3</span><span><b>Point your harness</b><span class="d">three lines, OpenAI- and Anthropic-compatible</span></span></li>
+        </ol>
+        <div class="signin-box">
+            <div class="row" id="start-controls">
+                <input class="input" id="start-email" type="email" placeholder="you@company.com" aria-label="Email">
+                <button class="btn btn-primary" id="btn-email">Email me a code</button>
+                <button class="btn btn-secondary" id="btn-google">Continue with Google</button>
+            </div>
+            <div class="note" id="start-note">Card via Stripe at step 2. 1 USD = 1 USD of inference credits.</div>
+        </div>
+    </section>
 
-    <div class="grid">
-        <div class="panel wide" id="buy-panel">
-            <h2>Buy credits — pay with a card</h2>
-            <div class="acct" id="acct-box">
-                <span class="who" id="acct-who">Not signed in</span>
-                <span class="bal" id="acct-bal"></span>
-                <span id="acct-controls"></span>
-            </div>
-            <div class="buy-form">
-                <div class="buy-field">
-                    <label for="buy-amount">Amount (USD)</label>
-                    <input id="buy-amount" type="number" min="1" max="500" step="1" value="5" inputmode="decimal">
-                </div>
-                <div class="buy-field">
-                    <label for="buy-product">Product</label>
-                    <select id="buy-product">
-                        <option value="credits" selected>Credits — spend anytime</option>
-                        <option value="lock_30">30-day lock — today's index</option>
-                        <option value="lock_90">90-day lock — today's index</option>
-                    </select>
-                </div>
-                <div class="buy-field">
-                    <label for="buy-class">Model</label>
-                    <select id="buy-class">
-                        <option value="tGLM53F" selected>GLM-5.3 Flash</option>
-                        <option value="tDeepseekV4F">DeepSeek V4 Flash</option>
-                        <option value="tGPT56L">GPT-5.6 Luna</option>
-                    </select>
-                </div>
-                <button class="btn btn-primary" id="buy-btn">Buy credits</button>
-            </div>
-            <div class="buy-note" id="buy-note">Card via Stripe. 1 USD = 1 USD of inference credits, redeemable at <b>api.tai.markets</b>. A lock fixes today's index for the tenor — same card, same credits, dated redemption.</div>
-            <div class="key-line" id="key-line">Your API key (shown once — store it now): <code id="key-secret"></code><button class="btn btn-secondary btn-sm copy" id="key-copy">Copy</button></div>
-            <div class="lastmint" id="lastmint"></div>
+    <!-- ── Step 2: Buy ───────────────────────────────────────────────────── -->
+    <section id="view-buy" class="view" hidden>
+        <div class="page-head"><h1>Buy credits</h1></div>
+        <div class="acct">
+            <span class="who" id="acct-who">Not signed in</span>
+            <span id="acct-controls"></span>
         </div>
-        <div class="panel">
-            <h2>Index Prices — On-chain vs OpenRouter Spot</h2>
-            <table class="data">
-                <thead><tr><th>Class</th><th>On-chain</th><th class="right">OpenRouter</th><th class="right">Status</th></tr></thead>
-                <tbody id="prices"></tbody>
-            </table>
-            <div class="roadmap"><b>SPOT TODAY → FUTURES NEXT:</b> lock today's index for future inference spend. Forward contracts on tModel are the hedge for the ~$1B/yr of unhedged compute flowing through the AI economy.</div>
+        <div class="buy-form">
+            <div class="buy-field">
+                <label for="buy-amount">Amount (USD)</label>
+                <input class="input" id="buy-amount" type="number" min="1" max="500" step="1" value="5" inputmode="decimal">
+            </div>
+            <div class="buy-field">
+                <label for="buy-product">Product</label>
+                <select class="input" id="buy-product">
+                    <option value="credits" selected>Credits — spend anytime</option>
+                    <option value="lock_30">30-day lock — today's index</option>
+                    <option value="lock_90">90-day lock — today's index</option>
+                </select>
+            </div>
+            <div class="buy-field">
+                <label for="buy-class">Model</label>
+                <select class="input" id="buy-class">
+                    <option value="tGLM53F" selected>GLM-5.3 Flash</option>
+                    <option value="tDeepseekV4F">DeepSeek V4 Flash</option>
+                    <option value="tGPT56L">GPT-5.6 Luna</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" id="buy-btn">Buy credits</button>
         </div>
-        <div class="panel wide">
-            <h2>Use it from your harness — Claude Code · Codex · ZCode</h2>
-            <table class="data">
-                <thead><tr><th>Model class</th><th>Upstream (OpenRouter top usage)</th><th class="right">≈ Index</th></tr></thead>
-                <tbody>
-                    <tr><td><b>tDeepseekV4F</b></td><td>deepseek/deepseek-v4-flash-0731</td><td class="right">$0.18 /1M</td></tr>
-                    <tr><td><b>tGLM53F</b></td><td>z-ai/glm-5.3-flash</td><td class="right">$0.25 /1M</td></tr>
-                    <tr><td><b>tGPT56L</b></td><td>openai/gpt-5.6-luna</td><td class="right">$1.20 /1M</td></tr>
-                </tbody>
-            </table>
-            <div class="panel-code"># 1. buy credits (x402 USDC via the tai-mcp MCP server)
+        <div class="buy-note" id="buy-note">Card via Stripe. 1 USD = 1 USD of inference credits, redeemable at <b>api.tai.markets</b>. A lock fixes today's index for the tenor — same card, same credits, dated redemption.</div>
+        <div class="proof" id="buy-proof"></div>
+        <div class="key-line" id="key-line">Your API key (shown once — store it now): <code id="key-secret"></code><button class="btn btn-secondary btn-sm" id="key-copy">Copy</button></div>
+    </section>
+
+    <!-- ── Step 3: Balance ──────────────────────────────────────────────── -->
+    <section id="view-balance" class="view" hidden>
+        <div class="page-head"><h1>Your balance</h1></div>
+        <div class="panel-mid">
+            <div class="pay-status" id="pay-status"></div>
+            <div class="kpi"><div class="label">Credits remaining</div><div class="bal-value" id="bal-value">—</div><div class="bal-lock" id="bal-lock"></div></div>
+            <div class="key-line" id="bal-key-line"><span id="bal-key-mask"></span><button class="btn btn-secondary btn-sm" id="bal-key-copy">Copy key</button></div>
+            <div style="margin-top:18px; display:flex; gap:10px; flex-wrap:wrap;">
+                <button class="btn btn-secondary" id="bal-continue">Continue → Integrate</button>
+                <a class="btn btn-secondary" href="#/buy">Buy more</a>
+            </div>
+            <div class="crosslink" id="bal-signin-nudge" hidden>Want this balance tied to an email login instead of just this browser? <a href="#/start">Sign in</a> and future purchases follow you.</div>
+        </div>
+    </section>
+
+    <!-- ── Step 4: Integrate ────────────────────────────────────────────── -->
+    <section id="view-integrate" class="view" hidden>
+        <div class="page-head"><h1>Point your harness at the clearing house</h1></div>
+        <div class="panel-mid">
+            <div class="panel-code" id="harness-block"># 1. buy credits (x402 USDC via the tai-mcp MCP server)
 claude mcp add tai-mcp -e TAI_BASE_KEY=0x… -- npx -y @tai-markets/mcp
 #    → agent tool: tai_buy_credits {usd: 2}  → tk_ API key, funded
 
@@ -161,22 +189,52 @@ claude mcp add tai-mcp -e TAI_BASE_KEY=0x… -- npx -y @tai-markets/mcp
 export ANTHROPIC_BASE_URL="https://api.tai.markets"   # Claude Code
 export ANTHROPIC_AUTH_TOKEN="tk_…"                    # Codex: ~/.codex/config.toml
 export ANTHROPIC_MODEL="tGLM53F"                      # Zcode: apiProviders.tai</div>
+            <div class="panel-code" id="curl-example" style="margin-top:14px"></div>
+            <div class="roadmap">Spend burns credits at actual usage. Every settlement is visible on the <a href="#/desk">live desk</a>.</div>
         </div>
-        <div class="panel">
-            <h2>Provider of Record — Quality Board</h2>
-            <table class="data">
-                <thead><tr><th>Provider</th><th>σ service factor</th><th class="right">Status</th></tr></thead>
-                <tbody id="providers"></tbody>
-            </table>
-            <div class="roadmap">SLA enforcement: σ rises on delivery failures; 3 consecutive failures suspend a provider. The PLR backstop buys replacement inference when no provider is available.</div>
-        </div>
-        <div class="panel wide">
-            <h2>Settlement Feed — burns · vault clears · DAO fees</h2>
-            <div class="feed" id="feed"><div class="empty">Awaiting first settlement…</div></div>
-        </div>
-    </div>
+    </section>
 
-    <div class="statusline"><span class="live-dot"></span><span id="status">connecting to gateway…</span></div>
+    <!-- ── Live desk (transparency tape) ────────────────────────────────── -->
+    <section id="view-desk" class="view" hidden>
+        <div class="page-head">
+            <h1><span class="live-dot"></span>Live Clearing House</h1>
+            <div class="sub">Tempo Moderato testnet (chain 42431) · <a href="https://explore.testnet.tempo.xyz" target="_blank">explorer ↗</a> · gateway <a href="#" id="gateway-link">api.tai.markets</a> · point it elsewhere with <b>?gateway=</b></div>
+        </div>
+        <div class="kpis">
+            <div class="kpi"><div class="label">Vault Collateral</div><div class="value" id="kpi-collateral">—</div><div class="note">pathUSD in provider vault</div></div>
+            <div class="kpi"><div class="label">Collateral Ratio</div><div class="value" id="kpi-cr">—</div><div class="note">floor 150% · liquidate 130%</div></div>
+            <div class="kpi"><div class="label">tGLM5 Supply</div><div class="value" id="kpi-supply">—</div><div class="note">1 token = 1M output tokens</div></div>
+            <div class="kpi"><div class="label">Treasury Revenue</div><div class="value" id="kpi-treasury">—</div><div class="note">5% settlement fees collected</div></div>
+            <div class="kpi"><div class="label">Settlements</div><div class="value" id="kpi-settled">—</div><div class="note" id="kpi-inferences">0 inferences served</div></div>
+        </div>
+        <div class="grid">
+            <div class="panel">
+                <h2>Index Prices — On-chain vs OpenRouter Spot</h2>
+                <table class="data">
+                    <thead><tr><th>Class</th><th>On-chain</th><th class="right">OpenRouter</th><th class="right">Status</th></tr></thead>
+                    <tbody id="prices"></tbody>
+                </table>
+                <div class="roadmap"><b>SPOT TODAY → FUTURES NEXT:</b> lock today's index for future inference spend. Forward contracts on tModel are the hedge for the ~$1B/yr of unhedged compute flowing through the AI economy.</div>
+            </div>
+            <div class="panel">
+                <h2>Provider of Record — Quality Board</h2>
+                <table class="data">
+                    <thead><tr><th>Provider</th><th>σ service factor</th><th class="right">Status</th></tr></thead>
+                    <tbody id="providers"></tbody>
+                </table>
+                <div class="roadmap">SLA enforcement: σ rises on delivery failures; 3 consecutive failures suspend a provider. The PLR backstop buys replacement inference when no provider is available.</div>
+            </div>
+            <div class="panel wide">
+                <h2>Settlement Feed — burns · vault clears · DAO fees</h2>
+                <div class="feed" id="feed"><div class="empty">Awaiting first settlement…</div></div>
+            </div>
+            <div class="panel wide" id="desk-lastmint-panel">
+                <h2>Last card mint — Stripe → house-mint → buyer wallet</h2>
+                <div class="lastmint" id="lastmint"><span class="empty">No card mints yet — be the first at step 2.</span></div>
+            </div>
+        </div>
+        <div class="statusline"><span class="live-dot"></span><span id="status">connecting to gateway…</span></div>
+    </section>
 </main>
 
 <footer class="footer">
@@ -223,6 +281,75 @@ const $ = (id) => document.getElementById(id);
 const fmt = (units, dec = 2) => (Number(units ?? 0) / 1e6).toLocaleString('en-US', { maximumFractionDigits: dec });
 const usd = (v) => '$' + Number(v ?? 0).toLocaleString('en-US', { maximumFractionDigits: 4 });
 
+// ── Step router + state machine ────────────────────────────────────────────
+const VIEWS = ['start', 'buy', 'balance', 'integrate', 'desk'];
+const STEP_DEFS = [
+    { id: 'start', n: 1, label: 'Sign in' },
+    { id: 'buy', n: 2, label: 'Buy credits' },
+    { id: 'balance', n: 3, label: 'Balance' },
+    { id: 'integrate', n: 4, label: 'Integrate' },
+];
+const keyExists = () => Boolean(localStorage.getItem('tai_key'));
+const authed = () => Boolean(account && localStorage.getItem('tai_session'));
+const routeForState = () => (authed() || keyExists()) ? 'balance' : 'start';
+
+function parseHash() {
+    const h = location.hash.replace(/^#\/?/, '');
+    if (h === 'paid') return { view: 'balance', paid: true };
+    if (h === 'canceled') return { view: 'buy', canceled: true };
+    const v = h.split('/')[0];
+    return VIEWS.includes(v) ? { view: v } : null;
+}
+
+let currentView = null;
+function showView(view, opts = {}) {
+    // Access: Buy and Balance need an identity (session or issued key); the
+    // router sends first-timers to Start, which is the only sign-in surface.
+    if ((view === 'buy' || view === 'balance') && !(authed() || keyExists())) view = 'start';
+    currentView = view;
+    for (const v of VIEWS) $('view-' + v).hidden = v !== view;
+    updateStepper();
+    window.scrollTo(0, 0);
+    if (view === 'balance') {
+        refreshBalance();
+        if (opts.paid) startPaymentConfirm();
+    }
+    if (view === 'integrate') renderCurl();
+    if (view === 'buy' && opts.canceled) {
+        $('buy-note').textContent = 'Payment canceled — nothing was charged. Your card was not saved.';
+    }
+}
+
+function updateStepper() {
+    const stepDone = { start: authed() || keyExists(), buy: balanceUsd > 0, balance: false, integrate: false };
+    const active = currentView === 'desk' ? null : currentView;
+    $('stepper').hidden = currentView === 'desk';
+    $('stepper').innerHTML = STEP_DEFS.map((s) => {
+        const isCurrent = s.id === active;
+        const isDone = stepDone[s.id] && !isCurrent;
+        const locked = (s.id === 'buy' || s.id === 'balance') && !(authed() || keyExists());
+        const cls = isCurrent ? 'step step-current' : isDone ? 'step step-done' : locked ? 'step step-locked' : 'step';
+        const mark = isDone ? '✓' : s.n;
+        const inner = `<span class="n">${mark}</span>${s.label}`;
+        return isCurrent || locked ? `<span class="${cls}">${inner}</span>` : `<button class="${cls}" data-view="${s.id}">${inner}</button>`;
+    }).join('');
+    for (const b of $('stepper').querySelectorAll('button[data-view]')) {
+        b.addEventListener('click', () => go(b.dataset.view));
+    }
+}
+
+function go(view) {
+    if (location.hash === '#/' + view) showView(view);
+    else location.hash = '#/' + view;
+}
+
+window.addEventListener('hashchange', () => {
+    const r = parseHash();
+    if (r) showView(r.view, r); else showView(routeForState());
+});
+
+// ── Desk tape (stats poll — ids live in the desk section, always in DOM) ───
+let balanceUsd = 0;
 function render(d) {
     $('status').textContent = `live · gateway ${GATEWAY} · updated ${new Date(d.updatedAt).toLocaleTimeString()}`;
     if (d.vault) {
@@ -273,16 +400,22 @@ function render(d) {
         feed.appendChild(div);
     }
 
-    // Last card mint (Stripe → house-mint → buyer's embedded wallet)
+    // Last card mint (Desk panel + Buy micro-proof)
     const lm = $('lastmint');
+    let mintLine = '';
     if (d.lastMint) {
-        lm.style.display = 'block';
         const tokens = (Number(d.lastMint.tokenAmount) / 1e6).toLocaleString('en-US', { maximumFractionDigits: 0 });
-        lm.innerHTML = `Last card mint: ${usd(d.lastMint.usdMicro / 1e6)} → ${tokens} ${d.lastMint.class} tokens → <a href="https://explore.testnet.tempo.xyz/tx/${d.lastMint.transferTx}" target="_blank">tx ↗</a>${d.pendingMints ? ` · ${d.pendingMints} mint(s) pending collateral` : ''}`;
+        mintLine = `Last card mint: ${usd(d.lastMint.usdMicro / 1e6)} → ${tokens} ${d.lastMint.class} tokens → <a href="https://explore.testnet.tempo.xyz/tx/${d.lastMint.transferTx}" target="_blank">tx ↗</a>${d.pendingMints ? ` · ${d.pendingMints} mint(s) pending collateral` : ''}`;
+        lm.innerHTML = mintLine;
     } else if (d.pendingMints) {
-        lm.style.display = 'block';
-        lm.textContent = `${d.pendingMints} card mint(s) pending — vault needs collateral.`;
+        mintLine = `${d.pendingMints} card mint(s) pending — vault needs collateral.`;
+        lm.innerHTML = `<span class="empty">${mintLine}</span>`;
     }
+    const proof = [];
+    if (d.vault) proof.push(`collateral ${(d.vault.collateralRatio / 100).toFixed(2)}x on-chain`);
+    if (d.lastMint) proof.push(`last mint ${usd(d.lastMint.usdMicro / 1e6)}`);
+    proof.push(`<a href="#/desk">live proof ↗</a>`);
+    $('buy-proof').innerHTML = proof.join(' · ');
 }
 
 async function tick() {
@@ -297,7 +430,6 @@ tick();
 setInterval(tick, 5000);
 
 // ── Account door: Privy email/Google, embedded wallet invisible ────────────
-const acctWho = $('acct-who'), acctBal = $('acct-bal'), acctControls = $('acct-controls');
 let privy = null, privyUser = null, account = null;
 
 async function initAccount() {
@@ -321,32 +453,35 @@ async function initAccount() {
     } catch (e) {
         renderSignedOut(`Login unavailable — ${e.message}`);
     }
+    updateStepper();
 }
 
 function renderSignedOut(note) {
-    acctWho.textContent = 'Not signed in';
-    acctBal.textContent = note ?? '';
-    acctControls.innerHTML = `
-        <input id="acct-email" type="email" placeholder="you@company.com" aria-label="Email">
-        <button class="btn btn-primary btn-sm" id="btn-email">Email me a code</button>
-        <button class="btn btn-secondary btn-sm" id="btn-google">Continue with Google</button>`;
+    // Sign-in controls live on the Start view
+    $('acct-controls').innerHTML = '';
+    $('start-controls').innerHTML = `
+        <input class="input" id="start-email" type="email" placeholder="you@company.com" aria-label="Email">
+        <button class="btn btn-primary" id="btn-email">Email me a code</button>
+        <button class="btn btn-secondary" id="btn-google">Continue with Google</button>`;
     $('btn-email').addEventListener('click', emailLogin);
     $('btn-google').addEventListener('click', googleLogin);
+    $('start-note').textContent = note ?? 'Card via Stripe at step 2. 1 USD = 1 USD of inference credits.';
+    $('acct-who').textContent = 'Not signed in';
 }
 
 async function emailLogin() {
-    const email = $('acct-email').value.trim();
-    if (!/.+@.+\..+/.test(email)) { acctBal.textContent = 'Enter a valid email address.'; return; }
+    const email = $('start-email').value.trim();
+    if (!/.+@.+\..+/.test(email)) { $('start-note').textContent = 'Enter a valid email address.'; return; }
     try {
         $('btn-email').disabled = true; $('btn-email').textContent = 'Sending…';
         await privy.auth.email.sendCode(email);
-        acctControls.innerHTML = `
-            <input id="acct-code" type="text" inputmode="numeric" placeholder="6-digit code" aria-label="Login code" style="min-width:120px">
-            <button class="btn btn-primary btn-sm" id="btn-verify">Verify</button>`;
+        $('start-controls').innerHTML = `
+            <input class="input" id="start-code" type="text" inputmode="numeric" placeholder="6-digit code" aria-label="Login code" style="min-width:120px">
+            <button class="btn btn-primary" id="btn-verify">Verify</button>`;
         $('btn-verify').addEventListener('click', () => codeLogin(email));
-        acctBal.textContent = `Code sent to ${email}.`;
+        $('start-note').textContent = `Code sent to ${email}.`;
     } catch (e) {
-        acctBal.textContent = `Could not send code — ${e.message}`;
+        $('start-note').textContent = `Could not send code — ${e.message}`;
         renderSignedOut();
     }
 }
@@ -354,10 +489,10 @@ async function emailLogin() {
 async function codeLogin(email) {
     try {
         $('btn-verify').disabled = true; $('btn-verify').textContent = 'Verifying…';
-        privyUser = await privy.auth.email.loginWithCode(email, $('acct-code').value.trim(), 'login-or-sign-up');
+        privyUser = await privy.auth.email.loginWithCode(email, $('start-code').value.trim(), 'login-or-sign-up');
         await exchangeSession();
     } catch (e) {
-        acctBal.textContent = `Invalid code — ${e.message}`;
+        $('start-note').textContent = `Invalid code — ${e.message}`;
         renderSignedOut();
     }
 }
@@ -367,7 +502,7 @@ async function googleLogin() {
         const { url } = await privy.oauth.generateURL('google', location.origin + location.pathname);
         location.href = url;
     } catch (e) {
-        acctBal.textContent = `Google sign-in unavailable — ${e.message}`;
+        $('start-note').textContent = `Google sign-in unavailable — ${e.message}`;
     }
 }
 
@@ -395,28 +530,79 @@ async function exchangeSession() {
 }
 
 function renderAccount() {
-    acctWho.innerHTML = `Signed in — <b>${account?.email ?? 'account'}</b>`;
-    acctControls.innerHTML = `<button class="linkish" id="btn-out">Sign out</button>`;
+    $('acct-who').innerHTML = `Signed in — <b>${account?.email ?? 'account'}</b>`;
+    $('acct-controls').innerHTML = `<button class="linkish" id="btn-out">Sign out</button>`;
     $('btn-out').addEventListener('click', async () => {
         try { await privy.logout(); } catch {}
         localStorage.removeItem('tai_session'); localStorage.removeItem('tai_key');
-        account = null; privyUser = null;
+        account = null; privyUser = null; balanceUsd = 0;
         renderSignedOut();
+        go('start');
     });
+    // Fresh sign-in advances the flow: Start → Buy
+    if (currentView === 'start') go('buy');
     refreshBalance();
 }
 
 async function refreshBalance() {
     const session = localStorage.getItem('tai_session');
-    if (!session || !account) return;
+    const key = localStorage.getItem('tai_key');
+    if (!session && !key) return;
     try {
-        const r = await fetch(GATEWAY + '/v1/account/me', { headers: { Authorization: 'Bearer ' + session } });
-        const me = await r.json();
-        if (!r.ok) return;
-        const k = me.keys?.[0];
-        const lock = k?.lock ? `, ${k.lock.model} locked through ${k.lock.through}` : '';
-        acctBal.textContent = k ? `$${k.credits_usd.toFixed(2)} of credits remaining${lock}` : '';
+        let credits = null, lock = null;
+        if (session && account) {
+            const me = await (await fetch(GATEWAY + '/v1/account/me', { headers: { Authorization: 'Bearer ' + session } })).json();
+            if (me.keys?.[0]) { credits = me.keys[0].credits_usd; lock = me.keys[0].lock ?? null; }
+        } else if (key) {
+            const b = await (await fetch(GATEWAY + '/v1/keys/me/balance', { headers: { Authorization: 'Bearer ' + key } })).json();
+            if (b && b.credits_usd !== undefined) credits = b.credits_usd;
+        }
+        if (credits === null) return;
+        balanceUsd = credits;
+        const line = `${usd(credits)} of credits remaining${lock ? `, ${lock.model} locked through ${lock.through}` : ''}`;
+        $('bal-value').textContent = usd(credits);
+        $('bal-lock').textContent = lock ? `${lock.model} locked through ${lock.through}` : 'spend anytime · redeemable at api.tai.markets';
+        // Key display on Balance: masked, copyable
+        if (key) {
+            $('bal-key-line').style.display = 'block';
+            $('bal-key-mask').textContent = `API key: ${key.slice(0, 10)}…${key.slice(-4)} `;
+        }
+        $('bal-signin-nudge').hidden = Boolean(session);
+        updateStepper();
     } catch {}
+}
+
+// Payment return: Stripe redirects to #paid — poll until the webhook lands.
+let confirmTimer = null;
+function startPaymentConfirm() {
+    $('pay-status').textContent = 'Payment received — confirming credits…';
+    let tries = 0;
+    clearInterval(confirmTimer);
+    confirmTimer = setInterval(async () => {
+        tries += 1;
+        await refreshBalance();
+        if (balanceUsd > 0 || tries > 20) {
+            clearInterval(confirmTimer);
+            $('pay-status').textContent = balanceUsd > 0
+                ? 'Credits are on your account. t-tokens mint to your wallet within a minute — watch the desk.'
+                : 'Still confirming — refresh in a moment, or check the desk.';
+        }
+    }, 3000);
+}
+
+$('bal-continue').addEventListener('click', () => go('integrate'));
+$('bal-key-copy').addEventListener('click', () => navigator.clipboard?.writeText(localStorage.getItem('tai_key') ?? ''));
+
+// ── Integrate: personalized first call ─────────────────────────────────────
+function renderCurl() {
+    const key = localStorage.getItem('tai_key');
+    const shown = key ? key : 'tk_…';
+    $('curl-example').textContent =
+`# your first call
+curl https://api.tai.markets/v1/chat/completions \\
+  -H "Authorization: Bearer ${shown}" \\
+  -H "Content-Type: application/json" \\
+  -d '{"model":"tGLM53F","messages":[{"role":"user","content":"Say something true."}],"max_tokens":50}'`;
 }
 
 // ── Card door: Stripe Checkout → tk_ credits → t-tokens on-chain ──────────
@@ -463,6 +649,9 @@ buyBtn.addEventListener('click', async () => {
     }
 });
 
+// Boot: route by state (keeping #paid/#canceled flags), then wire the account door.
+const boot = parseHash() ?? { view: routeForState() };
+showView(boot.view, boot);
 initAccount();
 </script>
 </body>

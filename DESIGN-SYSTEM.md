@@ -91,6 +91,14 @@ Inter 400/500/600/700 (Google Fonts) for all UI. JetBrains Mono 400/500 for data
 - **Footer** — light, 4 columns, hairline top. Optional inverse closer band only if the
   rest of the page stays light.
 - **Code / harness panels** (`.panel-code`) — `--bg-tertiary`, mono, no neon.
+- **Stepper** (`.steps` / `.step`) — mono 11px uppercase chip row for multi-step
+  conversion flows (demo buy flow). Current step: ink on surface, `--border-strong`.
+  Done steps: check + clickable. Locked steps: 55% opacity. Numerals `.n` in mono.
+  Never more than one stepper per view; transitions are instant or a single ≤200ms fade
+  (respect `prefers-reduced-motion`). One `.btn-primary` per view — the stepper is
+  never a CTA row.
+- **`.input`** — shared form input: `--bg-primary`, 1px `--border-color`, radius 8,
+  focus border `--border-strong`. `.btn[disabled]` — 50% opacity, no hover lift.
 
 ## Reference implementations
 

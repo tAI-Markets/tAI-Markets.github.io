@@ -205,3 +205,35 @@ table.data tr:last-child td { border-bottom: none; }
     .section-title { font-size: 28px; }
     body { font-size: 15px; }
 }
+
+/* ── Stepper (multi-step conversion flow) ─────────────────────────────────
+   Mono eyebrow row of numbered step chips. Current = ink on surface; done =
+   check + clickable; locked = dimmed. No motion beyond a 200ms fade. */
+.steps {
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em;
+    text-transform: uppercase; margin-bottom: 24px;
+}
+.step {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 12px; border: 1px solid var(--border-color); border-radius: var(--radius-sm);
+    color: var(--text-muted); background: var(--bg-primary);
+}
+.step .n { font-weight: 500; color: var(--text-secondary); }
+.step-current { color: var(--text-primary); border-color: var(--border-strong); background: var(--bg-secondary); }
+.step-done { color: var(--text-secondary); }
+button.step { cursor: pointer; font: inherit; letter-spacing: inherit; text-transform: inherit; }
+button.step:hover { border-color: var(--border-strong); color: var(--text-primary); }
+.step-locked { opacity: 0.55; }
+
+/* ── Form inputs (shared) ────────────────────────────────────────────────── */
+.input {
+    font: inherit; background: var(--bg-primary); color: var(--text-primary);
+    border: 1px solid var(--border-color); border-radius: var(--radius-sm);
+    padding: 10px 12px; min-width: 140px;
+}
+.input:focus { outline: none; border-color: var(--border-strong); }
+
+/* ── Button states ───────────────────────────────────────────────────────── */
+.btn[disabled] { opacity: 0.5; cursor: default; }
+.btn-primary[disabled]:hover { opacity: 0.5; }

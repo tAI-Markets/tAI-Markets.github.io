@@ -3,1011 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>tAI Markets — Tokenized AI (tAI): The Economic Unit for Superintelligence</title>
-    <meta name="description" content="Pioneering tokenized AI (tAI). Transform scarce AI computation into accessible, tradeable financial assets. Equalizing access to superintelligence.">
+    <title>tAI Markets — The futures market for model inference</title>
+    <meta name="description" content="Tokenized AI turns scarce compute into instruments you can buy, spend, and settle. Collateralized tModel futures for AI inference. Live on Tempo.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/theme.css?v=3">
     <style>
-        :root {
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #0d1520;
-            --bg-tertiary: #111b2b;
-            --accent-primary: #00a3e0;
-            --accent-secondary: #0077b3;
-            --accent-glow: rgba(0, 163, 224, 0.15);
-            --text-primary: #ffffff;
-            --text-secondary: #a8c5e0;
-            --text-muted: #6b8cae;
-            --border-color: #1a3a5c;
-            --gradient-start: #00a3e0;
-            --gradient-end: #0077b3;
+        /* Page layout only — tokens/components from assets/theme.css */
+        main { position: relative; z-index: 1; }
+
+        /* ── Hero ── */
+        .hero { max-width: 900px; margin: 0 auto; padding: 120px 24px 72px; }
+        .hero-eyebrow {
+            font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em;
+            text-transform: uppercase; color: var(--text-muted); margin-bottom: 28px;
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        #matrix-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            pointer-events: none;
-            opacity: 0.5;
-        }
-
-        .bg-grid {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image:
-                linear-gradient(rgba(0, 163, 224, 0.04) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 163, 224, 0.04) 1px, transparent 1px);
-            background-size: 40px 40px;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .bg-glow {
-            position: fixed;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: radial-gradient(circle at 50% 50%, var(--accent-glow) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: 0;
-            animation: pulse 8s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.5; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.1); }
-        }
-
-        .ticker {
-            background: transparent;
-            border-bottom: none;
-            padding: 0;
-            overflow: hidden;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .ticker-content {
-            display: flex;
-            animation: matrix-scroll 20s linear infinite;
-            white-space: nowrap;
-            opacity: 0.6;
-            font-size: 11px;
-            letter-spacing: 0.5px;
-        }
-
-        .ticker-item {
-            padding: 4px 0;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-            color: rgba(0, 163, 224, 0.5);
-            display: block;
-            animation: matrix-fade 3s ease-in-out infinite;
-            text-shadow: 0 0 10px rgba(0, 163, 224, 0.3);
-        }
-
-        .ticker-item:nth-child(odd) { animation-delay: 0.5s; }
-        .ticker-item:nth-child(even) { animation-delay: 1s; }
-        .ticker-item .address { color: rgba(0, 163, 224, 0.7); }
-        .ticker-item .value { color: rgba(0, 163, 224, 0.9); }
-
-        @keyframes scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
-        @keyframes matrix-scroll {
-            0% { transform: translateY(-100%) translateX(0); }
-            100% { transform: translateY(100%) translateX(-30%); }
-        }
-
-        @keyframes matrix-fade {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.8; }
-        }
-
-        nav {
-            position: sticky;
-            top: 0;
-            background: rgba(10, 10, 15, 0.75);
-            backdrop-filter: blur(20px);
-            z-index: 100;
-            padding: 20px 0;
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: var(--text-primary);
-            font-weight: 700;
-            font-size: 20px;
-        }
-
-        .logo-icon {
-            width: 36px; height: 36px;
-            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 18px;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 32px;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-
-        .nav-links a:hover { color: var(--text-primary); }
-
-        .nav-cta {
-            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
-            color: var(--bg-primary) !important;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-        }
-
-        .hero {
-            position: relative;
-            z-index: 10;
-            padding: 140px 64px 100px;
-            text-align: center;
-            max-width: 900px;
-            margin: 40px auto;
-            background: rgba(10, 10, 15, 0.85);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-        }
-
-        .terminal-container {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(0, 163, 224, 0.3);
-            border-radius: 8px;
-            padding: 12px 20px;
-            margin-bottom: 32px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 14px;
-            color: var(--accent-primary);
-        }
-
-        .terminal-prompt {
-            color: var(--accent-primary);
-            opacity: 0.8;
-        }
-
-        .terminal-text {
-            color: #fff;
-        }
-
-        .terminal-cursor {
-            display: inline-block;
-            width: 10px;
-            height: 18px;
-            background: var(--accent-primary);
-            animation: blink 1s infinite;
-            margin-left: 2px;
-        }
-
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
-        }
-
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
-            padding: 8px 16px;
-            border-radius: 100px;
-            font-size: 13px;
-            color: var(--text-secondary);
-            margin-bottom: 32px;
-        }
-
-        .badge-dot {
-            width: 8px; height: 8px;
-            background: var(--accent-primary);
-            border-radius: 50%;
-            animation: blink 2s infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
         .hero h1 {
-            font-size: 64px;
-            font-weight: 700;
-            line-height: 1.1;
-            margin-bottom: 24px;
-            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-primary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: 72px; font-weight: 600; line-height: 1.05;
+            letter-spacing: -0.035em; color: var(--text-primary);
+            margin-bottom: 28px;
         }
-
-        .hero-subtitle {
-            font-size: 22px;
-            color: var(--text-secondary);
-            max-width: 700px;
-            margin: 0 auto 40px;
-            line-height: 1.6;
+        .hero-sub {
+            font-size: 19px; line-height: 1.6; color: var(--text-secondary);
+            max-width: 620px; margin-bottom: 40px;
         }
+        .hero-cta { display: flex; gap: 12px; margin-bottom: 72px; }
 
-        .hero-cta {
-            display: flex;
-            gap: 16px;
-            justify-content: center;
-            margin-bottom: 60px;
-        }
-
-        .btn {
-            padding: 16px 32px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
-            color: var(--bg-primary);
-            box-shadow: 0 4px 24px rgba(0, 212, 170, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 32px rgba(0, 212, 170, 0.4);
-        }
-
-        .btn-secondary {
-            background: var(--bg-tertiary);
-            color: var(--text-primary);
-            border: 1px solid var(--border-color);
-        }
-
-        .btn-secondary:hover {
-            background: var(--bg-secondary);
-            border-color: var(--accent-primary);
-        }
-
+        /* Stats row — ink values, muted mono labels */
         .stats {
-            display: flex;
-            justify-content: center;
-            gap: 60px;
-            flex-wrap: wrap;
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+            background: var(--border-color);
+            border: 1px solid var(--border-color); border-radius: 8px;
+            overflow: hidden; margin-bottom: 96px;
         }
-
-        .stat { text-align: center; }
-
-        .stat-value {
-            font-size: 36px;
-            font-weight: 700;
-            color: var(--accent-primary);
-            font-family: 'JetBrains Mono', monospace;
+        .stat { background: var(--bg-secondary); padding: 24px; }
+        .stat .stat-label {
+            font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
+            letter-spacing: 0.12em; color: var(--text-muted); margin-bottom: 10px;
         }
-
-        .stat-label {
-            font-size: 14px;
-            color: var(--text-muted);
-            margin-top: 4px;
+        .stat .stat-value {
+            font-size: 32px; font-weight: 600; letter-spacing: -0.02em;
+            color: var(--text-primary); line-height: 1.1;
         }
+        .stat .stat-caption { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
 
-        .architecture {
-            padding: 100px 24px;
-            position: relative;
-            z-index: 10;
-            background: rgba(10, 10, 15, 0.88);
+        /* ── $tModel tape (quiet product object) ── */
+        .tape {
+            border: 1px solid var(--border-color); border-radius: 8px;
+            background: var(--bg-secondary); overflow: hidden; margin-bottom: 20px;
         }
-
-        .section-header {
-            text-align: center;
-            max-width: 700px;
-            margin: 0 auto 60px;
+        .tape-head {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 20px; border-bottom: 1px solid var(--border-color);
         }
-
-        .section-label {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--accent-primary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
+        .tape-head .title {
+            font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
+            letter-spacing: 0.12em; color: var(--text-muted);
         }
-
-        .section-title {
-            font-size: 42px;
-            font-weight: 700;
-            margin-bottom: 16px;
+        .tape-scroll {
+            display: flex; gap: 40px; white-space: nowrap; overflow: hidden;
+            padding: 12px 20px; font-family: var(--font-mono); font-size: 13px;
         }
+        .tape-scroll span { color: var(--text-secondary); }
+        .tape-scroll b { color: var(--text-primary); font-weight: 500; }
+        .tape-scroll .up { color: var(--semantic-up); }
+        .tape-scroll .down { color: var(--semantic-down); }
 
-        .section-desc {
-            font-size: 18px;
-            color: var(--text-secondary);
+        /* ── Sections ── */
+        .section { max-width: 1100px; margin: 0 auto; padding: 0 24px 104px; }
+        .section-header { max-width: 640px; margin-bottom: 56px; }
+
+        /* Model index table (OpenRouter-style rows) */
+        .index-table { border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-secondary); padding: 8px 20px; }
+        .index-table table.data td { padding: 14px 6px; font-size: 13px; }
+        .index-table .model { color: var(--text-primary); font-weight: 500; }
+
+        /* Clearing cycle figure — diagram as proof */
+        .cycle { border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-secondary); padding: 32px; }
+        .cycle-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+        .cycle-step { border-top: 2px solid var(--text-primary); padding-top: 16px; }
+        .cycle-step .n { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: 8px; }
+        .cycle-step h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; color: var(--text-primary); }
+        .cycle-step p { font-size: 13px; line-height: 1.6; color: var(--text-secondary); }
+
+        /* Features — paper, not cards */
+        .features-list { display: grid; gap: 0; }
+        .feature {
+            display: grid; grid-template-columns: 220px 1fr; gap: 32px;
+            padding: 28px 0; border-bottom: 1px solid var(--border-color);
         }
+        .feature:last-child { border-bottom: none; }
+        .feature h3 { font-size: 16px; font-weight: 600; color: var(--text-primary); }
+        .feature p { font-size: 15px; color: var(--text-secondary); }
 
-        .arch-diagram {
-            max-width: 1000px;
-            margin: 0 auto;
-            background: rgba(13, 21, 32, 0.4);
-            border-radius: 24px;
-            padding: 40px;
+        /* Closer — optional inverse band */
+        .closer { background: var(--bg-inverse); color: var(--text-on-inverse); padding: 104px 24px; text-align: center; }
+        .closer h2 {
+            font-size: 44px; font-weight: 600; letter-spacing: -0.03em;
+            line-height: 1.1; margin-bottom: 20px;
         }
+        .closer p { font-size: 17px; color: rgba(251,251,250,0.66); margin-bottom: 36px; }
+        .closer .btn-primary { background: var(--text-on-inverse); color: var(--bg-inverse); }
+        .closer .btn-primary:hover { opacity: 0.88; }
 
-        .arch-layer {
-            background: rgba(17, 27, 43, 0.6);
-            border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 16px;
-        }
-
-        .arch-layer:last-child { margin-bottom: 0; }
-
-        .arch-layer-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--accent-primary);
-            margin-bottom: 16px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .arch-components {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-        }
-
-        .arch-component {
-            background: rgba(10, 10, 15, 0.5);
-            border-radius: 12px;
-            padding: 20px;
-            transition: all 0.2s;
-        }
-
-        .arch-component:hover {
-            background: rgba(17, 27, 43, 0.8);
-            transform: translateY(-2px);
-        }
-
-        .arch-component h4 {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .arch-component p {
-            font-size: 13px;
-            color: var(--text-muted);
-            line-height: 1.5;
-        }
-
-        .features {
-            padding: 100px 24px;
-            position: relative;
-            z-index: 10;
-            background: rgba(10, 10, 15, 0.88);
-        }
-
-        .features-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 24px;
-        }
-
-        .feature-card {
-            background: rgba(13, 21, 32, 0.5);
-            border-radius: 20px;
-            padding: 32px;
-            transition: all 0.3s;
-        }
-
-        .feature-card:hover {
-            background: rgba(17, 27, 43, 0.7);
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .feature-icon {
-            width: 48px; height: 48px;
-            background: var(--accent-glow);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-
-        .feature-card h3 {
-            font-size: 22px;
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-
-        .feature-card p {
-            font-size: 15px;
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-
-        .tokens {
-            padding: 100px 24px;
-            background: rgba(10, 10, 15, 0.92);
-            position: relative;
-            z-index: 10;
-        }
-
-        .tokens-grid {
-            max-width: 1000px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-        }
-
-        .token-card {
-            background: rgba(10, 10, 15, 0.5);
-            border-radius: 16px;
-            padding: 28px;
-            text-align: center;
-            transition: all 0.2s;
-        }
-
-        .token-card:hover {
-            background: rgba(17, 27, 43, 0.8);
-            transform: scale(1.02);
-        }
-
-        .token-symbol {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--accent-primary);
-            margin-bottom: 8px;
-        }
-
-        .token-model {
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin-bottom: 12px;
-        }
-
-        .token-value {
-            font-size: 13px;
-            color: var(--text-muted);
-        }
-
-        .how-it-works {
-            padding: 100px 24px;
-            position: relative;
-            z-index: 10;
-            background: rgba(10, 10, 15, 0.88);
-        }
-
-        .steps {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .step {
-            display: flex;
-            gap: 32px;
-            margin-bottom: 48px;
-        }
-
-        .step:last-child { margin-bottom: 0; }
-
-        .step-number {
-            width: 56px; height: 56px;
-            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--bg-primary);
-            flex-shrink: 0;
-        }
-
-        .step-content h3 {
-            font-size: 22px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .step-content p {
-            font-size: 16px;
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-
-        .cta-section {
-            padding: 120px 24px;
-            text-align: center;
-            position: relative;
-            z-index: 10;
-            background: rgba(10, 10, 15, 0.9);
-        }
-
-        .cta-box {
-            max-width: 800px;
-            margin: 0 auto;
-            background: rgba(13, 21, 32, 0.5);
-            border-radius: 32px;
-            padding: 60px 40px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cta-box h2 {
-            font-size: 42px;
-            font-weight: 700;
-            margin-bottom: 16px;
-        }
-
-        .cta-box p {
-            font-size: 18px;
-            color: var(--text-secondary);
-            margin-bottom: 32px;
-        }
-
-        footer {
-            background: rgba(13, 21, 32, 0.9);
-            border-top: 1px solid var(--border-color);
-            padding: 60px 24px 40px;
-            position: relative;
-            z-index: 10;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 60px;
-        }
-
-        .footer-brand { max-width: 300px; }
-        .footer-brand .logo { margin-bottom: 16px; }
-
-        .footer-brand p {
-            font-size: 14px;
-            color: var(--text-muted);
-            line-height: 1.6;
-        }
-
-        .footer-links h4 {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
-
-        .footer-links ul { list-style: none; }
-        .footer-links li { margin-bottom: 12px; }
-
-        .footer-links a {
-            font-size: 14px;
-            color: var(--text-muted);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        .footer-links a:hover { color: var(--accent-primary); }
-
-        .footer-bottom {
-            max-width: 1200px;
-            margin: 60px auto 0;
-            padding-top: 40px;
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 14px;
-            color: var(--text-muted);
-        }
-
-        .footer-social {
-            display: flex;
-            gap: 20px;
-        }
-
-        .footer-social a {
-            color: var(--text-muted);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        .footer-social a:hover { color: var(--accent-primary); }
-
-        /* Mobile Menu */
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--text-primary);
-            font-size: 24px;
-            cursor: pointer;
-            padding: 8px;
-        }
-
+        .mobile-menu-btn { display: none; background: none; border: none; color: var(--text-primary); font-size: 22px; cursor: pointer; padding: 8px; }
         .mobile-nav {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(10, 10, 15, 0.98);
-            backdrop-filter: blur(20px);
-            z-index: 200;
-            padding: 80px 24px 24px;
-            flex-direction: column;
-            gap: 24px;
+            display: none; position: fixed; inset: 0; z-index: 200;
+            background: rgba(251,251,250,0.98); backdrop-filter: blur(16px);
+            padding: 80px 24px 24px; flex-direction: column; gap: 8px;
         }
-
         .mobile-nav.active { display: flex; }
+        .mobile-nav a { color: var(--text-primary); text-decoration: none; font-size: 22px; font-weight: 600; padding: 14px 0; border-bottom: 1px solid var(--border-color); }
+        .mobile-nav .nav-cta { border-bottom: none; justify-content: center; }
+        .mobile-nav-close { position: absolute; top: 20px; right: 24px; background: none; border: none; color: var(--text-primary); font-size: 30px; cursor: pointer; }
 
-        .mobile-nav a {
-            color: var(--text-primary);
-            text-decoration: none;
-            font-size: 24px;
-            font-weight: 600;
-            padding: 16px 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .mobile-nav-close {
-            position: absolute;
-            top: 20px;
-            right: 24px;
-            background: none;
-            border: none;
-            color: var(--text-primary);
-            font-size: 32px;
-            cursor: pointer;
-        }
-
-        /* Megapot-inspired Mobile Improvements */
         @media (max-width: 968px) {
-            .hero {
-                padding: 100px 20px 60px;
-                margin: 20px 16px;
-                border-radius: 20px;
-            }
-            
-            .hero h1 { 
-                font-size: 36px; 
-                line-height: 1.15;
-            }
-            
-            .hero-subtitle { 
-                font-size: 17px; 
-                line-height: 1.5;
-            }
-            
+            .hero { padding: 72px 20px 48px; }
+            .hero h1 { font-size: 40px; }
+            .hero-sub { font-size: 17px; }
             .nav-links { display: none; }
             .mobile-menu-btn { display: block; }
-            
-            .nav-container {
-                padding: 0 16px;
-            }
-            
-            .footer-content { 
-                grid-template-columns: 1fr 1fr; 
-                gap: 40px;
-            }
-            
-            .features-grid { 
-                grid-template-columns: 1fr; 
-                gap: 16px;
-            }
-            
-            .feature-card {
-                padding: 24px;
-            }
-            
-            .architecture,
-            .features,
-            .tokens,
-            .how-it-works,
-            .cta-section {
-                padding: 60px 16px;
-            }
-            
-            .section-title {
-                font-size: 32px;
-            }
-            
-            .section-desc {
-                font-size: 16px;
-            }
-            
-            .arch-diagram {
-                padding: 24px;
-                border-radius: 16px;
-            }
-            
-            .arch-layer {
-                padding: 20px;
-            }
-            
-            .arch-components {
-                grid-template-columns: 1fr;
-                gap: 12px;
-            }
-            
-            .arch-component {
-                padding: 16px;
-            }
-            
-            .tokens-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 12px;
-            }
-            
-            .token-card {
-                padding: 20px 16px;
-            }
-            
-            .token-symbol {
-                font-size: 18px;
-            }
-            
-            .step {
-                gap: 20px;
-                margin-bottom: 32px;
-            }
-            
-            .step-number {
-                width: 44px;
-                height: 44px;
-                font-size: 18px;
-                border-radius: 12px;
-            }
-            
-            .step-content h3 {
-                font-size: 18px;
-            }
-            
-            .step-content p {
-                font-size: 14px;
-            }
-            
-            .cta-box {
-                padding: 40px 24px;
-                border-radius: 20px;
-            }
-            
-            .cta-box h2 {
-                font-size: 28px;
-            }
-            
-            .stats {
-                gap: 20px;
-                flex-wrap: wrap;
-            }
-            
-            .stat {
-                min-width: calc(50% - 10px);
-                padding: 12px;
-            }
-            
-            .stat-value {
-                font-size: 28px;
-            }
-            
-            .stat-label {
-                font-size: 12px;
-            }
+            .stats { grid-template-columns: 1fr 1fr; }
+            .cycle-row { grid-template-columns: 1fr 1fr; }
+            .feature { grid-template-columns: 1fr; gap: 8px; }
+            .closer h2 { font-size: 30px; }
+            .section { padding-bottom: 72px; }
         }
-
         @media (max-width: 640px) {
-            .hero {
-                padding: 80px 16px 48px;
-                margin: 12px;
-                border-radius: 16px;
-            }
-            
-            .hero h1 { 
-                font-size: 28px; 
-                line-height: 1.2;
-            }
-            
-            .hero-subtitle { 
-                font-size: 15px; 
-                line-height: 1.5;
-            }
-            
-            .hero-cta { 
-                flex-direction: column; 
-                gap: 12px;
-            }
-            
-            .btn {
-                width: 100%;
-                justify-content: center;
-                padding: 14px 24px;
-                font-size: 15px;
-            }
-            
-            .terminal-container {
-                padding: 10px 14px;
-                font-size: 12px;
-                margin-bottom: 20px;
-            }
-            
-            .stats { 
-                gap: 12px; 
-            }
-            
-            .stat {
-                min-width: calc(50% - 6px);
-            }
-            
-            .stat-value {
-                font-size: 24px;
-            }
-            
-            .footer-content { 
-                grid-template-columns: 1fr; 
-                gap: 32px; 
-            }
-            
-            .footer-bottom { 
-                flex-direction: column; 
-                gap: 16px; 
-                text-align: center; 
-            }
-            
-            .step { 
-                flex-direction: column; 
-                gap: 12px; 
-            }
-            
-            .section-title {
-                font-size: 26px;
-            }
-            
-            .arch-layer-title {
-                font-size: 12px;
-            }
-            
-            .arch-component h4 {
-                font-size: 14px;
-            }
-            
-            .arch-component p {
-                font-size: 12px;
-            }
-            
-            .feature-card h3 {
-                font-size: 18px;
-            }
-            
-            .feature-card p {
-                font-size: 14px;
-            }
-            
-            .feature-icon {
-                width: 40px;
-                height: 40px;
-                font-size: 20px;
-            }
-            
-            .tokens-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .token-card {
-                padding: 20px;
-                text-align: left;
-                display: flex;
-                align-items: center;
-                gap: 16px;
-            }
-            
-            .token-symbol {
-                font-size: 20px;
-                margin-bottom: 0;
-                min-width: 80px;
-            }
-            
-            .token-model {
-                margin-bottom: 0;
-                flex: 1;
-            }
-            
-            .cta-box h2 {
-                font-size: 24px;
-            }
-            
-            .cta-box p {
-                font-size: 15px;
-            }
-        }
-        
-        /* Improve touch targets on mobile */
-        @media (max-width: 968px) {
-            .nav-links a,
-            .footer-links a,
-            .btn {
-                min-height: 44px;
-                display: inline-flex;
-                align-items: center;
-            }
-            
-            .footer-links li {
-                margin-bottom: 8px;
-            }
+            .hero-cta { flex-direction: column; }
+            .stats { grid-template-columns: 1fr; }
+            .cycle-row { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <div class="bg-grid"></div>
-    <div class="bg-glow"></div>
-    <canvas id="matrix-canvas"></canvas>
-
-    <nav>
+    <nav class="nav">
         <div class="nav-container">
             <a href="/" class="logo">
-                <img src="logo.jpg" alt="tAI Markets" style="height: 40px; width: auto; border-radius: 8px;">
+                <img src="/logo.jpg?v=3" alt="tAI Markets">
+                <span>tAI Markets</span>
             </a>
             <div class="nav-links">
-                <a href="#architecture">Architecture</a>
-                <a href="#features">Features</a>
-                <a href="#tokens">Tokens</a>
-                <a href="/docs/" >Documentation</a>
+                <a href="/#architecture">Protocol</a>
+                <a href="/#models">Models</a>
+                <a href="/docs/">Documentation</a>
                 <a href="https://github.com/tAI-Markets/tAI-contracts" target="_blank">GitHub</a>
                 <a href="/licensing.html">Licensing</a>
                 <a href="/demo/" class="nav-cta">Live Demo</a>
@@ -1018,246 +158,173 @@
 
     <div class="mobile-nav" id="mobileNav">
         <button class="mobile-nav-close" onclick="toggleMobileNav()" aria-label="Close menu">×</button>
-        <a href="#architecture" onclick="toggleMobileNav()">Architecture</a>
-        <a href="#features" onclick="toggleMobileNav()">Features</a>
-        <a href="#tokens" onclick="toggleMobileNav()">Tokens</a>
+        <a href="/#architecture" onclick="toggleMobileNav()">Protocol</a>
+        <a href="/#models" onclick="toggleMobileNav()">Models</a>
+        <a href="/docs/">Documentation</a>
         <a href="https://github.com/tAI-Markets/tAI-contracts" target="_blank">GitHub</a>
         <a href="/licensing.html" onclick="toggleMobileNav()">Licensing</a>
         <a href="/demo/" class="nav-cta" onclick="toggleMobileNav()">Live Demo</a>
     </div>
 
-    <section class="hero">
-        <div class="terminal-container">
-            <span class="terminal-prompt">$</span>
-            <span class="terminal-text" id="typed"></span>
-            <span class="terminal-cursor"></span>
-        </div>
-        <h1>Pioneering the Monetary Unit for Superintelligence</h1>
-        <p class="hero-subtitle">
-            Tokenized AI (tAI) — transforming scarce computation into tradeable, redeemable financial assets ($tModel). <b>Now live on Tempo: buy, spend, and settle AI inference on-chain.</b>
-        </p>
-        <div class="hero-cta">
-            <a href="/demo/" class="btn btn-primary">Live Demo →</a>
-            <a href="https://github.com/tAI-Markets/tAI-contracts" class="btn btn-secondary">View on GitHub ↗</a>
-        </div>
-        <div class="stats">
-            <div class="stat">
-                <div class="stat-value">150%</div>
-                <div class="stat-label">Min Collateral Ratio</div>
-            </div>
-            <div class="stat">
-                <div class="stat-value">5%</div>
-                <div class="stat-label">Settlement Fee</div>
-            </div>
-            <div class="stat">
-                <div class="stat-value">6</div>
-                <div class="stat-label">Decimals Precision</div>
-            </div>
-            <div class="stat">
-                <div class="stat-value">∞</div>
-                <div class="stat-label">Provider Agnostic</div>
-            </div>
-        </div>
-    </section>
-
-    <section class="architecture" id="architecture">
-        <div class="section-header">
-            <div class="section-label">Tokenized AI Infrastructure</div>
-            <h2 class="section-title">The tAI Protocol</h2>
-            <p class="section-desc">Tokenized AI (tAI) transforms scarce computation into accessible financial assets. A decentralized clearing house for the AI economy.</p>
-        </div>
-        <div class="arch-diagram">
-            <div class="arch-layer">
-                <div class="arch-layer-title">Core Layer — TAIProxy (CCP Router)</div>
-                <div class="arch-components">
-                    <div class="arch-component">
-                        <h4>Redemption Requests</h4>
-                        <p>Users request inference by burning tModel tokens</p>
-                    </div>
-                    <div class="arch-component">
-                        <h4>Settlement</h4>
-                        <p>5% fee on all settlements to DAO treasury</p>
-                    </div>
-                    <div class="arch-component">
-                        <h4>Novation</h4>
-                        <p>CCP becomes counterparty to all trades</p>
-                    </div>
-                    <div class="arch-component">
-                        <h4>PLR Fallback</h4>
-                        <p>Provider of Last Resort via x402 integration</p>
-                    </div>
-                </div>
-            </div>
-            <div class="arch-layer">
-                <div class="arch-layer-title">Token & Collateral Layer</div>
-                <div class="arch-components">
-                    <div class="arch-component">
-                        <h4>tModelToken</h4>
-                        <p>ERC-20 tokens representing 1M inference tokens</p>
-                    </div>
-                    <div class="arch-component">
-                        <h4>CDPVault</h4>
-                        <p>Per-provider USDC collateralized debt positions</p>
-                    </div>
-                    <div class="arch-component">
-                        <h4>RoutingEngine</h4>
-                        <p>Waterfall algorithm based on Service Factor σ</p>
-                    </div>
-                </div>
-            </div>
-            <div class="arch-layer">
-                <div class="arch-layer-title">Infrastructure Layer</div>
-                <div class="arch-components">
-                    <div class="arch-component">
-                        <h4>OracleHub</h4>
-                        <p>Live OpenRouter oracle, mirrored on-chain</p>
-                    </div>
-                    <div class="arch-component">
-                        <h4>SlashingEngine</h4>
-                        <p>SLA enforcement and quality penalties</p>
-                    </div>
-                    <div class="arch-component">
-                        <h4>PLRModule</h4>
-                        <p>Emergency liquidity via x402 protocol</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="features" id="features">
-        <div class="section-header">
-            <div class="section-label">Why Tokenized AI</div>
-            <h2 class="section-title">The New Paradigm</h2>
-            <p class="section-desc">tAI makes AI computation accessible, tradeable, and globally available. The infrastructure for superintelligence.</p>
-        </div>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">🔄</div>
-                <h3>Standardization</h3>
-                <p>AI inference from any provider becomes fungible ERC-20 tokens. A tGLM5 token is a tGLM5 token, regardless of who provided the compute.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🔒</div>
-                <h3>Collateralization</h3>
-                <p>150% minimum collateral ratio in USDC. Providers must lock collateral to mint tokens, ensuring redemption guarantees.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🎯</div>
-                <h3>Smart Routing</h3>
-                <p>Waterfall algorithm routes redemption requests based on Service Factor (σ) — quality, latency, and cost optimization.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">⚡</div>
-                <h3>Automated Liquidation</h3>
-                <p>Keepers monitor collateral ratios and trigger liquidations when CR falls below 150%, protecting token holders.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🛟</div>
-                <h3>Provider of Last Resort</h3>
-                <p>When no provider is available, the PLR module buys replacement inference (x402-ready), keeping redemptions whole.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🏛️</div>
-                <h3>DAO Governance</h3>
-                <p>tModel holders govern protocol parameters, fee structures, and whitelisted providers through on-chain voting.</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="tokens" id="tokens">
-        <div class="section-header">
-            <div class="section-label">Tokenized AI Models</div>
-            <h2 class="section-title">tAI Token Suite</h2>
-            <p class="section-desc">Each AI model becomes a tradeable tAI token. Collateralized, liquid, and globally accessible.</p>
-        </div>
-        <div class="tokens-grid">
-            <div class="token-card">
-                <div class="token-symbol">tGLM5</div>
-                <div class="token-model">GLM-5</div>
-                <div class="token-value">1 Token = 1M output tokens</div>
-            </div>
-            <div class="token-card">
-                <div class="token-symbol">tOpus46</div>
-                <div class="token-model">Claude Opus 4.6</div>
-                <div class="token-value">1 Token = 1M output tokens</div>
-            </div>
-            <div class="token-card">
-                <div class="token-symbol">tSonnet4</div>
-                <div class="token-model">Claude Sonnet 4</div>
-                <div class="token-value">1 Token = 1M output tokens</div>
-            </div>
-            <div class="token-card">
-                <div class="token-symbol">tGPT5</div>
-                <div class="token-model">GPT-5</div>
-                <div class="token-value">1 Token = 1M output tokens</div>
-            </div>
-        </div>
-    </section>
-
-    <section class="how-it-works">
-        <div class="section-header">
-            <div class="section-label">How It Works</div>
-            <h2 class="section-title">From Collateral to Settlement</h2>
-            <p class="section-desc">A complete cycle of AI inference tokenization and redemption.</p>
-        </div>
-        <div class="steps">
-            <div class="step">
-                <div class="step-number">1</div>
-                <div class="step-content">
-                    <h3>Provider Locks Collateral</h3>
-                    <p>AI inference providers deposit USDC into CDPVaults at 150% collateral ratio. This collateral backs the tokens they mint, ensuring redemption guarantees for token holders.</p>
-                </div>
-            </div>
-            <div class="step">
-                <div class="step-number">2</div>
-                <div class="step-content">
-                    <h3>Mint tModel Tokens</h3>
-                    <p>Providers mint tModel tokens (e.g., tGLM5, tOpus46) representing 1 million inference tokens. These ERC-20 tokens are now tradeable on DEXs or used for redemption.</p>
-                </div>
-            </div>
-            <div class="step">
-                <div class="step-number">3</div>
-                <div class="step-content">
-                    <h3>User Redeems for Inference</h3>
-                    <p>Token holders burn tModel tokens to request AI inference. The RoutingEngine assigns the request to the best provider based on Service Factor (σ), optimizing for quality and cost.</p>
-                </div>
-            </div>
-            <div class="step">
-                <div class="step-number">4</div>
-                <div class="step-content">
-                    <h3>Settlement & Fees</h3>
-                    <p>The provider delivers inference, settlement occurs with a 5% fee to the DAO treasury. If providers fail, the PLR module ensures completion via x402 protocol integration.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="cta-section">
-        <div class="cta-box">
-            <h2>Join the Tokenized AI Revolution</h2>
-            <p>Be part of the tAI paradigm shift. Build on the infrastructure that's making superintelligence accessible to everyone, everywhere.</p>
+    <main>
+        <section class="hero">
+            <div class="hero-eyebrow">Forward compute infrastructure · Live on Tempo</div>
+            <h1>The futures market for model&nbsp;inference.</h1>
+            <p class="hero-sub">
+                Tokenized AI turns scarce compute into instruments you can buy, spend,
+                and settle. Live on Tempo.
+            </p>
             <div class="hero-cta">
-                <a href="/demo/" class="btn btn-primary">Live Demo →</a>
-                <a href="https://github.com/tAI-Markets/tAI-contracts" class="btn btn-secondary">Read Documentation ↗</a>
+                <a href="/demo/" class="btn btn-primary">Live Demo</a>
+                <a href="https://github.com/tAI-Markets/tAI-contracts" class="btn btn-secondary">View on GitHub</a>
             </div>
-        </div>
+
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-label">Collateral floor</div>
+                    <div class="stat-value">150%</div>
+                    <div class="stat-caption">USDC in provider vaults</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Settlement fee</div>
+                    <div class="stat-value">5%</div>
+                    <div class="stat-caption">on every redemption</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Listed models</div>
+                    <div class="stat-value">6</div>
+                    <div class="stat-caption">tModel classes trading</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Settlement</div>
+                    <div class="stat-value">T+0</div>
+                    <div class="stat-caption">on-chain, stablecoin-denominated</div>
+                </div>
+            </div>
+
+            <div class="tape">
+                <div class="tape-head">
+                    <span class="title">$tModel tape</span>
+                    <span class="title">index · /1M tokens</span>
+                </div>
+                <div class="tape-scroll" id="tape">
+                    <span><b>$tOpus46</b> 12.40 <span class="up">+0.8%</span></span>
+                    <span><b>$tGLM5</b> 0.62 <span class="up">+1.2%</span></span>
+                    <span><b>$tSonnet4</b> 2.10 <span class="down">−0.4%</span></span>
+                    <span><b>$tGPT5</b> 1.88 <span class="up">+0.3%</span></span>
+                    <span><b>$tGLM53F</b> 0.25 <span class="up">+0.5%</span></span>
+                    <span><b>$tGPT56L</b> 1.20 <span class="down">−0.2%</span></span>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="architecture">
+            <div class="section-header">
+                <div class="section-label">Protocol</div>
+                <h2 class="section-title">A clearing house for inference</h2>
+                <p class="section-desc">
+                    Providers collateralize, mint, and deliver. The clearing house stands
+                    between every trade: novation, routing, and settlement on-chain.
+                </p>
+            </div>
+            <div class="cycle">
+                <div class="cycle-row">
+                    <div class="cycle-step">
+                        <div class="n">01 / COLLATERAL</div>
+                        <h3>Provider locks USDC</h3>
+                        <p>Per-provider vaults at a 150% collateral floor back every minted token.</p>
+                    </div>
+                    <div class="cycle-step">
+                        <div class="n">02 / MINT</div>
+                        <h3>tModel issued</h3>
+                        <p>One tModel token = one million inference tokens, tradeable as an ERC-20.</p>
+                    </div>
+                    <div class="cycle-step">
+                        <div class="n">03 / REDEEM</div>
+                        <h3>Holder burns for inference</h3>
+                        <p>The routing engine assigns the request by Service Factor σ — quality, latency, cost.</p>
+                    </div>
+                    <div class="cycle-step">
+                        <div class="n">04 / SETTLE</div>
+                        <h3>Delivery &amp; clearing</h3>
+                        <p>Provider delivers; 5% fee clears to the treasury. PLR backstop completes failed deliveries.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="models">
+            <div class="section-header">
+                <div class="section-label">Model index</div>
+                <h2 class="section-title">Listed tModel classes</h2>
+                <p class="section-desc">
+                    Each model becomes a fungible instrument. Prices are set by the live
+                    index, mirrored from the open inference market.
+                </p>
+            </div>
+            <div class="index-table">
+                <table class="data">
+                    <thead>
+                        <tr><th>Class</th><th>Underlying</th><th class="right">Index /1M</th><th class="right">Collateral</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="model">tGLM5</td><td>GLM-5</td><td class="right">$0.62</td><td class="right">≥150%</td></tr>
+                        <tr><td class="model">tOpus46</td><td>Claude Opus 4.6</td><td class="right">$12.40</td><td class="right">≥150%</td></tr>
+                        <tr><td class="model">tSonnet4</td><td>Claude Sonnet 4</td><td class="right">$2.10</td><td class="right">≥150%</td></tr>
+                        <tr><td class="model">tGPT5</td><td>GPT-5</td><td class="right">$1.88</td><td class="right">≥150%</td></tr>
+                        <tr><td class="model">tGLM53F</td><td>GLM-5.3 Flash</td><td class="right">$0.25</td><td class="right">≥150%</td></tr>
+                        <tr><td class="model">tGPT56L</td><td>GPT-5.6 Luna</td><td class="right">$1.20</td><td class="right">≥150%</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="section" id="features">
+            <div class="section-header">
+                <div class="section-label">Properties</div>
+                <h2 class="section-title">Why it holds</h2>
+            </div>
+            <div class="features-list">
+                <div class="feature">
+                    <h3>Fungible inference</h3>
+                    <p>Inference from any provider standardizes into one ERC-20 per model. A tGLM5 token is a tGLM5 token, whoever served the compute.</p>
+                </div>
+                <div class="feature">
+                    <h3>Overcollateralized</h3>
+                    <p>Providers lock 150% in USDC to mint. Keepers liquidate below the floor, so redemption stays guaranteed.</p>
+                </div>
+                <div class="feature">
+                    <h3>Provider of last resort</h3>
+                    <p>If no provider can serve a redemption, the PLR module buys replacement inference, keeping settlements whole.</p>
+                </div>
+                <div class="feature">
+                    <h3>Oracle-priced</h3>
+                    <p>The index mirrors the live open inference market on-chain, so tModel prices track real compute costs.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <section class="closer">
+        <h2>List a model.<br>Sell future inference.</h2>
+        <p>Turn committed compute capacity into settled, tradeable instruments.</p>
+        <a href="mailto:licensing@tai.markets?subject=Listing%20inquiry" class="btn btn-primary">Become a provider</a>
     </section>
 
-    <footer>
+    <footer class="footer">
         <div class="footer-content">
             <div class="footer-brand">
                 <a href="/" class="logo">
-                    <img src="logo.jpg" alt="tAI Markets" style="height: 32px; width: auto; border-radius: 6px;">
+                    <img src="/logo.jpg?v=3" alt="tAI Markets">
+                    <span>tAI Markets</span>
                 </a>
-                <p>Pioneering tokenized AI (tAI). Equalizing access to superintelligence through decentralized financial infrastructure.</p>
+                <p>Forward-compute infrastructure: a clearing house for AI inference, collateralized and settled on-chain.</p>
             </div>
             <div class="footer-links">
                 <h4>Product</h4>
                 <ul>
-                    <li><a href="#architecture">Architecture</a></li>
-                    <li><a href="#tokens">Tokens</a></li>
-                    <li><a href="#features">Features</a></li>
+                    <li><a href="/#architecture">Protocol</a></li>
+                    <li><a href="/#models">Models</a></li>
                     <li><a href="/demo/">Live Demo</a></li>
                     <li><a href="/licensing.html">Licensing</a></li>
                 </ul>
@@ -1267,160 +334,44 @@
                 <ul>
                     <li><a href="/docs/">Documentation</a></li>
                     <li><a href="https://github.com/tAI-Markets/tAI-contracts">GitHub</a></li>
-                    <li><a href="#">Documentation</a></li>
-                    <li><a href="#">Smart Contracts</a></li>
-                    <li><a href="#">SDK</a></li>
                 </ul>
             </div>
             <div class="footer-links">
-                <h4>Community</h4>
+                <h4>Live</h4>
                 <ul>
-                    <li><a href="#">Twitter/X</a></li>
-                    <li><a href="#">Discord</a></li>
-                    <li><a href="#">Telegram</a></li>
-                    <li><a href="#">Blog</a></li>
+                    <li><a href="https://explore.testnet.tempo.xyz" target="_blank">Tempo Explorer</a></li>
+                    <li><a href="/demo/">Dashboard</a></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
             <p>© 2026 tAI Markets. Live on Tempo testnet · settled in stablecoins · x402 &amp; MPP-ready.</p>
-            <div class="footer-social">
-                <a href="https://github.com/tAI-Markets">GitHub</a>
-                <a href="#">Twitter</a>
-                <a href="#">Discord</a>
-            </div>
+            <p><a href="https://github.com/tAI-Markets">GitHub</a></p>
         </div>
     </footer>
 
 <script>
-// Matrix Rain Effect for tAI Markets
-const canvas = document.getElementById('matrix-canvas');
-const ctx = canvas.getContext('2d');
-
-// Set canvas size
-function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
-
-// tAI token data for the matrix
-const tokenData = [
-    'tGLM5', 'tOpus46', 'tSonnet4', 'tGPT5',
-    '$1,250', '$5,000', '$2,100', '$42.50',
-    '1.2M', '500k', 'MINT', 'BURN',
-    'COLLATERAL', 'REDEEM', 'tAI', 'TOKENIZED',
-    '0x7a2f', '0x3b8c', '0x9d4e', '0x1f5a',
-    '150% CR', 'σ=0.94', 'x402', 'USDC'
-];
-
-const fontSize = 16;
-let columns = Math.floor(canvas.width / fontSize);
-const drops = [];
-
-// Initialize drops
-for (let i = 0; i < columns; i++) {
-    drops[i] = Math.random() * -100; // Start at random heights above screen
-}
-
-// Colors for glow effect
-const glowColors = ['#00a3e0', '#0077b3', '#4db8ff', '#00d4ff'];
-
-function draw() {
-    // Semi-transparent black for trail effect - slower fade
-    ctx.fillStyle = 'rgba(10, 10, 15, 0.03)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
-    ctx.font = fontSize + 'px JetBrains Mono';
-    
-    for (let i = 0; i < drops.length; i++) {
-        // Pick random token data
-        const text = tokenData[Math.floor(Math.random() * tokenData.length)];
-        
-        // Calculate position
-        const x = i * fontSize;
-        const y = drops[i] * fontSize;
-        
-        // Glow effect for leading character
-        if (drops[i] * fontSize > 0 && drops[i] * fontSize < canvas.height) {
-            ctx.shadowBlur = 15;
-            ctx.shadowColor = glowColors[Math.floor(Math.random() * glowColors.length)];
-            ctx.fillStyle = '#ffffff';
-            ctx.fillText(text, x, y);
-            
-            // Reset shadow for trail
-            ctx.shadowBlur = 0;
-        }
-        
-        // Trail characters with fading opacity
-        for (let j = 1; j < 8; j++) {
-            const trailY = y - (j * fontSize);
-            if (trailY > 0 && trailY < canvas.height) {
-                const opacity = 1 - (j * 0.12);
-                const trailText = tokenData[Math.floor(Math.random() * tokenData.length)];
-                ctx.fillStyle = `rgba(0, 163, 224, ${opacity * 0.6})`;
-                ctx.fillText(trailText, x, trailY);
-            }
-        }
-        
-        // Move drop down slower
-        drops[i] += 0.5;
-        
-        // Reset drop when it goes off screen (with randomness)
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.98) {
-            drops[i] = -10 - Math.random() * 30;
-        }
-    }
-}
-
-// Animation loop - slower for readability
-setInterval(draw, 120);
-
-// Terminal typing animation
-const terminalTexts = ['tGLM5', 'tOpus46', 'tMimoV2pro', 'tSonnet46', 'tMiniMaxM27'];
-let textIndex = 0;
-let charIndex = 0;
-let isDeleting = false;
-let typingSpeed = 50;
-const typedElement = document.getElementById('typed');
-
-function type() {
-    const currentText = terminalTexts[textIndex];
-    
-    if (isDeleting) {
-        typedElement.textContent = currentText.substring(0, charIndex - 1);
-        charIndex--;
-        typingSpeed = 30; // Faster when deleting
-    } else {
-        typedElement.textContent = currentText.substring(0, charIndex + 1);
-        charIndex++;
-        typingSpeed = 50; // Normal typing speed
-    }
-    
-    if (!isDeleting && charIndex === currentText.length) {
-        // Finished typing, pause before deleting
-        isDeleting = true;
-        typingSpeed = 1000;
-    } else if (isDeleting && charIndex === 0) {
-        // Finished deleting, move to next text
-        isDeleting = false;
-        textIndex = (textIndex + 1) % terminalTexts.length;
-        typingSpeed = 300; // Pause before typing next
-    }
-    
-    setTimeout(type, typingSpeed);
-}
-
-// Start typing animation
-type();
-
-// Mobile navigation toggle
 function toggleMobileNav() {
     const mobileNav = document.getElementById('mobileNav');
     mobileNav.classList.toggle('active');
     document.body.style.overflow = mobileNav.classList.contains('active') ? 'hidden' : '';
 }
+
+// $tModel tape — quiet horizontal marquee, mono only
+(function () {
+    const tape = document.getElementById('tape');
+    if (!tape) return;
+    tape.innerHTML += tape.innerHTML; // duplicate for seamless loop
+    let x = 0;
+    const step = 0.4;
+    function frame() {
+        x -= step;
+        if (Math.abs(x) >= tape.scrollWidth / 2) x = 0;
+        tape.style.transform = 'translateX(' + x + 'px)';
+        requestAnimationFrame(frame);
+    }
+    frame();
+})();
 </script>
 </body>
 </html>

@@ -19,8 +19,8 @@ live dashboard, licensing page, agent-integration quickstarts and the documentat
 
 ## Design system
 
-The brand is the **blue theme**: `#00a3e0 → #0077b3` on `#0a0a0f`, Inter for UI,
-JetBrains Mono for data. Every page links `assets/theme.css` and reuses the standard
+The brand is the **light lab canvas**: ink `#111110` on warm white `#fbfbfa`, Inter for
+UI, JetBrains Mono for data, steel `#2f6f8f` for links/live indicators only, black CTAs. Every page links `assets/theme.css` and reuses the standard
 nav + footer. Full token table and rules: [DESIGN-SYSTEM.md](DESIGN-SYSTEM.md).
 (The green terminal theme was a divergence — rebuilt Sep 2026.)
 

@@ -35,7 +35,6 @@ const config = {
         src: 'logo.jpg?v=3', // v3: cache-bust (GH Pages serves assets with 4h max-age)
         href: 'https://tai.markets/',
       },
-      style: 'primary',
       items: [
         { to: '/', label: 'Concepts', position: 'left' },
         { to: '/api', label: 'API', position: 'left' },

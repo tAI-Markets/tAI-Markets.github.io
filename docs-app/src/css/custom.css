@@ -1,178 +1,198 @@
 /* ============================================================
-   tAI Markets Docs — GitBook-style light reading experience
-   Brand: tai.markets blue (#00a3e0) · dark navbar · light content
+   tAI Markets Docs — light lab canvas (matches tai.markets)
+   Brand: ink #111110 on warm white #fbfbfa · steel #2f6f8f links
+   Inter for UI · JetBrains Mono for data/code.
    See site/DESIGN-SYSTEM.md for the full design system.
    ============================================================ */
 
 :root {
-    --ifm-color-primary: #00a3e0;
-    --ifm-color-primary-dark: #0093ca;
-    --ifm-color-primary-darker: #008abf;
-    --ifm-color-primary-darkest: #0077b3;
-    --ifm-color-primary-light: #0fb3f0;
-    --ifm-color-primary-lighter: #18bcf8;
-    --ifm-color-primary-lightest: #3ecbfa;
+    /* Infima primary → ink (CTAs/active states are black) */
+    --ifm-color-primary: #111110;
+    --ifm-color-primary-dark: #1f1f1d;
+    --ifm-color-primary-darker: #2a2a28;
+    --ifm-color-primary-darkest: #3d3d3a;
+    --ifm-color-primary-light: #111110;
+    --ifm-color-primary-lighter: #111110;
+    --ifm-color-primary-lightest: #111110;
 
-    /* GitBook-like light reading surfaces */
-    --ifm-background-color: #ffffff;
-    --ifm-background-surface-color: #f7f9fb;
+    /* Light reading surfaces */
+    --ifm-background-color: #fbfbfa;
+    --ifm-background-surface-color: #ffffff;
     --ifm-font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --ifm-font-family-monospace: 'JetBrains Mono', monospace;
     --ifm-font-size-base: 16px;
-    --ifm-line-height-base: 1.75;
-    --ifm-heading-font-weight: 700;
+    --ifm-line-height-base: 1.7;
+    --ifm-heading-font-weight: 600;
     --ifm-heading-margin-bottom: 1.2rem;
-    --ifm-navbar-height: 4rem;
+    --ifm-navbar-height: 3.75rem;
     --ifm-navbar-padding-horizontal: 1.5rem;
-    --ifm-menu-color: #44546a;
-    --ifm-menu-color-active: #00a3e0;
-    --ifm-toc-border-color: #e6ebf1;
-    --ifm-table-border-color: #e6ebf1;
-    --ifm-code-background: #f0f4f8;
-    --ifm-footer-background-color: #0a0a0f;
-    --ifm-footer-title-color: #a8c5e0;
-    --ifm-footer-link-color: #6b8cae;
+    --ifm-navbar-background-color: rgba(251, 251, 250, 0.82);
+    --ifm-menu-color: #5c5a55;
+    --ifm-menu-color-active: #111110;
+    --ifm-toc-border-color: rgba(17, 17, 16, 0.10);
+    --ifm-table-border-color: rgba(17, 17, 16, 0.10);
+    --ifm-code-background: #f3f2ee;
+    --ifm-footer-background-color: #fbfbfa;
+    --ifm-footer-title-color: #111110;
+    --ifm-footer-link-color: #8a8780;
 
-    /* Brand surfaces */
-    --tai-bg-primary: #0a0a0f;
-    --tai-bg-secondary: #0d1520;
-    --tai-border: #1a3a5c;
-    --tai-text-secondary: #a8c5e0;
-    --tai-text-muted: #6b8cae;
-    --tai-gradient: linear-gradient(135deg, #00a3e0, #0077b3);
+    /* Brand tokens (mirror site/assets/theme.css) */
+    --tai-bg-primary: #fbfbfa;
+    --tai-bg-secondary: #ffffff;
+    --tai-bg-tertiary: #f3f2ee;
+    --tai-ink: #111110;
+    --tai-text-secondary: #5c5a55;
+    --tai-text-muted: #8a8780;
+    --tai-border: rgba(17, 17, 16, 0.10);
+    --tai-border-strong: rgba(17, 17, 16, 0.18);
+    --tai-signal: #2f6f8f;
 }
 
-/* ── Dark brand navbar (matches tai.markets nav) ── */
+/* ── Navbar: light blur + hairline, sharp logo, black CTA (matches homepage) ── */
 .navbar {
-    background: var(--tai-bg-primary);
+    background: var(--ifm-navbar-background-color);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     box-shadow: none;
     border-bottom: 1px solid var(--tai-border);
     height: var(--ifm-navbar-height);
 }
 .navbar__title {
-    color: #fff;
-    font-weight: 700;
-    font-size: 17px;
+    color: var(--tai-ink);
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: -0.01em;
 }
-.navbar__logo { height: 34px; border-radius: 8px; margin-right: 10px; }
+.navbar__logo { height: 30px; border-radius: 0; margin-right: 10px; }
 .navbar__link {
     color: var(--tai-text-secondary);
     font-weight: 500;
     font-size: 14px;
 }
-.navbar__link:hover { color: #fff; }
-.navbar__link--active { color: #fff; }
-.navbar__items--right .navbar__link { color: var(--tai-text-muted); }
-.navbar__items--right .navbar__link:hover { color: #fff; }
+.navbar__link:hover { color: var(--tai-ink); }
+.navbar__link--active { color: var(--tai-ink); }
+.navbar-cta {
+    background: var(--tai-ink);
+    color: #fbfbfa !important;
+    border-radius: 8px;
+    padding: 8px 16px !important;
+    margin-left: 0.5rem;
+}
+.navbar-cta:hover { opacity: 0.88; color: #fbfbfa; }
+.navbar__toggle { color: var(--tai-ink); }
 
-/* ── Light content area (GitBook readability) ── */
-.main-wrapper { background: #fff; }
+/* ── Content area ── */
+.main-wrapper { background: var(--tai-bg-primary); }
 article {
     max-width: 46rem;
     font-size: 16px;
-    color: #1f2d3d;
+    color: #5c5a55;
 }
 article h1 {
     font-size: 2.1rem;
+    font-weight: 600;
     letter-spacing: -0.02em;
     margin-bottom: 1.4rem;
     padding-bottom: 0.8rem;
-    border-bottom: 1px solid #e6ebf1;
+    border-bottom: 1px solid var(--tai-border);
+    color: var(--tai-ink);
 }
-article h2 { font-size: 1.45rem; margin-top: 2.4rem; letter-spacing: -0.01em; }
-article h3 { font-size: 1.15rem; margin-top: 1.8rem; }
-article p, article li { color: #2c3e50; }
-article a { color: var(--ifm-color-primary); text-decoration-thickness: 1px; text-underline-offset: 2px; }
-article strong { color: #16283c; }
+article h2 { font-size: 1.4rem; font-weight: 500; margin-top: 2.4rem; letter-spacing: -0.015em; color: var(--tai-ink); }
+article h3 { font-size: 1.12rem; font-weight: 600; margin-top: 1.8rem; color: var(--tai-ink); }
+article p, article li { color: var(--tai-text-secondary); }
+/* Steel is legal on text links (color law) */
+article a { color: var(--tai-signal); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+article strong { color: var(--tai-ink); }
 article table {
     display: table;
     width: 100%;
-    font-size: 14.5px;
+    font-size: 14px;
+    font-family: var(--ifm-font-family-monospace);
 }
-article th { background: var(--ifm-background-surface-color); font-weight: 600; }
+article th { background: var(--tai-bg-tertiary); font-weight: 500; color: var(--tai-text-muted); text-transform: uppercase; font-size: 11px; letter-spacing: 0.08em; }
 
-/* ── Code (dark brand blocks on the light page — like GitBook) ── */
+/* ── Code: quiet tertiary panels, no neon ── */
 article pre, .theme-code-block {
-    border-radius: 10px;
-    box-shadow: 0 2px 12px rgba(10, 16, 23, 0.12);
+    border-radius: 8px;
+    box-shadow: none;
+    background: var(--tai-bg-tertiary);
+    border: 1px solid var(--tai-border);
 }
 code {
     background: var(--ifm-code-background);
-    border: 1px solid #e6ebf1;
+    border: 1px solid var(--tai-border);
     border-radius: 5px;
     padding: 1.5px 6px;
-    color: #005f87;
+    color: var(--tai-ink);
+    font-family: var(--ifm-font-family-monospace);
     font-size: 85%;
 }
 pre code { border: none; padding: 0; color: inherit; font-size: 13px; line-height: 1.6; }
 
-/* ── Sidebar (light, GitBook-style) ── */
+/* ── Sidebar: light, hairline ── */
 .theme-doc-sidebar-container {
-    border-right: 1px solid #e6ebf1;
-    background: #fbfcfd;
+    border-right: 1px solid var(--tai-border);
+    background: var(--tai-bg-primary);
 }
 .theme-doc-sidebar-container menu { padding: 1rem 0.75rem 2rem; }
 .menu__link {
     font-size: 13.5px;
-    border-radius: 7px;
+    border-radius: 8px;
     padding: 6px 10px;
-    color: #44546a;
+    color: var(--tai-text-secondary);
     font-weight: 500;
 }
 .menu__link:hover {
-    background: #eef4f9;
-    color: var(--ifm-color-primary);
+    background: var(--tai-bg-tertiary);
+    color: var(--tai-ink);
 }
 .menu__link--active {
-    background: rgba(0, 163, 224, 0.09);
-    color: var(--ifm-color-primary) !important;
+    background: rgba(17, 17, 16, 0.05);
+    color: var(--tai-ink) !important;
     font-weight: 600;
 }
-.menu__list-item-collapsible > .menu__link { font-weight: 600; color: #16283c; }
+.menu__list-item-collapsible > .menu__link { font-weight: 600; color: var(--tai-ink); }
 
-/* ── TOC (right, subtle) ── */
+/* ── TOC (right, subtle; steel allowed on links) ── */
 .table-of-contents { font-size: 13px; }
-.table-of-contents__link { color: #6b7c93; }
+.table-of-contents__link { color: var(--tai-text-muted); }
 .table-of-contents__link--active, .table-of-contents__link:hover {
-    color: var(--ifm-color-primary);
+    color: var(--tai-signal);
 }
 
-/* ── Admonitions (soft tinted, GitBook-style callouts) ── */
+/* ── Admonitions: quiet, semantic edges only ── */
 .admonition {
-    border-radius: 10px;
-    border: none;
-    box-shadow: inset 3px 0 0 var(--ifm-admonition-color, var(--ifm-color-primary));
-    background: #f7fafc;
+    border-radius: 8px;
+    border: 1px solid var(--tai-border);
+    box-shadow: inset 3px 0 0 var(--ifm-admonition-color, var(--tai-ink));
+    background: var(--tai-bg-tertiary);
     padding: 0.8rem 1rem;
 }
 .admonition p { margin-bottom: 0.4rem; }
-.admonition-note { --ifm-color-primary: #44546a; --ifm-background-color: #f4f6f8; }
-.admonition-tip { --ifm-background-color: #f0f9f4; }
+.admonition-note { --ifm-admonition-color: #8a8780; --ifm-background-color: #f3f2ee; }
+.admonition-tip { --ifm-admonition-color: #1f8a6e; --ifm-background-color: #f3f2ee; }
 
-/* ── Pagination + breadcrumbs spacing ── */
+/* ── Pagination + breadcrumbs ── */
 .pagination-nav { margin-top: 3rem; }
 .pagination-nav__link {
-    border-radius: 10px;
-    border-color: #e6ebf1;
-    transition: border-color .2s, box-shadow .2s;
+    border-radius: 8px;
+    border-color: var(--tai-border);
+    transition: border-color .15s;
 }
-.pagination-nav__link:hover {
-    border-color: var(--ifm-color-primary);
-    box-shadow: 0 2px 12px rgba(0, 163, 224, 0.1);
-}
-.theme-doc-breadcrumbs { font-size: 12.5px; color: #6b7c93; }
+.pagination-nav__link:hover { border-color: var(--tai-border-strong); box-shadow: none; }
+.theme-doc-breadcrumbs { font-size: 12.5px; color: var(--tai-text-muted); }
 
-/* ── Footer: dark brand strip ── */
+/* ── Footer: light, hairline top (matches site footer) ── */
 .footer {
     background: var(--tai-bg-primary);
     border-top: 1px solid var(--tai-border);
 }
 .footer .container { color: var(--tai-text-muted); }
-.footer__title { color: var(--tai-text-secondary); font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
-.footer__link-item { color: var(--tai-text-muted); font-size: 13.5px; }
-.footer__link-item:hover { color: var(--accent-primary); }
+.footer__title { color: var(--tai-ink); font-size: 13px; font-weight: 600; text-transform: none; letter-spacing: 0; }
+.footer__link-item { color: var(--tai-text-muted); font-size: 14px; }
+.footer__link-item:hover { color: var(--tai-ink); }
 .footer__copyright { color: var(--tai-text-muted); font-size: 12.5px; }
 
 @media (max-width: 996px) {
-    .navbar__toggle { color: #fff; }
-    .sidebar { background: #fff; }
+    .sidebar { background: var(--tai-bg-primary); }
 }

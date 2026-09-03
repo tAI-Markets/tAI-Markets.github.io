@@ -61,14 +61,13 @@
             font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
             letter-spacing: 0.12em; color: var(--text-muted);
         }
-        .tape-scroll {
-            display: flex; gap: 40px; white-space: nowrap; overflow: hidden;
-            padding: 12px 20px; font-family: var(--font-mono); font-size: 13px;
-        }
-        .tape-scroll span { color: var(--text-secondary); }
-        .tape-scroll b { color: var(--text-primary); font-weight: 500; }
-        .tape-scroll .up { color: var(--semantic-up); }
-        .tape-scroll .down { color: var(--semantic-down); }
+        .tape-scroll { overflow: hidden; }
+        .tape-track { display: flex; width: max-content; will-change: transform; }
+        .tape-group { display: flex; gap: 40px; padding: 12px 20px; white-space: nowrap; font-family: var(--font-mono); font-size: 13px; }
+        .tape-group span { color: var(--text-secondary); }
+        .tape-group b { color: var(--text-primary); font-weight: 500; }
+        .tape-group .up { color: var(--semantic-up); }
+        .tape-group .down { color: var(--semantic-down); }
 
         /* ── Sections ── */
         .section { max-width: 1100px; margin: 0 auto; padding: 0 24px 104px; }
@@ -207,13 +206,17 @@
                     <span class="title">$tModel tape</span>
                     <span class="title">index · /1M tokens</span>
                 </div>
-                <div class="tape-scroll" id="tape">
-                    <span><b>$tOpus46</b> 12.40 <span class="up">+0.8%</span></span>
-                    <span><b>$tGLM5</b> 0.62 <span class="up">+1.2%</span></span>
-                    <span><b>$tSonnet4</b> 2.10 <span class="down">−0.4%</span></span>
-                    <span><b>$tGPT5</b> 1.88 <span class="up">+0.3%</span></span>
-                    <span><b>$tGLM53F</b> 0.25 <span class="up">+0.5%</span></span>
-                    <span><b>$tGPT56L</b> 1.20 <span class="down">−0.2%</span></span>
+                <div class="tape-scroll">
+                    <div class="tape-track" id="tape">
+                        <div class="tape-group">
+                            <span><b>$tOpus46</b> 12.40 <span class="up">+0.8%</span></span>
+                            <span><b>$tGLM5</b> 0.62 <span class="up">+1.2%</span></span>
+                            <span><b>$tSonnet4</b> 2.10 <span class="down">−0.4%</span></span>
+                            <span><b>$tGPT5</b> 1.88 <span class="up">+0.3%</span></span>
+                            <span><b>$tGLM53F</b> 0.25 <span class="up">+0.5%</span></span>
+                            <span><b>$tGPT56L</b> 1.20 <span class="down">−0.2%</span></span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -357,20 +360,28 @@ function toggleMobileNav() {
     document.body.style.overflow = mobileNav.classList.contains('active') ? 'hidden' : '';
 }
 
-// $tModel tape — quiet horizontal marquee, mono only
+// $tModel tape — seamless loop: clone the group once, translate by exactly
+// one group width (incl. trailing gap), then reset — no drift, no blank gap.
 (function () {
-    const tape = document.getElementById('tape');
-    if (!tape) return;
-    tape.innerHTML += tape.innerHTML; // duplicate for seamless loop
-    let x = 0;
-    const step = 0.4;
-    function frame() {
-        x -= step;
-        if (Math.abs(x) >= tape.scrollWidth / 2) x = 0;
-        tape.style.transform = 'translateX(' + x + 'px)';
-        requestAnimationFrame(frame);
+    const track = document.getElementById('tape');
+    if (!track) return;
+    const group = track.querySelector('.tape-group');
+    track.appendChild(group.cloneNode(true));
+    function loop() {
+        const w = group.getBoundingClientRect().width;
+        if (w <= 0) { requestAnimationFrame(loop); return; }
+        let x = 0;
+        const step = 0.4;
+        (function frame() {
+            x -= step;
+            if (x <= -w) x += w;
+            track.style.transform = 'translateX(' + x + 'px)';
+            requestAnimationFrame(frame);
+        })();
     }
-    frame();
+    // Wait for fonts/layout so the measured width is final.
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(loop);
+    else window.addEventListener('load', loop);
 })();
 </script>
 </body>

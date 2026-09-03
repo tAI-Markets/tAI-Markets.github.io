@@ -9,6 +9,9 @@ const config = {
   organizationName: 'tAI-Markets',
   projectName: 'tAI-Markets.github.io',
   i18n: { defaultLocale: 'en', locales: ['en'] },
+  stylesheets: [
+    'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap',
+  ],
   presets: [
     [
       'classic',
@@ -21,25 +24,61 @@ const config = {
     ],
   ],
   themeConfig: {
-    // (navbar style handled in themeConfig above)
     colorMode: {
       defaultMode: 'light',
-      disableSwitch: false,
+      disableSwitch: true,
       respectPrefersColorScheme: false,
     },
     navbar: {
-      logo: { alt: 'tAI Markets', src: 'logo.jpg?v=2' }, // v2: cache-bust the pre-fix 404 some browsers cached
-      style: 'dark',
+      logo: {
+        alt: 'tAI Markets',
+        src: 'logo.jpg?v=3', // v3: cache-bust (GH Pages serves assets with 4h max-age)
+        href: 'https://tai.markets/',
+      },
+      style: 'primary',
       items: [
         { to: '/', label: 'Concepts', position: 'left' },
         { to: '/api', label: 'API', position: 'left' },
         { to: '/tutorials/originate-tokens', label: 'Tutorials', position: 'left' },
-        { href: 'https://tai.markets', label: 'tai.markets', position: 'right' },
+        { href: 'https://tai.markets/licensing.html', label: 'Licensing', position: 'right' },
+        { href: 'https://github.com/tAI-Markets/tAI-contracts', label: 'GitHub', position: 'right' },
+        {
+          href: 'https://tai.markets/demo/',
+          label: 'Live Demo',
+          position: 'right',
+          className: 'navbar-cta',
+        },
       ],
     },
     footer: {
-      style: 'dark',
-      copyright: `Copyright © ${new Date().getFullYear()} tAI Markets — commercial source-available (BUSL-1.1). Built on Tempo.`,
+      style: 'light',
+      logo: undefined,
+      links: [
+        {
+          title: 'Product',
+          items: [
+            { label: 'Protocol', href: 'https://tai.markets/#architecture' },
+            { label: 'Models', href: 'https://tai.markets/#models' },
+            { label: 'Live Demo', href: 'https://tai.markets/demo/' },
+            { label: 'Licensing', href: 'https://tai.markets/licensing.html' },
+          ],
+        },
+        {
+          title: 'Developers',
+          items: [
+            { label: 'Documentation', to: '/' },
+            { label: 'GitHub', href: 'https://github.com/tAI-Markets/tAI-contracts' },
+          ],
+        },
+        {
+          title: 'Live',
+          items: [
+            { label: 'Tempo Explorer', href: 'https://explore.testnet.tempo.xyz' },
+            { label: 'Dashboard', href: 'https://tai.markets/demo/' },
+          ],
+        },
+      ],
+      copyright: `© ${new Date().getFullYear()} tAI Markets. Live on Tempo testnet · settled in stablecoins · x402 & MPP-ready.`,
     },
   },
 };

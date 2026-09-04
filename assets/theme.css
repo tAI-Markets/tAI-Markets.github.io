@@ -358,6 +358,7 @@ body.nav-locked { overflow: hidden; }
 .reveal.is-inview { opacity: 1; transform: translateY(0); }
 
 /* ── Hero artifact pin (desktop ≥1080 homepage only; one viewport) ────────── */
+.pin-stage { margin: 20px 0; }
 @media (min-width: 1080px) {
     .pin-stage { min-height: calc(100vh - 60px); }
     .pin-hero-artifact {

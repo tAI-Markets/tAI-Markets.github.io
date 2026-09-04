@@ -117,6 +117,8 @@ article pre, .theme-code-block {
     box-shadow: none;
     background: var(--tai-bg-tertiary);
     border: 1px solid var(--tai-border);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 code {
     background: var(--ifm-code-background);
@@ -206,9 +208,32 @@ pre code { border: none; padding: 0; color: inherit; font-size: 13px; line-heigh
     .navbar__items--right { display: flex !important; }
 }
 
-/* ≤860: menu rows are 44px, left-aligned; Live Demo renders black, last. */
+/* ≤860: menu rows are 44px, left-aligned; Live Demo renders black, last.
+   Hamburger sits on the RIGHT (logo left) per the site bar contract; the skip
+   link and doc tables must never open horizontal document scroll. */
 @media (max-width: 860px) {
-    .navbar__toggle { width: 44px; height: 44px; }
+    html, body { overflow-x: clip; }
+    /* Docusaurus parks the skip link at left:100% — a fixed element hanging
+       past the right edge adds document scroll width. Park it left instead
+       (LTR: left overflow never scrolls); focus still pulls it in. */
+    a[class*="skipToContent"] { left: -100% !important; }
+    .navbar { position: sticky; }
+    .navbar__items:not(.navbar__items--right) { position: relative; }
+    .navbar__toggle {
+        position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+        width: 44px; height: 44px;
+    }
+    /* The mobile drawer must be a full-height opaque panel above the page
+       (Docusaurus 4 squashes it to the navbar height and paints content over
+       its translucent background). */
+    .theme-layout-navbar-sidebar,
+    .navbar-sidebar {
+        height: 100dvh !important;
+        top: 0 !important;
+        bottom: 0 !important;
+        background: var(--tai-bg-primary) !important;
+        z-index: 300;
+    }
     .navbar-sidebar .menu__link {
         display: flex; align-items: center;
         min-height: 44px;

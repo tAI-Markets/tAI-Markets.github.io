@@ -213,6 +213,8 @@ pre code { border: none; padding: 0; color: inherit; font-size: 13px; line-heigh
    link and doc tables must never open horizontal document scroll. */
 @media (max-width: 860px) {
     html, body { overflow-x: clip; }
+    /* Site-wide chrome padding law: 20px <600 */
+    :root { --ifm-navbar-padding-horizontal: 20px; }
     /* Docusaurus parks the skip link at left:100% — a fixed element hanging
        past the right edge adds document scroll width. Park it left instead
        (LTR: left overflow never scrolls); focus still pulls it in. */

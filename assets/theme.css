@@ -56,17 +56,19 @@ body {
 
 a { color: var(--accent-signal); }
 
-/* ── Navigation (sticky, light blur, sharp logo, black CTA) ── */
+/* ── Navigation (sticky, light blur, sharp logo, black CTA) ──
+   One bar height everywhere: fixed 59px container, content centered. */
 .nav {
     position: sticky; top: 0;
     background: rgba(251, 251, 250, 0.82);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border-color);
-    z-index: 100; padding: 14px 0;
+    z-index: 100; padding: 0;
 }
 .nav-container {
     max-width: 1200px; margin: 0 auto; padding: 0 24px;
+    height: 59px;
     display: flex; justify-content: space-between; align-items: center;
 }
 .logo {
@@ -284,7 +286,6 @@ button.step:hover { border-color: var(--border-strong); color: var(--text-primar
 body.nav-locked { overflow: hidden; }
 
 @media (max-width: 860px) {
-    .nav { padding: 8px 0; }
     .nav-container { padding: 0 20px; }
     .nav-links { display: none; }
     .nav-toggle { display: flex; }

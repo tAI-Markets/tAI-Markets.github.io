@@ -100,6 +100,165 @@ Inter 400/500/600/700 (Google Fonts) for all UI. JetBrains Mono 400/500 for data
 - **`.input`** — shared form input: `--bg-primary`, 1px `--border-color`, radius 8,
   focus border `--border-strong`. `.btn[disabled]` — 50% opacity, no hover lift.
 
+## Mobile & breakpoints
+
+### Breakpoints
+- `--bp-sm: 600px` — single column, drawer nav
+- `--bp-md: 860px` — compact tablet; drawer still on
+- `--bp-lg: 1080px` — inline nav allowed; homepage rails/pin allowed
+Nav collapses at `max-width: 860px`. Same number on every page (docs-app: see its
+subsection — the collapse is forced to 860 via custom.css override of Infima's 996).
+
+### Viewport + tap
+- `width=device-width, initial-scale=1` on every HTML page.
+- Minimum tap target 44×44px for nav links, hamburger, buttons, stepper chips.
+- Hamburger is 44×44, vertically centered with the 28px logo tile. Icon 20px,
+  2px strokes, ink `#111110`. `aria-expanded` state + `aria-controls="nav-drawer"`.
+
+### Page chrome
+- Horizontal page padding: `20px` <600 · `24px` 600–1079 · `24–32px` ≥1080.
+- Section padding: `96px` (lg) / `72px` (md ≤860) / `56px` (sm ≤600), implemented as
+  the shared `.section` class. No page invents its own section rhythm.
+- One `.btn-primary` per view. `<860px`: `.hero-actions` stack full-width, primary
+  first, 12px gap. Buttons `height: 44px`, padding `12px 20px`, radius 8.
+
+### Nav — desktop ≥861
+Sticky frosted bar, hairline bottom, no shrink-on-scroll. Item order on every page:
+
+> [sharp 28px logo] [tAI Markets] · Protocol · Models · Documentation · GitHub ·
+> Licensing · [Live Demo]
+
+Active page gets `.active`. `Live Demo` is `.nav-cta` (black pill) only — on the page
+it points at (demo), it renders as `.active` text instead, so the view keeps a single
+primary CTA.
+
+Exact snippet (paste verbatim; no cousins):
+
+```html
+<nav class="nav">
+  <div class="nav-container">
+    <a href="/" class="logo" aria-label="tAI Markets home">
+      <img src="/logo.jpg?v=3" alt="" width="28" height="28">
+      <span>tAI Markets</span>
+    </a>
+    <div class="nav-links">
+      <a href="/#architecture">Protocol</a>
+      <a href="/#models">Models</a>
+      <a href="/docs/">Documentation</a>
+      <a href="https://github.com/tAI-Markets/tAI-contracts" target="_blank" rel="noopener">GitHub</a>
+      <a href="/licensing.html">Licensing</a>
+      <a href="/demo/" class="nav-cta">Live Demo</a>
+    </div>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-drawer" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-drawer" id="nav-drawer">
+    <a href="/#architecture">Protocol</a>
+    <a href="/#models">Models</a>
+    <a href="/docs/">Documentation</a>
+    <a href="https://github.com/tAI-Markets/tAI-contracts" target="_blank" rel="noopener">GitHub</a>
+    <a href="/licensing.html">Licensing</a>
+    <a href="/demo/" class="nav-cta">Live Demo</a>
+  </div>
+</nav>
+<script src="/assets/nav.js?v=1" defer></script>
+```
+
+Mark the active page's inline link with `.active` per page.
+
+### Nav — mobile ≤860
+- Inline links `display: none`. Hamburger only, right side. No Live Demo in the top bar.
+- The drawer is a full-width panel under the bar (not a modal, not a right sheet):
+  background `--bg-primary`; hairline top; padding `8px 20px 20px`; links vertical,
+  each row 44px, left-aligned with the wordmark; Inter 500 / 16px / `--text-primary`;
+  last item = black Live Demo, full width, 44px.
+- Open: lock body scroll (`body.nav-locked`). Escape and hamburger both close.
+  Drawer id `nav-drawer`. Toggle handled by `assets/nav.js` on every page.
+
+### Type on small screens
+- Display 40px; hero measure max 20em.
+- Section title 28px below 860.
+- Body 16px / 1.55 below 600.
+- Eyebrow may wrap.
+- KPI value 28px below 600, 32px above.
+- Tables: never shrink mono below 12px; scroll inside `.table-wrap`.
+
+### Data surfaces
+- KPI grids (`.kpi-grid`): 4-col ≥1080 · 2-col 600–859 · 1-col <600.
+  No 4-across on a phone.
+- `table.data` sits inside `.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }`.
+- Code panels wrap or scroll-x (`.panel-code`); never expand page width.
+- Stepper chips wrap, 44px tall ≤860; current step always visible.
+
+### Footer
+- 1 column below 860. Link rows 44px on mobile.
+
+### Docs-app → /docs
+- `docs-app/src/css/custom.css` uses the same tokens (already mirrored as `--tai-*`).
+- Same logo tile + wordmark + item set as the marketing nav.
+- ≤860px the Docusaurus menu shows 44px left-aligned rows, black Live Demo last.
+- No Infima purple, no second font. Collapse forced to 860 (custom.css override of
+  Infima's 996 between 861–996).
+
+### Future-page rule
+> Every new page ships at 375px. If a component has no mobile spec in this file, it is
+> not allowed to ship. Add the spec here first, implement it in assets/theme.css, then
+> use the class. Do not add a one-off @media in a page stylesheet for nav, buttons, or
+> section padding.
+
+### QA checklist
+- 375 / 390: drawer opens; links left-aligned with wordmark; no horizontal page
+  scroll; hero CTAs stacked 44px; KPI grid 1-col; tables scroll inside wrap;
+  hamburger 44×44 aligned with logo. Motion is fade-only (no pin, no rails).
+- 768: 2-col KPIs; drawer still used; no pin.
+- 861+: inline nav, no hamburger.
+- 1080+: optional homepage pin + rails allowed.
+
+## Motion (Rekord-derived, tAI-constrained)
+
+Reference mechanics (rekordsoftware.com): hero as a stage with a reserved empty field;
+hairline column rails; micro-sheen on the black CTA; one-shot 16px rise reveals with
+70ms stagger; stats count from 0 on enter; one desktop product pin; reduced-motion as
+a first-class state. Adopted mechanics only — no Framer/Rive runtime, no particles,
+no scroll-jacking, no parallax, no bounce.
+
+### Tokens
+```css
+--motion-rise: 16px;
+--motion-dur: 560ms;
+--motion-stagger: 70ms;
+--motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+--motion-count: 700ms;
+```
+
+### Classes (implemented in assets/theme.css + assets/motion.js)
+- `.reveal` — `opacity: 0; transform: translateY(var(--motion-rise))` until
+  `.is-inview`; then opacity 1, translateY 0, `var(--motion-dur) var(--motion-ease)`.
+  Plays once; never reverses on scroll-up.
+- `.reveal-stagger` — container whose direct children animate with per-child delay
+  `calc(var(--i) * var(--motion-stagger))`; motion.js assigns `--i`. Max 6 children.
+  Never stagger individual letters.
+- `.countup` — homepage KPI values only. `data-count-to`, optional
+  `data-count-prefix/suffix/decimals`; 700ms ease-out on enter. `data-count-snap`
+  values (T+0) appear instantly.
+- `.page-rails` — two 1px vertical guides `rgba(17,17,16,0.10)` pinning the content
+  column. Desktop homepage only; hidden below 1080.
+- `.pin-hero-artifact` — desktop ≥1080 homepage only; `position: sticky` under the nav
+  for one viewport, released after. Never on mobile.
+- `.btn-primary::after` sheen — 8px square, `--text-on-inverse`, top-left corner,
+  300ms opacity fade on hover/focus-visible. No scale, no shadow, no colored glint.
+
+### Law
+- Motion explains structure; it never substitutes for a missing layout.
+- One pin per page, homepage only.
+- Demo, licensing, docs: no `.reveal` required. The shared drawer animates instantly
+  or with a ≤200ms fade.
+- No animation may cause overflow-x.
+- `prefers-reduced-motion: reduce` disables rise, stagger, count, pin, and sheen —
+  content is fully visible immediately.
+- Cache-bust `theme.css?v=` and `motion.js?v=` after any change.
+
 ## Reference implementations
 
 - Marketing page: `index.html`

@@ -237,3 +237,144 @@ button.step:hover { border-color: var(--border-strong); color: var(--text-primar
 /* ── Button states ───────────────────────────────────────────────────────── */
 .btn[disabled] { opacity: 0.5; cursor: default; }
 .btn-primary[disabled]:hover { opacity: 0.5; }
+
+/* ── Motion tokens (Rekord-derived, see DESIGN-SYSTEM.md) ────────────────── */
+:root {
+    --motion-rise: 16px;
+    --motion-dur: 560ms;
+    --motion-stagger: 70ms;
+    --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --motion-count: 700ms;
+}
+
+/* ── Hamburger + drawer (one mobile chrome on every page, ≤860) ──────────── */
+.nav-toggle {
+    display: none;
+    width: 44px; height: 44px;
+    background: none; border: none; cursor: pointer;
+    flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+}
+.nav-toggle span {
+    display: block; width: 20px; height: 2px;
+    background: var(--accent-primary);
+    transition: transform 0.2s var(--motion-ease), opacity 0.2s;
+}
+.nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.nav-drawer {
+    display: none;
+    background: var(--bg-primary);
+    border-top: 1px solid var(--border-color);
+    padding: 8px 20px 20px;
+}
+.nav-drawer a {
+    display: flex; align-items: center;
+    min-height: 44px;
+    color: var(--text-primary); text-decoration: none;
+    font-size: 16px; font-weight: 500;
+}
+.nav-drawer a.nav-cta {
+    background: var(--accent-primary); color: var(--text-on-inverse);
+    justify-content: center; border-radius: var(--radius-sm);
+    margin-top: 8px;
+}
+.nav-drawer.open { display: block; }
+body.nav-locked { overflow: hidden; }
+
+@media (max-width: 860px) {
+    .nav { padding: 8px 0; }
+    .nav-container { padding: 0 20px; }
+    .nav-links { display: none; }
+    .nav-toggle { display: flex; }
+    .logo img { height: 28px; width: 28px; }
+}
+
+/* ── Shared section rhythm (96 / 72 / 56) + content chrome ──────────────── */
+.section { padding: 96px 24px 96px; }
+@media (max-width: 860px) { .section { padding: 72px 24px; } }
+@media (max-width: 600px) { .section { padding: 56px 20px; } }
+
+/* ── Buttons: 44px scale; stack on mobile ────────────────────────────────── */
+@media (max-width: 860px) {
+    .btn { height: 44px; padding: 12px 20px; }
+    .hero-actions { flex-direction: column; align-items: stretch; gap: 12px; }
+    .hero-actions .btn { justify-content: center; }
+}
+@media (max-width: 860px) {
+    .footer-content { grid-template-columns: 1fr; gap: 24px; }
+    .footer-links li a { display: flex; align-items: center; min-height: 44px; }
+    .footer { padding: 40px 20px 32px; }
+}
+
+/* ── Data surfaces ────────────────────────────────────────────────────────── */
+.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.table-wrap table.data { min-width: 480px; }
+
+.kpi-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: var(--border-color);
+    border: 1px solid var(--border-color); border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+.kpi-cell { background: var(--bg-secondary); padding: 24px; min-width: 0; }
+@media (max-width: 860px) { .kpi-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 600px) {
+    .kpi-grid { grid-template-columns: 1fr; }
+    .kpi-cell { padding: 18px 20px; }
+}
+
+/* ── CTA micro-sheen (Rekord-derived; opacity only, no scale/shadow) ─────── */
+.btn-primary { position: relative; overflow: hidden; }
+.btn-primary::after {
+    content: ""; position: absolute; top: 0; left: 0;
+    width: 8px; height: 8px; background: var(--text-on-inverse);
+    opacity: 0; pointer-events: none;
+}
+.btn-primary:hover::after, .btn-primary:focus-visible::after {
+    animation: cta-sheen 300ms var(--motion-ease);
+}
+@keyframes cta-sheen { 0% { opacity: 0.9; } 100% { opacity: 0; } }
+
+/* ── Homepage rails (desktop ≥1080 only) ──────────────────────────────────── */
+.page-rails { position: relative; }
+@media (min-width: 1080px) {
+    .page-rails::before, .page-rails::after {
+        content: ""; position: absolute; top: 0; bottom: 0;
+        width: 1px; background: rgba(17, 17, 16, 0.10);
+    }
+    .page-rails::before { left: calc(50% - 551px); }
+    .page-rails::after { left: calc(50% + 550px); }
+}
+
+/* ── Scroll reveal (once; homepage only) ──────────────────────────────────── */
+.reveal {
+    opacity: 0; transform: translateY(var(--motion-rise));
+    transition: opacity var(--motion-dur) var(--motion-ease),
+                transform var(--motion-dur) var(--motion-ease);
+    transition-delay: var(--reveal-delay, 0ms);
+}
+.reveal.is-inview { opacity: 1; transform: translateY(0); }
+
+/* ── Hero artifact pin (desktop ≥1080 homepage only; one viewport) ────────── */
+@media (min-width: 1080px) {
+    .pin-stage { min-height: calc(100vh - 60px); }
+    .pin-hero-artifact {
+        position: sticky; top: 76px;
+    }
+}
+
+/* ── Reduced motion: first-class state — everything instant/visible ──────── */
+@media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+    .pin-hero-artifact { position: static !important; }
+    .pin-stage { min-height: 0 !important; }
+    .btn-primary::after { display: none; }
+    .nav-toggle span { transition: none; }
+}
+
+/* ── Stepper chips: 44px tap height ≤860 ─────────────────────────────────── */
+@media (max-width: 860px) {
+    .step { min-height: 44px; }
+}

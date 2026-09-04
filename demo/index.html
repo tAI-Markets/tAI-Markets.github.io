@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Buy credits — tAI Markets</title>
-<meta name="description" content="Buy inference now. Lock the price. Spend it later. Card in, credits on a tk_ key out — collateralized on Tempo, priced by the live market.">
+<title>Buy credits · tAI Markets</title>
+<meta name="description" content="Buy inference now. Lock the price. Spend it later. Card in, credits on a tk_ key out: collateralized on Tempo, priced by the live market.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -12,9 +12,9 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16.png?v=3">
 <link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/favicon-48.png?v=3">
 <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png?v=3">
-<link rel="stylesheet" href="/assets/theme.css?v=7">
+<link rel="stylesheet" href="/assets/theme.css?v=8">
 <style>
-    /* Page layout only — all tokens/components come from assets/theme.css */
+    /* Page layout only: all tokens/components come from assets/theme.css */
     main { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; padding: 40px 24px 60px; }
     section[hidden] { display: none; }
     .view { animation: viewfade 0.2s ease; }
@@ -54,6 +54,7 @@
     .key-line { display: none; margin-top: 12px; padding: 12px; background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: 6px; font-family: var(--font-mono); font-size: 12px; word-break: break-all; }
     .key-line code { color: var(--text-secondary); }
 
+    .bal-card { border: none; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); border-radius: 0; background: transparent; padding: 18px 0; }
     .bal-value { font-size: 34px; font-weight: 600; letter-spacing: -0.02em; color: var(--text-primary); margin: 6px 0 2px; }
     .bal-lock { color: var(--text-muted); font-size: 13px; font-family: var(--font-mono); margin-bottom: 16px; }
     .pay-status { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); margin: 10px 0; }
@@ -92,25 +93,25 @@
             <img src="/logo.jpg?v=3" alt="" width="28" height="28">
             <span>tAI Markets</span>
         </a>
-        <div class="nav-links">
-            <a href="/#architecture">Protocol</a>
-            <a href="/#models">Models</a>
-            <a href="/docs/">Documentation</a>
-            <a href="https://github.com/tAI-Markets/tAI-contracts" target="_blank" rel="noopener">GitHub</a>
-            <a href="/licensing.html">Licensing</a>
-            <a href="/demo/" class="active">Live Demo</a>
-        </div>
+            <div class="nav-links">
+                <a href="/#how">How it works</a>
+                <a href="/#models">Models</a>
+                <a href="/docs/">Documentation</a>
+                <a href="https://github.com/tAI-Markets/tAI-contracts" target="_blank" rel="noopener">GitHub</a>
+                <a href="/licensing.html">Licensing</a>
+                <a href="/demo/" class="active">Buy credits</a>
+            </div>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-drawer" aria-label="Menu">
             <span></span><span></span><span></span>
         </button>
     </div>
     <div class="nav-drawer" id="nav-drawer">
-        <a href="/#architecture">Protocol</a>
+        <a href="/#how">How it works</a>
         <a href="/#models">Models</a>
         <a href="/docs/">Documentation</a>
         <a href="https://github.com/tAI-Markets/tAI-contracts" target="_blank" rel="noopener">GitHub</a>
         <a href="/licensing.html">Licensing</a>
-        <a href="/demo/" class="nav-cta">Live Demo</a>
+        <a href="/demo/" class="nav-cta">Buy credits</a>
     </div>
 </nav>
 <script src="/assets/nav.js?v=1" defer></script>
@@ -121,13 +122,13 @@
     <!-- ── Step 1: Start ─────────────────────────────────────────────────── -->
     <section id="view-start" class="view">
         <div class="hero">
-            <div class="section-label">tAI MARKETS — CLEARING HOUSE FOR MODEL INFERENCE</div>
+            <div class="section-label">tAI MARKETS · CLEARING HOUSE FOR MODEL INFERENCE</div>
             <h1>Buy inference now.<br>Lock the price. Spend it later.</h1>
             <div class="sub">Pay with a card. Credits land on a <b>tk_</b> key priced by the live market, collateralized on Tempo. Point Claude Code, Codex or ZCode at <b>api.tai.markets</b> and spend them like any other API.</div>
         </div>
         <ol class="flow-preview">
-            <li><span class="n">1</span><span><b>Sign in</b><span class="d">email or Google — a wallet is created invisibly, no seed phrase</span></span></li>
-            <li><span class="n">2</span><span><b>Buy credits</b><span class="d">or lock today's index for 30/90 days — same card, dated redemption</span></span></li>
+            <li><span class="n">1</span><span><b>Sign in</b><span class="d">email or Google: a wallet is created invisibly, no seed phrase</span></span></li>
+            <li><span class="n">2</span><span><b>Buy credits</b><span class="d">or lock today's index for 30/90 days. Same card, dated redemption</span></span></li>
             <li><span class="n">3</span><span><b>Point your harness</b><span class="d">three lines, OpenAI- and Anthropic-compatible</span></span></li>
         </ol>
         <div class="signin-box">
@@ -155,24 +156,25 @@
             <div class="buy-field">
                 <label for="buy-product">Product</label>
                 <select class="input" id="buy-product">
-                    <option value="credits" selected>Credits — spend anytime</option>
-                    <option value="lock_30">30-day lock — today's index</option>
-                    <option value="lock_90">90-day lock — today's index</option>
+                    <option value="credits" selected>Credits (spend anytime)</option>
+                    <option value="lock_30">30-day lock at today's index</option>
+                    <option value="lock_90">90-day lock at today's index</option>
                 </select>
             </div>
             <div class="buy-field">
                 <label for="buy-class">Model</label>
                 <select class="input" id="buy-class">
                     <option value="tGLM53F" selected>GLM-5.3 Flash</option>
-                    <option value="tDeepseekV4F">DeepSeek V4 Flash</option>
+                    <option value="tDSV4F">DeepSeek V4 Flash 0731</option>
                     <option value="tGPT56L">GPT-5.6 Luna</option>
+                    <option value="tMuse13">Muse Spark 1.3</option>
                 </select>
             </div>
             <button class="btn btn-primary" id="buy-btn">Buy credits</button>
         </div>
-        <div class="buy-note" id="buy-note">Card via Stripe. 1 USD = 1 USD of inference credits, redeemable at <b>api.tai.markets</b>. A lock fixes today's index for the tenor — same card, same credits, dated redemption.</div>
+        <div class="buy-note" id="buy-note">Card via Stripe. 1 USD = 1 USD of inference credits, redeemable at <b>api.tai.markets</b>. A lock fixes today's index for the tenor: same card, same credits, dated redemption.</div>
         <div class="proof" id="buy-proof"></div>
-        <div class="key-line" id="key-line">Your API key (shown once — store it now): <code id="key-secret"></code><button class="btn btn-secondary btn-sm" id="key-copy">Copy</button></div>
+        <div class="key-line" id="key-line">Your API key (shown once; store it now): <code id="key-secret"></code><button class="btn btn-secondary btn-sm" id="key-copy">Copy</button></div>
     </section>
 
     <!-- ── Step 3: Balance ──────────────────────────────────────────────── -->
@@ -180,7 +182,7 @@
         <div class="page-head"><h1>Your balance</h1></div>
         <div class="panel-mid">
             <div class="pay-status" id="pay-status"></div>
-            <div class="kpi card"><div class="label">Credits remaining</div><div class="bal-value" id="bal-value">—</div><div class="bal-lock" id="bal-lock"></div></div>
+            <div class="kpi bal-card"><div class="label">Credits remaining</div><div class="bal-value" id="bal-value">—</div><div class="bal-lock" id="bal-lock"></div></div>
             <div class="key-line" id="bal-key-line"><span id="bal-key-mask"></span><button class="btn btn-secondary btn-sm" id="bal-key-copy">Copy key</button></div>
             <div style="margin-top:18px; display:flex; gap:10px; flex-wrap:wrap;">
                 <button class="btn btn-secondary" id="bal-continue">Continue → Integrate</button>
@@ -203,7 +205,7 @@ export ANTHROPIC_BASE_URL="https://api.tai.markets"   # Claude Code
 export ANTHROPIC_AUTH_TOKEN="tk_…"                    # Codex: ~/.codex/config.toml
 export ANTHROPIC_MODEL="tGLM53F"                      # Zcode: apiProviders.tai</div>
             <div class="panel-code" id="curl-example" style="margin-top:14px"></div>
-            <div class="roadmap">Spend burns credits at actual usage. Every settlement is visible on the <a href="#/desk">live desk</a>.</div>
+            <div class="roadmap">Spend draws down credits at actual usage. Every settlement is visible on the <a href="#/desk">live desk</a>.</div>
         </div>
     </section>
 
@@ -216,23 +218,23 @@ export ANTHROPIC_MODEL="tGLM53F"                      # Zcode: apiProviders.tai<
         <div class="kpi-grid">
             <div class="kpi kpi-cell"><div class="label">Vault Collateral</div><div class="value" id="kpi-collateral">—</div><div class="note">pathUSD in provider vault</div></div>
             <div class="kpi kpi-cell"><div class="label">Collateral Ratio</div><div class="value" id="kpi-cr">—</div><div class="note">floor 150% · liquidate 130%</div></div>
-            <div class="kpi kpi-cell"><div class="label">tGLM5 Supply</div><div class="value" id="kpi-supply">—</div><div class="note">1 token = 1M output tokens</div></div>
+            <div class="kpi kpi-cell"><div class="label">Last settlement</div><div class="value" id="kpi-supply">—</div><div class="note">most recent redemption</div></div>
             <div class="kpi kpi-cell"><div class="label">Treasury Revenue</div><div class="value" id="kpi-treasury">—</div><div class="note">5% settlement fees collected</div></div>
             <div class="kpi kpi-cell"><div class="label">Settlements</div><div class="value" id="kpi-settled">—</div><div class="note" id="kpi-inferences">0 inferences served</div></div>
         </div>
         <div class="grid">
             <div class="panel">
-                <h2>Index Prices — On-chain vs OpenRouter Spot</h2>
+                <h2>Index Prices: On-chain vs OpenRouter Spot</h2>
                 <div class="table-wrap">
                     <table class="data">
                         <thead><tr><th>Class</th><th>On-chain</th><th class="right">OpenRouter</th><th class="right">Status</th></tr></thead>
                         <tbody id="prices"></tbody>
                     </table>
                 </div>
-                <div class="roadmap"><b>SPOT TODAY → FUTURES NEXT:</b> lock today's index for future inference spend. Forward contracts on tModel are the hedge for the ~$1B/yr of unhedged compute flowing through the AI economy.</div>
+                <div class="roadmap"><b>SPOT TODAY → LOCKS NEXT:</b> lock today's index for future inference spend: the hedge for unhedged API budgets.</div>
             </div>
             <div class="panel">
-                <h2>Provider of Record — Quality Board</h2>
+                <h2>Provider of Record: Quality Board</h2>
                 <div class="table-wrap">
                     <table class="data">
                         <thead><tr><th>Provider</th><th>σ service factor</th><th class="right">Status</th></tr></thead>
@@ -242,12 +244,12 @@ export ANTHROPIC_MODEL="tGLM53F"                      # Zcode: apiProviders.tai<
                 <div class="roadmap">SLA enforcement: σ rises on delivery failures; 3 consecutive failures suspend a provider. The PLR backstop buys replacement inference when no provider is available.</div>
             </div>
             <div class="panel wide">
-                <h2>Settlement Feed — burns · vault clears · DAO fees</h2>
+                <h2>Settlement tape: redemptions · fees · vault</h2>
                 <div class="feed" id="feed"><div class="empty">Awaiting first settlement…</div></div>
             </div>
             <div class="panel wide" id="desk-lastmint-panel">
-                <h2>Last card mint — Stripe → house-mint → buyer wallet</h2>
-                <div class="lastmint" id="lastmint"><span class="empty">No card mints yet — be the first at step 2.</span></div>
+                <h2>Last card purchase: Stripe → house credit → buyer key</h2>
+                <div class="lastmint" id="lastmint"><span class="empty">No card purchases yet. Be the first at step 2.</span></div>
             </div>
         </div>
         <div class="statusline"><span class="live-dot"></span><span id="status">connecting to gateway…</span></div>
@@ -261,16 +263,16 @@ export ANTHROPIC_MODEL="tGLM53F"                      # Zcode: apiProviders.tai<
                 <img src="/logo.jpg?v=3" alt="tAI Markets">
                 <span>tAI Markets</span>
             </a>
-            <p>The clearing house for AI inference — collateralized, settled on-chain, priced by the live market.</p>
+            <p>The clearing house for AI inference: collateralized, settled on-chain, priced by the live market.</p>
         </div>
-        <div class="footer-links">
-            <h4>Product</h4>
-            <ul>
-                <li><a href="/#architecture">Protocol</a></li>
-                <li><a href="/#models">Models</a></li>
-                <li><a href="/licensing.html">Licensing</a></li>
-            </ul>
-        </div>
+            <div class="footer-links">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="/#how">How it works</a></li>
+                    <li><a href="/#models">Models</a></li>
+                    <li><a href="/licensing.html">Licensing</a></li>
+                </ul>
+            </div>
         <div class="footer-links">
             <h4>Live</h4>
             <ul>
@@ -281,8 +283,8 @@ export ANTHROPIC_MODEL="tGLM53F"                      # Zcode: apiProviders.tai<
         <div class="footer-links">
             <h4>Rails</h4>
             <ul>
-                <li>Tempo — tModel + stablecoin gas</li>
-                <li>x402 — USDC on Base (EIP-3009)</li>
+                <li>Tempo: tModel + stablecoin gas</li>
+                <li>x402: USDC on Base (EIP-3009)</li>
             </ul>
         </div>
     </div>
@@ -333,7 +335,7 @@ function showView(view, opts = {}) {
     }
     if (view === 'integrate') renderCurl();
     if (view === 'buy' && opts.canceled) {
-        $('buy-note').textContent = 'Payment canceled — nothing was charged. Your card was not saved.';
+        $('buy-note').textContent = 'Payment canceled. Nothing was charged, and your card was not saved.';
     }
 }
 
@@ -365,7 +367,7 @@ window.addEventListener('hashchange', () => {
     if (r) showView(r.view, r); else showView(routeForState());
 });
 
-// ── Desk tape (stats poll — ids live in the desk section, always in DOM) ───
+// ── Desk tape (stats poll; ids live in the desk section, always in DOM) ───
 let balanceUsd = 0;
 function render(d) {
     $('status').textContent = `live · gateway ${GATEWAY} · updated ${new Date(d.updatedAt).toLocaleTimeString()}`;
@@ -379,6 +381,10 @@ function render(d) {
     }
     $('kpi-settled').textContent = d.totals?.settled ?? 0;
     $('kpi-inferences').textContent = `${d.totals?.inferences ?? 0} inferences served`;
+    const lastSettle = (d.recentSettlements ?? [])[0];
+    $('kpi-supply').textContent = lastSettle
+        ? new Date(lastSettle.at).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })
+        : '—';
 
     const tb = $('prices'); tb.innerHTML = '';
     for (const m of d.models ?? []) {
@@ -412,8 +418,8 @@ function render(d) {
         div.className = 'settle';
         div.innerHTML = `
             <div>${s.explorer ? `<a class="tx" href="${s.explorer}" target="_blank">settlement tx ↗</a>` : (s.txHash ?? '')}
-                <span style="color:var(--text-secondary)"> ${fmt(s.tokenAmount)} ${s.modelClass} burned</span></div>
-            <div class="meta">fee to DAO ${usd((s.fee ?? 0) / 1e6)} · ${new Date(s.at).toLocaleTimeString()}</div>`;
+                <span style="color:var(--text-secondary)"> ${fmt(s.tokenAmount)} ${s.modelClass} credits redeemed</span></div>
+            <div class="meta">settlement fee ${usd((s.fee ?? 0) / 1e6)} · ${new Date(s.at).toLocaleTimeString()}</div>`;
         feed.appendChild(div);
     }
 
@@ -422,10 +428,10 @@ function render(d) {
     let mintLine = '';
     if (d.lastMint) {
         const tokens = (Number(d.lastMint.tokenAmount) / 1e6).toLocaleString('en-US', { maximumFractionDigits: 0 });
-        mintLine = `Last card mint: ${usd(d.lastMint.usdMicro / 1e6)} → ${tokens} ${d.lastMint.class} tokens → <a href="https://explore.testnet.tempo.xyz/tx/${d.lastMint.transferTx}" target="_blank">tx ↗</a>${d.pendingMints ? ` · ${d.pendingMints} mint(s) pending collateral` : ''}`;
+        mintLine = `Last card purchase: ${usd(d.lastMint.usdMicro / 1e6)} → ${tokens} ${d.lastMint.class} tokens → <a href="https://explore.testnet.tempo.xyz/tx/${d.lastMint.transferTx}" target="_blank">tx ↗</a>${d.pendingMints ? ` · ${d.pendingMints} mint(s) pending collateral` : ''}`;
         lm.innerHTML = mintLine;
     } else if (d.pendingMints) {
-        mintLine = `${d.pendingMints} card mint(s) pending — vault needs collateral.`;
+        mintLine = `${d.pendingMints} card mint(s) pending; vault needs collateral.`;
         lm.innerHTML = `<span class="empty">${mintLine}</span>`;
     }
     const proof = [];
@@ -440,7 +446,7 @@ async function tick() {
         const d = await (await fetch(GATEWAY + '/v1/stats')).json();
         render(d);
     } catch (e) {
-        $('status').textContent = `gateway unreachable at ${GATEWAY} — retrying…`;
+        $('status').textContent = `gateway unreachable at ${GATEWAY}; retrying…`;
     }
 }
 tick();
@@ -448,11 +454,13 @@ setInterval(tick, 5000);
 
 // ── Account door: Privy email/Google, embedded wallet invisible ────────────
 let privy = null, privyUser = null, account = null;
+let authConfigured = false;
 
 async function initAccount() {
     try {
         const cfg = await (await fetch(GATEWAY + '/v1/auth/config')).json();
-        if (!cfg.configured) { renderSignedOut('Login arrives with the next gateway deploy.'); return; }
+        if (!cfg.configured) { renderSignedOut('Sign-in arrives with the next gateway deploy. The live desk below is.'); return; }
+        authConfigured = true;
         const mod = await import('https://esm.sh/@privy-io/js-sdk-core@0.72.1');
         privy = new mod.Privy({ appId: cfg.app_id });
         window._privyHelpers = mod;
@@ -468,25 +476,34 @@ async function initAccount() {
         if (privyUser) await exchangeSession();
         else renderSignedOut();
     } catch (e) {
-        renderSignedOut(`Login unavailable — ${e.message}`);
+        renderSignedOut(`Login unavailable: ${e.message}`);
     }
     updateStepper();
 }
 
 function renderSignedOut(note) {
-    // Sign-in controls live on the Start view
+    // Sign-in controls live on the Start view. While the auth door is
+    // unconfigured, render it honestly disabled instead of clickable-and-bricked.
     $('acct-controls').innerHTML = '';
-    $('start-controls').innerHTML = `
-        <input class="input" id="start-email" type="email" placeholder="you@company.com" aria-label="Email">
-        <button class="btn btn-primary" id="btn-email">Email me a code</button>
-        <button class="btn btn-secondary" id="btn-google">Continue with Google</button>`;
-    $('btn-email').addEventListener('click', emailLogin);
-    $('btn-google').addEventListener('click', googleLogin);
+    if (!authConfigured) {
+        $('start-controls').innerHTML = `
+            <input class="input" id="start-email" type="email" placeholder="you@company.com" aria-label="Email" disabled>
+            <button class="btn btn-primary" id="btn-email" disabled>Sign-in offline</button>
+            <button class="btn btn-secondary" id="btn-google" disabled>Continue with Google</button>`;
+    } else {
+        $('start-controls').innerHTML = `
+            <input class="input" id="start-email" type="email" placeholder="you@company.com" aria-label="Email">
+            <button class="btn btn-primary" id="btn-email">Email me a code</button>
+            <button class="btn btn-secondary" id="btn-google">Continue with Google</button>`;
+        $('btn-email').addEventListener('click', emailLogin);
+        $('btn-google').addEventListener('click', googleLogin);
+    }
     $('start-note').textContent = note ?? 'Card via Stripe at step 2. 1 USD = 1 USD of inference credits.';
     $('acct-who').textContent = 'Not signed in';
 }
 
 async function emailLogin() {
+    if (!privy) { $('start-note').textContent = 'Sign-in is not live yet. The live desk below is. Card checkout lands with the next gateway deploy.'; return; }
     const email = $('start-email').value.trim();
     if (!/.+@.+\..+/.test(email)) { $('start-note').textContent = 'Enter a valid email address.'; return; }
     try {
@@ -498,7 +515,7 @@ async function emailLogin() {
         $('btn-verify').addEventListener('click', () => codeLogin(email));
         $('start-note').textContent = `Code sent to ${email}.`;
     } catch (e) {
-        $('start-note').textContent = `Could not send code — ${e.message}`;
+        $('start-note').textContent = `Could not send code: ${e.message}`;
         renderSignedOut();
     }
 }
@@ -509,17 +526,18 @@ async function codeLogin(email) {
         privyUser = await privy.auth.email.loginWithCode(email, $('start-code').value.trim(), 'login-or-sign-up');
         await exchangeSession();
     } catch (e) {
-        $('start-note').textContent = `Invalid code — ${e.message}`;
+        $('start-note').textContent = `Invalid code: ${e.message}`;
         renderSignedOut();
     }
 }
 
 async function googleLogin() {
+    if (!privy) { $('start-note').textContent = 'Sign-in is not live yet. The live desk below is.'; return; }
     try {
         const { url } = await privy.oauth.generateURL('google', location.origin + location.pathname);
         location.href = url;
     } catch (e) {
-        $('start-note').textContent = `Google sign-in unavailable — ${e.message}`;
+        $('start-note').textContent = `Google sign-in unavailable: ${e.message}`;
     }
 }
 
@@ -533,7 +551,7 @@ async function exchangeSession() {
     } catch (e) { console.warn('embedded wallet create failed', e); }
 
     const token = await privy.getAccessToken();
-    if (!token) { renderSignedOut('Session expired — sign in again.'); return; }
+    if (!token) { renderSignedOut('Session expired. Sign in again.'); return; }
     const r = await fetch(GATEWAY + '/v1/auth/privy', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ access_token: token }),
@@ -547,7 +565,7 @@ async function exchangeSession() {
 }
 
 function renderAccount() {
-    $('acct-who').innerHTML = `Signed in — <b>${account?.email ?? 'account'}</b>`;
+    $('acct-who').innerHTML = `Signed in: <b>${account?.email ?? 'account'}</b>`;
     $('acct-controls').innerHTML = `<button class="linkish" id="btn-out">Sign out</button>`;
     $('btn-out').addEventListener('click', async () => {
         try { await privy.logout(); } catch {}
@@ -589,10 +607,10 @@ async function refreshBalance() {
     } catch {}
 }
 
-// Payment return: Stripe redirects to #paid — poll until the webhook lands.
+// Payment return: Stripe redirects to #paid; poll until the webhook lands.
 let confirmTimer = null;
 function startPaymentConfirm() {
-    $('pay-status').textContent = 'Payment received — confirming credits…';
+    $('pay-status').textContent = 'Payment received, confirming credits…';
     let tries = 0;
     clearInterval(confirmTimer);
     confirmTimer = setInterval(async () => {
@@ -601,8 +619,8 @@ function startPaymentConfirm() {
         if (balanceUsd > 0 || tries > 20) {
             clearInterval(confirmTimer);
             $('pay-status').textContent = balanceUsd > 0
-                ? 'Credits are on your account. t-tokens mint to your wallet within a minute — watch the desk.'
-                : 'Still confirming — refresh in a moment, or check the desk.';
+                ? 'Credits are on your account. They settle on-chain within a minute. Watch the desk.'
+                : 'Still confirming. Refresh in a moment, or check the desk.';
         }
     }, 3000);
 }
@@ -649,7 +667,7 @@ buyBtn.addEventListener('click', async () => {
         });
         const body = await r.json();
         if (!r.ok) {
-            buyNote.textContent = body?.error?.message ?? 'Checkout failed — try again.';
+            buyNote.textContent = body?.error?.message ?? 'Checkout failed. Try again.';
             return;
         }
         if (body.api_key) {
@@ -659,7 +677,7 @@ buyBtn.addEventListener('click', async () => {
         }
         location.href = body.checkout_url; // Stripe-hosted page; card never touches us
     } catch (e) {
-        buyNote.textContent = `Could not reach ${GATEWAY} — ${e.message}`;
+        buyNote.textContent = `Could not reach ${GATEWAY}: ${e.message}`;
     } finally {
         buyBtn.disabled = false;
         buyBtn.textContent = $('buy-product').value === 'credits' ? 'Buy credits' : 'Lock this price';

@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>tAI Markets — The futures market for model inference</title>
-    <meta name="description" content="Tokenized AI turns scarce compute into instruments you can buy, spend, and settle. Collateralized tModel futures for AI inference. Live on Tempo.">
+    <title>tAI Markets — Buy inference now. Lock the price. Spend it later.</title>
+    <meta name="description" content="Card-bought, dated, redeemable inference credits. Pay with a card, spend at api.tai.markets, or lock today's index for 30/90 days. Collateralized on Tempo, priced by the live market.">
+    <script>document.documentElement.classList.add('js');</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -12,7 +13,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16.png?v=3">
     <link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/favicon-48.png?v=3">
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png?v=3">
-    <link rel="stylesheet" href="/assets/theme.css?v=7">
+    <link rel="stylesheet" href="/assets/theme.css?v=8">
     <style>
         /* Page layout only — tokens/components from assets/theme.css */
         main { position: relative; z-index: 1; }
@@ -33,7 +34,11 @@
             max-width: 620px; margin-bottom: 40px;
         }
         /* Hero CTA row — .hero-actions stacks full-width ≤860 (theme.css) */
-        .hero-cta { display: flex; gap: 12px; margin-bottom: 72px; }
+        .hero-cta { display: flex; gap: 12px; margin-bottom: 16px; }
+        .hero-note {
+            font-family: var(--font-mono); font-size: 12px; color: var(--text-muted);
+            margin-bottom: 64px;
+        }
 
         /* Stats row — .kpi-grid (theme) + local label/value/caption type */
         .stat .stat-label {
@@ -47,7 +52,7 @@
         .stat .stat-caption { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
         @media (max-width: 600px) { .stat .stat-value { font-size: 28px; } }
 
-        /* ── $tModel tape (quiet product object) ── */
+        /* ── Index tape (quiet product object) ── */
         .tape {
             border: 1px solid var(--border-color); border-radius: 8px;
             background: var(--bg-secondary); overflow: hidden; margin-bottom: 20px;
@@ -61,12 +66,11 @@
             letter-spacing: 0.12em; color: var(--text-muted);
         }
         .tape-scroll { overflow: hidden; }
+        .tape-scroll:hover { overflow-x: auto; }
         .tape-track { display: flex; width: max-content; will-change: transform; }
         .tape-group { display: flex; gap: 40px; padding: 12px 20px; white-space: nowrap; font-family: var(--font-mono); font-size: 13px; }
         .tape-group span { color: var(--text-secondary); }
         .tape-group b { color: var(--text-primary); font-weight: 500; }
-        .tape-group .up { color: var(--semantic-up); }
-        .tape-group .down { color: var(--semantic-down); }
 
         /* Sections — shared rhythm (.section in theme.css: 96/72/56) */
         .section { max-width: 1100px; margin: 0 auto; }
@@ -76,8 +80,14 @@
         .index-table { border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-secondary); padding: 8px 20px; }
         .index-table table.data td { padding: 14px 6px; font-size: 13px; }
         .index-table .model { color: var(--text-primary); font-weight: 500; }
+        .index-table .idx { display: none; }   /* stacked mobile rows only */
+        .index-table .table-foot {
+            font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);
+            padding: 10px 6px 8px; border-top: 1px solid var(--border-color);
+        }
+        .index-table .table-foot a { color: var(--accent-signal); text-decoration: none; }
 
-        /* Clearing cycle figure — diagram as proof */
+        /* How-it-works figure */
         .cycle { border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-secondary); padding: 32px; }
         .cycle-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
         .cycle-step { border-top: 2px solid var(--text-primary); padding-top: 16px; }
@@ -95,7 +105,7 @@
         .feature h3 { font-size: 16px; font-weight: 600; color: var(--text-primary); }
         .feature p { font-size: 15px; color: var(--text-secondary); }
 
-        /* Closer — optional inverse band */
+        /* Closer — inverse band */
         .closer { background: var(--bg-inverse); color: var(--text-on-inverse); padding: 104px 24px; text-align: center; }
         .closer h2 {
             font-size: 44px; font-weight: 600; letter-spacing: -0.03em;
@@ -104,6 +114,8 @@
         .closer p { font-size: 17px; color: rgba(251,251,250,0.66); margin-bottom: 36px; }
         .closer .btn-primary { background: var(--text-on-inverse); color: var(--bg-inverse); }
         .closer .btn-primary:hover { opacity: 0.88; }
+        .closer .provider-line { margin-top: 28px; font-size: 13px; color: rgba(251,251,250,0.5); }
+        .closer .provider-line a { color: rgba(251,251,250,0.78); text-decoration: underline; text-underline-offset: 3px; }
 
         @media (max-width: 860px) {
             .hero { padding: 72px 20px 0; }
@@ -115,6 +127,20 @@
         }
         @media (max-width: 600px) {
             .cycle-row { grid-template-columns: 1fr; }
+            /* Stacked model rows: class, display, labeled price — price never off-screen */
+            .index-table table.data, .index-table table.data tbody,
+            .index-table table.data tr, .index-table table.data td { display: block; }
+            .index-table table.data thead { display: none; }
+            .index-table table.data tr { padding: 12px 0; border-bottom: 1px solid var(--border-color); }
+            .index-table table.data tr:last-child { border-bottom: none; }
+            .index-table table.data td { padding: 2px 6px; border-bottom: none; }
+            .index-table table.data td .sub { display: block; font-family: var(--font-body); color: var(--text-secondary); }
+            .index-table table.data td .idx { display: block; margin-top: 6px; font-size: 15px; font-weight: 500; }
+            .index-table table.data td .idx::before {
+                content: "index · $ /1M out   ";
+                font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
+                color: var(--text-muted); font-weight: 400;
+            }
         }
     </style>
 </head>
@@ -126,56 +152,58 @@
                 <span>tAI Markets</span>
             </a>
             <div class="nav-links">
-                <a href="/#architecture">Protocol</a>
+                <a href="/#how">How it works</a>
                 <a href="/#models">Models</a>
                 <a href="/docs/">Documentation</a>
                 <a href="https://github.com/tAI-Markets/tAI-contracts" target="_blank" rel="noopener">GitHub</a>
                 <a href="/licensing.html">Licensing</a>
-                <a href="/demo/" class="nav-cta">Live Demo</a>
+                <a href="/demo/">Buy credits</a>
             </div>
             <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-drawer" aria-label="Menu">
                 <span></span><span></span><span></span>
             </button>
         </div>
         <div class="nav-drawer" id="nav-drawer">
-            <a href="/#architecture">Protocol</a>
+            <a href="/#how">How it works</a>
             <a href="/#models">Models</a>
             <a href="/docs/">Documentation</a>
             <a href="https://github.com/tAI-Markets/tAI-contracts" target="_blank" rel="noopener">GitHub</a>
             <a href="/licensing.html">Licensing</a>
-            <a href="/demo/" class="nav-cta">Live Demo</a>
+            <a href="/demo/" class="nav-cta">Buy credits</a>
         </div>
     </nav>
     <script src="/assets/nav.js?v=1" defer></script>
 
     <main class="page-rails">
         <section class="hero">
-            <div class="hero-eyebrow">Forward compute infrastructure · Live on Tempo</div>
-            <h1>The futures market for model&nbsp;inference.</h1>
+            <div class="hero-eyebrow">Inference credits · collateralized · live on Tempo</div>
+            <h1>Buy inference now. Lock the price. Spend it&nbsp;later.</h1>
             <p class="hero-sub">
-                Tokenized AI turns scarce compute into instruments you can buy, spend,
-                and settle. Live on Tempo.
+                Pay with a card. Credits land on a <strong>tk_</strong> key priced by the live market.
+                Point Claude Code, Codex or ZCode at <strong>api.tai.markets</strong> and spend them
+                today, or lock the price for 30/90 days.
             </p>
             <div class="hero-cta hero-actions">
-                <a href="/demo/" class="btn btn-primary">Live Demo</a>
-                <a href="https://github.com/tAI-Markets/tAI-contracts" class="btn btn-secondary">View on GitHub</a>
+                <a href="/demo/" class="btn btn-primary">Buy credits</a>
+                <a href="/demo/#/desk" class="btn btn-secondary">See the live desk</a>
             </div>
+            <div class="hero-note">1 USD = 1 USD of inference credits · card via Stripe · no seed phrase</div>
 
             <div class="kpi-grid reveal">
                 <div class="stat kpi-cell">
+                    <div class="stat-label">Listed classes</div>
+                    <div class="stat-value countup" data-count-to="4" data-count-decimals="0">4</div>
+                    <div class="stat-caption">each redeemable at api.tai.markets</div>
+                </div>
+                <div class="stat kpi-cell">
                     <div class="stat-label">Collateral floor</div>
                     <div class="stat-value countup" data-count-to="150" data-count-suffix="%" data-count-decimals="0">150%</div>
-                    <div class="stat-caption">USDC in provider vaults</div>
+                    <div class="stat-caption">stablecoins behind every credit</div>
                 </div>
                 <div class="stat kpi-cell">
-                    <div class="stat-label">Settlement fee</div>
-                    <div class="stat-value countup" data-count-to="5" data-count-suffix="%" data-count-decimals="0">5%</div>
-                    <div class="stat-caption">on every redemption</div>
-                </div>
-                <div class="stat kpi-cell">
-                    <div class="stat-label">Listed models</div>
-                    <div class="stat-value countup" data-count-to="6" data-count-decimals="0">6</div>
-                    <div class="stat-caption">tModel classes trading</div>
+                    <div class="stat-label">Lock tenors</div>
+                    <div class="stat-value countup" data-count-snap>30/90</div>
+                    <div class="stat-caption">days · today's index, dated redemption</div>
                 </div>
                 <div class="stat kpi-cell">
                     <div class="stat-label">Settlement</div>
@@ -187,18 +215,16 @@
             <div class="pin-stage">
                 <div class="tape pin-hero-artifact">
                     <div class="tape-head">
-                        <span class="title">$tModel tape</span>
-                        <span class="title">index · /1M tokens</span>
+                        <span class="title">Index tape · snapshot</span>
+                        <span class="title">$ /1M output tokens · <a href="/demo/#/desk" style="color:inherit">live at the desk</a></span>
                     </div>
                     <div class="tape-scroll">
                         <div class="tape-track" id="tape">
                             <div class="tape-group">
-                                <span><b>$tOpus46</b> 12.40 <span class="up">+0.8%</span></span>
-                                <span><b>$tGLM5</b> 0.62 <span class="up">+1.2%</span></span>
-                                <span><b>$tSonnet4</b> 2.10 <span class="down">−0.4%</span></span>
-                                <span><b>$tGPT5</b> 1.88 <span class="up">+0.3%</span></span>
-                                <span><b>$tGLM53F</b> 0.25 <span class="up">+0.5%</span></span>
-                                <span><b>$tGPT56L</b> 1.20 <span class="down">−0.2%</span></span>
+                                <span><b>GLM-5.3 Flash</b> tGLM53F · $0.25</span>
+                                <span><b>DeepSeek V4 Flash</b> tDSV4F · $0.20</span>
+                                <span><b>GPT-5.6 Luna</b> tGPT56L · $1.20</span>
+                                <span><b>Muse Spark 1.3</b> tMuse13 · $4.25</span>
                             </div>
                         </div>
                     </div>
@@ -206,36 +232,36 @@
             </div>
         </section>
 
-        <section class="section" id="architecture">
+        <section class="section" id="how">
             <div class="section-header reveal">
-                <div class="section-label">Protocol</div>
+                <div class="section-label">How it works</div>
                 <h2 class="section-title">A clearing house for inference</h2>
                 <p class="section-desc">
-                    Providers collateralize, mint, and deliver. The clearing house stands
-                    between every trade: novation, routing, and settlement on-chain.
+                    You see a card payment, a balance, and a key. Underneath, providers
+                    collateralize, credits settle on Tempo, and every redemption clears on-chain.
                 </p>
             </div>
             <div class="cycle">
                 <div class="cycle-row reveal-stagger">
                     <div class="cycle-step">
-                        <div class="n">01 / COLLATERAL</div>
-                        <h3>Provider locks USDC</h3>
-                        <p>Per-provider vaults at a 150% collateral floor back every minted token.</p>
+                        <div class="n">01 / BUY</div>
+                        <h3>Card → credits</h3>
+                        <p>Stripe checkout credits your account. 1 USD = 1 USD of credits on a tk_ key, issued in the same request.</p>
                     </div>
                     <div class="cycle-step">
-                        <div class="n">02 / MINT</div>
-                        <h3>tModel issued</h3>
-                        <p>One tModel token = one million inference tokens, tradeable as an ERC-20.</p>
+                        <div class="n">02 / PRICE</div>
+                        <h3>Index-set, on-chain</h3>
+                        <p>Credit prices mirror the live open inference market, published on-chain next to OpenRouter spot at the desk.</p>
                     </div>
                     <div class="cycle-step">
-                        <div class="n">03 / REDEEM</div>
-                        <h3>Holder burns for inference</h3>
-                        <p>The routing engine assigns the request by Service Factor σ — quality, latency, cost.</p>
+                        <div class="n">03 / SPEND</div>
+                        <h3>Point your harness</h3>
+                        <p>OpenAI- and Anthropic-compatible at api.tai.markets. An empty balance returns HTTP 402 with a top-up link.</p>
                     </div>
                     <div class="cycle-step">
-                        <div class="n">04 / SETTLE</div>
-                        <h3>Delivery &amp; clearing</h3>
-                        <p>Provider delivers; 5% fee clears to the treasury. PLR backstop completes failed deliveries.</p>
+                        <div class="n">04 / HEDGE</div>
+                        <h3>Lock the price</h3>
+                        <p>Lock today's index for 30 or 90 days. Same card, same credits, dated redemption.</p>
                     </div>
                 </div>
             </div>
@@ -243,53 +269,52 @@
 
         <section class="section" id="models">
             <div class="section-header reveal">
-                <div class="section-label">Model index</div>
-                <h2 class="section-title">Listed tModel classes</h2>
+                <div class="section-label">The book</div>
+                <h2 class="section-title">Four listed classes</h2>
                 <p class="section-desc">
-                    Each model becomes a fungible instrument. Prices are set by the live
-                    index, mirrored from the open inference market.
+                    Narrow on purpose. Each class redeems at api.tai.markets like any other
+                    API. Spend goes live per class after its first on-chain redemption.
                 </p>
             </div>
             <div class="index-table reveal">
                 <div class="table-wrap">
                 <table class="data">
                     <thead>
-                        <tr><th>Class</th><th>Underlying</th><th class="right">Index /1M</th><th class="right">Collateral</th></tr>
+                        <tr><th>Class</th><th>Display</th><th class="right">Index · $ /1M out</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td class="model">tGLM5</td><td>GLM-5</td><td class="right">$0.62</td><td class="right">≥150%</td></tr>
-                        <tr><td class="model">tOpus46</td><td>Claude Opus 4.6</td><td class="right">$12.40</td><td class="right">≥150%</td></tr>
-                        <tr><td class="model">tSonnet4</td><td>Claude Sonnet 4</td><td class="right">$2.10</td><td class="right">≥150%</td></tr>
-                        <tr><td class="model">tGPT5</td><td>GPT-5</td><td class="right">$1.88</td><td class="right">≥150%</td></tr>
-                        <tr><td class="model">tGLM53F</td><td>GLM-5.3 Flash</td><td class="right">$0.25</td><td class="right">≥150%</td></tr>
-                        <tr><td class="model">tGPT56L</td><td>GPT-5.6 Luna</td><td class="right">$1.20</td><td class="right">≥150%</td></tr>
+                        <tr><td class="model">tGLM53F</td><td><span class="sub">Z.ai GLM-5.3 Flash</span><span class="idx">$0.25</span></td><td class="right">$0.25</td></tr>
+                        <tr><td class="model">tDSV4F</td><td><span class="sub">DeepSeek V4 Flash 0731</span><span class="idx">$0.20</span></td><td class="right">$0.20</td></tr>
+                        <tr><td class="model">tGPT56L</td><td><span class="sub">OpenAI GPT-5.6 Luna</span><span class="idx">$1.20</span></td><td class="right">$1.20</td></tr>
+                        <tr><td class="model">tMuse13</td><td><span class="sub">Meta Muse Spark 1.3</span><span class="idx">$4.25</span></td><td class="right">$4.25</td></tr>
                     </tbody>
                 </table>
                 </div>
+                <div class="table-foot">index snapshot · on-chain vs OpenRouter spot, live at the <a href="/demo/#/desk">desk</a></div>
             </div>
         </section>
 
-        <section class="section" id="features">
+        <section class="section" id="properties">
             <div class="section-header reveal">
                 <div class="section-label">Properties</div>
-                <h2 class="section-title">Why it holds</h2>
+                <h2 class="section-title">Why credits hold</h2>
             </div>
             <div class="features-list reveal-stagger">
                 <div class="feature">
-                    <h3>Fungible inference</h3>
-                    <p>Inference from any provider standardizes into one ERC-20 per model. A tGLM5 token is a tGLM5 token, whoever served the compute.</p>
+                    <h3>Backed 150%</h3>
+                    <p>Providers lock stablecoins above every credit issued, and the floor is enforced on-chain. Redemption stays guaranteed.</p>
                 </div>
                 <div class="feature">
-                    <h3>Overcollateralized</h3>
-                    <p>Providers lock 150% in USDC to mint. Keepers liquidate below the floor, so redemption stays guaranteed.</p>
+                    <h3>One credit, any provider</h3>
+                    <p>Inference is standardized across providers: your credit redeems whoever serves the compute, at the same index.</p>
                 </div>
                 <div class="feature">
                     <h3>Provider of last resort</h3>
-                    <p>If no provider can serve a redemption, the PLR module buys replacement inference, keeping settlements whole.</p>
+                    <p>If no provider can serve a redemption, the house buys replacement inference. Settlements stay whole.</p>
                 </div>
                 <div class="feature">
-                    <h3>Oracle-priced</h3>
-                    <p>The index mirrors the live open inference market on-chain, so tModel prices track real compute costs.</p>
+                    <h3>Priced by the market</h3>
+                    <p>The index mirrors live compute costs on-chain, so credits track what inference is actually worth.</p>
                 </div>
             </div>
         </section>
@@ -297,9 +322,10 @@
 
     <section class="closer">
         <div class="reveal">
-            <h2>List a model.<br>Sell future inference.</h2>
-            <p>Turn committed compute capacity into settled, tradeable instruments.</p>
-            <a href="mailto:licensing@tai.markets?subject=Listing%20inquiry" class="btn btn-primary">Become a provider</a>
+            <h2>Stop renting at spot.<br>Lock today's price.</h2>
+            <p>Credits and dated locks, bought with a card, redeemable at api.tai.markets.</p>
+            <a href="/demo/" class="btn btn-primary">Buy credits</a>
+            <div class="provider-line">Running inference capacity? <a href="/licensing.html">Become a provider</a>.</div>
         </div>
     </section>
 
@@ -310,14 +336,14 @@
                     <img src="/logo.jpg?v=3" alt="tAI Markets">
                     <span>tAI Markets</span>
                 </a>
-                <p>Forward-compute infrastructure: a clearing house for AI inference, collateralized and settled on-chain.</p>
+                <p>The clearing house for model inference: card-bought credits, collateralized and settled on-chain.</p>
             </div>
             <div class="footer-links">
                 <h4>Product</h4>
                 <ul>
-                    <li><a href="/#architecture">Protocol</a></li>
+                    <li><a href="/demo/">Buy credits</a></li>
+                    <li><a href="/demo/#/desk">Live desk</a></li>
                     <li><a href="/#models">Models</a></li>
-                    <li><a href="/demo/">Live Demo</a></li>
                     <li><a href="/licensing.html">Licensing</a></li>
                 </ul>
             </div>
@@ -331,8 +357,8 @@
             <div class="footer-links">
                 <h4>Live</h4>
                 <ul>
-                    <li><a href="https://explore.testnet.tempo.xyz" target="_blank">Tempo Explorer</a></li>
-                    <li><a href="/demo/">Dashboard</a></li>
+                    <li><a href="https://explore.testnet.tempo.xyz" target="_blank" rel="noopener">Tempo Explorer</a></li>
+                    <li><a href="/demo/#/desk">Desk</a></li>
                 </ul>
             </div>
         </div>
@@ -344,22 +370,30 @@
 
 <script src="/assets/motion.js?v=1" defer></script>
 <script>
-// $tModel tape — seamless loop: clone the group once, translate by exactly
+// Index tape — seamless loop: clone the group once, translate by exactly
 // one group width (incl. trailing gap), then reset — no drift, no blank gap.
+// Honors prefers-reduced-motion (static row); pauses on hover/focus.
 (function () {
     const track = document.getElementById('tape');
     if (!track) return;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const group = track.querySelector('.tape-group');
-    track.appendChild(group.cloneNode(true));
+    const clone = group.cloneNode(true);
+    clone.setAttribute('aria-hidden', 'true');
+    track.appendChild(clone);
+    if (reduced) return;
+    const tape = track.closest('.tape');
     function loop() {
         const w = group.getBoundingClientRect().width;
         if (w <= 0) { requestAnimationFrame(loop); return; }
         let x = 0;
         const step = 0.4;
         (function frame() {
-            x -= step;
-            if (x <= -w) x += w;
-            track.style.transform = 'translateX(' + x + 'px)';
+            if (!tape.matches(':hover')) {
+                x -= step;
+                if (x <= -w) x += w;
+                track.style.transform = 'translateX(' + x + 'px)';
+            }
             requestAnimationFrame(frame);
         })();
     }

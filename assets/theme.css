@@ -23,11 +23,11 @@
     /* Text */
     --text-primary: #111110;
     --text-secondary: #5c5a55;
-    --text-muted: #8a8780;
+    --text-muted: #6e6b64;                    /* ≥4.5:1 on --bg-primary at 11px */
     --text-on-inverse: #fbfbfa;
 
     /* Semantic (state only, never decoration) */
-    --semantic-up: #1f8a6e;
+    --semantic-up: #177a5f;
     --semantic-down: #c43c4e;
     --semantic-warn: #b5791d;
     --semantic-ok: var(--semantic-up);
@@ -60,7 +60,7 @@ a { color: var(--accent-signal); }
    One bar height everywhere: fixed 59px container, content centered. */
 .nav {
     position: sticky; top: 0;
-    background: rgba(251, 251, 250, 0.82);
+    background: rgba(251, 251, 250, 0.92);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border-color);
@@ -234,7 +234,8 @@ button.step:hover { border-color: var(--border-strong); color: var(--text-primar
     border: 1px solid var(--border-color); border-radius: var(--radius-sm);
     padding: 10px 12px; min-width: 140px;
 }
-.input:focus { outline: none; border-color: var(--border-strong); }
+.input:focus { outline: 2px solid var(--accent-signal); outline-offset: 1px; border-color: var(--border-strong); }
+.btn:focus-visible, a:focus-visible, button:focus-visible { outline: 2px solid var(--accent-signal); outline-offset: 2px; }
 
 /* ── Button states ───────────────────────────────────────────────────────── */
 .btn[disabled] { opacity: 0.5; cursor: default; }
@@ -349,14 +350,19 @@ body.nav-locked { overflow: hidden; }
     .page-rails::after { left: calc(50% + 550px); }
 }
 
-/* ── Scroll reveal (once; homepage only) ──────────────────────────────────── */
-.reveal {
+/* ── Scroll reveal (once; homepage only) ────────────────────────────────────
+   Hidden state applies only when JS is present (html.js set inline in <head>),
+   so no-JS, print, and full-page captures always see final content. */
+.js .reveal {
     opacity: 0; transform: translateY(var(--motion-rise));
     transition: opacity var(--motion-dur) var(--motion-ease),
                 transform var(--motion-dur) var(--motion-ease);
     transition-delay: var(--reveal-delay, 0ms);
 }
-.reveal.is-inview { opacity: 1; transform: translateY(0); }
+.js .reveal.is-inview { opacity: 1; transform: translateY(0); }
+@media print {
+    .js .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+}
 
 /* ── Hero artifact stage (homepage) ─────────────────────────────────────────
    The tape follows the KPI band with 20px rhythm. The desktop pin runway was

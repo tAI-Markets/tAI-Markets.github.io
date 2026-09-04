@@ -211,9 +211,9 @@ Mark the active page's inline link with `.active` per page.
 - 375 / 390: drawer opens; links left-aligned with wordmark; no horizontal page
   scroll; hero CTAs stacked 44px; KPI grid 1-col; tables scroll inside wrap;
   hamburger 44×44 aligned with logo. Motion is fade-only (no pin, no rails).
-- 768: 2-col KPIs; drawer still used; no pin.
+- 768: 2-col KPIs; drawer still used.
 - 861+: inline nav, no hamburger.
-- 1080+: optional homepage pin + rails allowed.
+- 1080+: homepage rails allowed; no reserved stage field (tape follows the KPI band).
 
 ## Motion (Rekord-derived, tAI-constrained)
 
@@ -244,8 +244,9 @@ no scroll-jacking, no parallax, no bounce.
   values (T+0) appear instantly.
 - `.page-rails` — two 1px vertical guides `rgba(17,17,16,0.10)` pinning the content
   column. Desktop homepage only; hidden below 1080.
-- `.pin-hero-artifact` — desktop ≥1080 homepage only; `position: sticky` under the nav
-  for one viewport, released after. Never on mobile.
+- `.pin-stage` / `.pin-hero-artifact` — reserved hooks, currently not pinned: the
+  desktop stage field was removed (founder call — no reserved empty space), so the
+  tape follows the KPI band with the shared 20px rhythm on every breakpoint.
 - `.btn-primary::after` sheen — 8px square, `--text-on-inverse`, top-left corner,
   300ms opacity fade on hover/focus-visible. No scale, no shadow, no colored glint.
 

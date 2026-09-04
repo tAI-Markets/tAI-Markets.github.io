@@ -38,6 +38,7 @@ const config = {
       respectPrefersColorScheme: false,
     },
     navbar: {
+      title: 'tAI Markets',
       logo: {
         alt: 'tAI Markets',
         src: 'logo.jpg?v=3', // v3: cache-bust (GH Pages serves assets with 4h max-age)

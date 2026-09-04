@@ -357,20 +357,15 @@ body.nav-locked { overflow: hidden; }
 }
 .reveal.is-inview { opacity: 1; transform: translateY(0); }
 
-/* ── Hero artifact pin (desktop ≥1080 homepage only; one viewport) ────────── */
+/* ── Hero artifact stage (homepage) ─────────────────────────────────────────
+   The tape follows the KPI band with 20px rhythm. The desktop pin runway was
+   removed (founder call): no reserved empty field, no sticky travel. The
+   .pin-stage/.pin-hero-artifact classes remain as reserved hooks. */
 .pin-stage { margin: 20px 0; }
-@media (min-width: 1080px) {
-    .pin-stage { min-height: calc(100vh - 60px); }
-    .pin-hero-artifact {
-        position: sticky; top: 76px;
-    }
-}
 
 /* ── Reduced motion: first-class state — everything instant/visible ──────── */
 @media (prefers-reduced-motion: reduce) {
     .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
-    .pin-hero-artifact { position: static !important; }
-    .pin-stage { min-height: 0 !important; }
     .btn-primary::after { display: none; }
     .nav-toggle span { transition: none; }
 }

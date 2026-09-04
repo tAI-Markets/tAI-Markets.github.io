@@ -24,7 +24,7 @@
     --ifm-line-height-base: 1.7;
     --ifm-heading-font-weight: 600;
     --ifm-heading-margin-bottom: 1.2rem;
-    --ifm-navbar-height: 3.75rem;
+    --ifm-navbar-height: 59px;          /* matches the marketing bar (14px pad + 30px logo) */
     --ifm-navbar-padding-horizontal: 1.5rem;
     --ifm-navbar-background-color: rgba(251, 251, 250, 0.82);
     --ifm-menu-color: #5c5a55;
@@ -63,7 +63,7 @@
     font-size: 16px;
     letter-spacing: -0.01em;
 }
-.navbar__logo { height: 30px; border-radius: 0; margin-right: 10px; }
+.navbar__logo { height: 30px; width: 30px; border-radius: 0; margin-right: 12px; }
 .navbar__link {
     color: var(--tai-text-secondary);
     font-weight: 500;
@@ -213,6 +213,7 @@ pre code { border: none; padding: 0; color: inherit; font-size: 13px; line-heigh
    link and doc tables must never open horizontal document scroll. */
 @media (max-width: 860px) {
     html, body { overflow-x: clip; }
+    .navbar__logo { height: 28px; width: 28px; }
     /* Site-wide chrome padding law: 20px <600 */
     :root { --ifm-navbar-padding-horizontal: 20px; }
     .navbar__inner { padding-left: 20px; padding-right: 20px; }

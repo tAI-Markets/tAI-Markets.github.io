@@ -24,7 +24,7 @@
     --ifm-line-height-base: 1.7;
     --ifm-heading-font-weight: 600;
     --ifm-heading-margin-bottom: 1.2rem;
-    --ifm-navbar-height: 59px;          /* matches the marketing bar (14px pad + 30px logo) */
+    --ifm-navbar-height: 60px;          /* matches the marketing bar (59px container + 1px border) */
     --ifm-navbar-padding-horizontal: 1.5rem;
     --ifm-navbar-background-color: rgba(251, 251, 250, 0.82);
     --ifm-menu-color: #5c5a55;

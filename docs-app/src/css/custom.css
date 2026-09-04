@@ -215,6 +215,13 @@ pre code { border: none; padding: 0; color: inherit; font-size: 13px; line-heigh
     html, body { overflow-x: clip; }
     /* Site-wide chrome padding law: 20px <600 */
     :root { --ifm-navbar-padding-horizontal: 20px; }
+    .navbar__inner { padding-left: 20px; padding-right: 20px; }
+    .navbar__items:not(.navbar__items--right),
+    .theme-layout-navbar-left { position: static !important; }
+    .navbar__toggle {
+        position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
+        width: 44px; height: 44px;
+    }
     /* Docusaurus parks the skip link at left:100% — a fixed element hanging
        past the right edge adds document scroll width. Park it left instead
        (LTR: left overflow never scrolls); focus still pulls it in. */

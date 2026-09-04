@@ -196,3 +196,31 @@ pre code { border: none; padding: 0; color: inherit; font-size: 13px; line-heigh
 @media (max-width: 996px) {
     .sidebar { background: var(--tai-bg-primary); }
 }
+
+/* ── Mobile chrome contract (DESIGN-SYSTEM.md → docs-app) ──────────────────
+   Same 860 collapse as the marketing nav: force Infima's 996 hamburger back
+   to inline links between 861–996. */
+@media (min-width: 861px) and (max-width: 996px) {
+    .navbar__toggle { display: none !important; }
+    .navbar-sidebar { display: none !important; }
+    .navbar__items--right { display: flex !important; }
+}
+
+/* ≤860: menu rows are 44px, left-aligned; Live Demo renders black, last. */
+@media (max-width: 860px) {
+    .navbar__toggle { width: 44px; height: 44px; }
+    .navbar-sidebar .menu__link {
+        display: flex; align-items: center;
+        min-height: 44px;
+        font-size: 16px; font-weight: 500;
+        color: #111110;
+    }
+    .navbar-sidebar li:last-child .menu__link[href*="tai.markets/demo/"],
+    .navbar-sidebar .menu__link.navbar-cta {
+        background: var(--tai-ink);
+        color: #fbfbfa !important;
+        justify-content: center;
+        border-radius: 8px;
+        margin-top: 8px;
+    }
+}

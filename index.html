@@ -12,7 +12,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16.png?v=3">
     <link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/favicon-48.png?v=3">
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png?v=3">
-    <link rel="stylesheet" href="/assets/theme.css?v=3">
+    <link rel="stylesheet" href="/assets/theme.css?v=4">
     <style>
         /* Page layout only — tokens/components from assets/theme.css */
         main { position: relative; z-index: 1; }
@@ -32,16 +32,10 @@
             font-size: 19px; line-height: 1.6; color: var(--text-secondary);
             max-width: 620px; margin-bottom: 40px;
         }
+        /* Hero CTA row — .hero-actions stacks full-width ≤860 (theme.css) */
         .hero-cta { display: flex; gap: 12px; margin-bottom: 72px; }
 
-        /* Stats row — ink values, muted mono labels */
-        .stats {
-            display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
-            background: var(--border-color);
-            border: 1px solid var(--border-color); border-radius: 8px;
-            overflow: hidden; margin-bottom: 96px;
-        }
-        .stat { background: var(--bg-secondary); padding: 24px; }
+        /* Stats row — .kpi-grid (theme) + local label/value/caption type */
         .stat .stat-label {
             font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
             letter-spacing: 0.12em; color: var(--text-muted); margin-bottom: 10px;
@@ -51,6 +45,7 @@
             color: var(--text-primary); line-height: 1.1;
         }
         .stat .stat-caption { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
+        @media (max-width: 600px) { .stat .stat-value { font-size: 28px; } }
 
         /* ── $tModel tape (quiet product object) ── */
         .tape {
@@ -73,8 +68,8 @@
         .tape-group .up { color: var(--semantic-up); }
         .tape-group .down { color: var(--semantic-down); }
 
-        /* ── Sections ── */
-        .section { max-width: 1100px; margin: 0 auto; padding: 0 24px 104px; }
+        /* Sections — shared rhythm (.section in theme.css: 96/72/56) */
+        .section { max-width: 1100px; margin: 0 auto; }
         .section-header { max-width: 640px; margin-bottom: 56px; }
 
         /* Model index table (OpenRouter-style rows) */
@@ -110,66 +105,50 @@
         .closer .btn-primary { background: var(--text-on-inverse); color: var(--bg-inverse); }
         .closer .btn-primary:hover { opacity: 0.88; }
 
-        .mobile-menu-btn { display: none; background: none; border: none; color: var(--text-primary); font-size: 22px; cursor: pointer; padding: 8px; }
-        .mobile-nav {
-            display: none; position: fixed; inset: 0; z-index: 200;
-            background: rgba(251,251,250,0.98); backdrop-filter: blur(16px);
-            padding: 80px 24px 24px; flex-direction: column; gap: 8px;
-        }
-        .mobile-nav.active { display: flex; }
-        .mobile-nav a { color: var(--text-primary); text-decoration: none; font-size: 22px; font-weight: 600; padding: 14px 0; border-bottom: 1px solid var(--border-color); }
-        .mobile-nav .nav-cta { border-bottom: none; justify-content: center; }
-        .mobile-nav-close { position: absolute; top: 20px; right: 24px; background: none; border: none; color: var(--text-primary); font-size: 30px; cursor: pointer; }
-
-        @media (max-width: 968px) {
+        @media (max-width: 860px) {
             .hero { padding: 72px 20px 48px; }
-            .hero h1 { font-size: 40px; }
+            .hero h1 { font-size: 40px; max-width: 20em; }
             .hero-sub { font-size: 17px; }
-            .nav-links { display: none; }
-            .mobile-menu-btn { display: block; }
-            .stats { grid-template-columns: 1fr 1fr; }
             .cycle-row { grid-template-columns: 1fr 1fr; }
             .feature { grid-template-columns: 1fr; gap: 8px; }
             .closer h2 { font-size: 30px; }
-            .section { padding-bottom: 72px; }
         }
-        @media (max-width: 640px) {
-            .hero-cta { flex-direction: column; }
-            .stats { grid-template-columns: 1fr; }
+        @media (max-width: 600px) {
             .cycle-row { grid-template-columns: 1fr; }
         }
     </style>
 </head>
-<body>
+<body data-motion-home>
     <nav class="nav">
         <div class="nav-container">
-            <a href="/" class="logo">
-                <img src="/logo.jpg?v=3" alt="tAI Markets">
+            <a href="/" class="logo" aria-label="tAI Markets home">
+                <img src="/logo.jpg?v=3" alt="" width="28" height="28">
                 <span>tAI Markets</span>
             </a>
             <div class="nav-links">
                 <a href="/#architecture">Protocol</a>
                 <a href="/#models">Models</a>
                 <a href="/docs/">Documentation</a>
-                <a href="https://github.com/tAI-Markets/tAI-contracts" target="_blank">GitHub</a>
+                <a href="https://github.com/tAI-Markets/tAI-contracts" target="_blank" rel="noopener">GitHub</a>
                 <a href="/licensing.html">Licensing</a>
                 <a href="/demo/" class="nav-cta">Live Demo</a>
             </div>
-            <button class="mobile-menu-btn" onclick="toggleMobileNav()" aria-label="Open menu">☰</button>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-drawer" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+        <div class="nav-drawer" id="nav-drawer">
+            <a href="/#architecture">Protocol</a>
+            <a href="/#models">Models</a>
+            <a href="/docs/">Documentation</a>
+            <a href="https://github.com/tAI-Markets/tAI-contracts" target="_blank" rel="noopener">GitHub</a>
+            <a href="/licensing.html">Licensing</a>
+            <a href="/demo/" class="nav-cta">Live Demo</a>
         </div>
     </nav>
+    <script src="/assets/nav.js?v=1" defer></script>
 
-    <div class="mobile-nav" id="mobileNav">
-        <button class="mobile-nav-close" onclick="toggleMobileNav()" aria-label="Close menu">×</button>
-        <a href="/#architecture" onclick="toggleMobileNav()">Protocol</a>
-        <a href="/#models" onclick="toggleMobileNav()">Models</a>
-        <a href="/docs/">Documentation</a>
-        <a href="https://github.com/tAI-Markets/tAI-contracts" target="_blank">GitHub</a>
-        <a href="/licensing.html" onclick="toggleMobileNav()">Licensing</a>
-        <a href="/demo/" class="nav-cta" onclick="toggleMobileNav()">Live Demo</a>
-    </div>
-
-    <main>
+    <main class="page-rails">
         <section class="hero">
             <div class="hero-eyebrow">Forward compute infrastructure · Live on Tempo</div>
             <h1>The futures market for model&nbsp;inference.</h1>
@@ -177,48 +156,50 @@
                 Tokenized AI turns scarce compute into instruments you can buy, spend,
                 and settle. Live on Tempo.
             </p>
-            <div class="hero-cta">
+            <div class="hero-cta hero-actions">
                 <a href="/demo/" class="btn btn-primary">Live Demo</a>
                 <a href="https://github.com/tAI-Markets/tAI-contracts" class="btn btn-secondary">View on GitHub</a>
             </div>
 
-            <div class="stats">
-                <div class="stat">
+            <div class="kpi-grid reveal">
+                <div class="stat kpi-cell">
                     <div class="stat-label">Collateral floor</div>
-                    <div class="stat-value">150%</div>
+                    <div class="stat-value countup" data-count-to="150" data-count-suffix="%" data-count-decimals="0">150%</div>
                     <div class="stat-caption">USDC in provider vaults</div>
                 </div>
-                <div class="stat">
+                <div class="stat kpi-cell">
                     <div class="stat-label">Settlement fee</div>
-                    <div class="stat-value">5%</div>
+                    <div class="stat-value countup" data-count-to="5" data-count-suffix="%" data-count-decimals="0">5%</div>
                     <div class="stat-caption">on every redemption</div>
                 </div>
-                <div class="stat">
+                <div class="stat kpi-cell">
                     <div class="stat-label">Listed models</div>
-                    <div class="stat-value">6</div>
+                    <div class="stat-value countup" data-count-to="6" data-count-decimals="0">6</div>
                     <div class="stat-caption">tModel classes trading</div>
                 </div>
-                <div class="stat">
+                <div class="stat kpi-cell">
                     <div class="stat-label">Settlement</div>
-                    <div class="stat-value">T+0</div>
+                    <div class="stat-value countup" data-count-snap>T+0</div>
                     <div class="stat-caption">on-chain, stablecoin-denominated</div>
                 </div>
             </div>
 
-            <div class="tape">
-                <div class="tape-head">
-                    <span class="title">$tModel tape</span>
-                    <span class="title">index · /1M tokens</span>
-                </div>
-                <div class="tape-scroll">
-                    <div class="tape-track" id="tape">
-                        <div class="tape-group">
-                            <span><b>$tOpus46</b> 12.40 <span class="up">+0.8%</span></span>
-                            <span><b>$tGLM5</b> 0.62 <span class="up">+1.2%</span></span>
-                            <span><b>$tSonnet4</b> 2.10 <span class="down">−0.4%</span></span>
-                            <span><b>$tGPT5</b> 1.88 <span class="up">+0.3%</span></span>
-                            <span><b>$tGLM53F</b> 0.25 <span class="up">+0.5%</span></span>
-                            <span><b>$tGPT56L</b> 1.20 <span class="down">−0.2%</span></span>
+            <div class="pin-stage">
+                <div class="tape pin-hero-artifact">
+                    <div class="tape-head">
+                        <span class="title">$tModel tape</span>
+                        <span class="title">index · /1M tokens</span>
+                    </div>
+                    <div class="tape-scroll">
+                        <div class="tape-track" id="tape">
+                            <div class="tape-group">
+                                <span><b>$tOpus46</b> 12.40 <span class="up">+0.8%</span></span>
+                                <span><b>$tGLM5</b> 0.62 <span class="up">+1.2%</span></span>
+                                <span><b>$tSonnet4</b> 2.10 <span class="down">−0.4%</span></span>
+                                <span><b>$tGPT5</b> 1.88 <span class="up">+0.3%</span></span>
+                                <span><b>$tGLM53F</b> 0.25 <span class="up">+0.5%</span></span>
+                                <span><b>$tGPT56L</b> 1.20 <span class="down">−0.2%</span></span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -226,7 +207,7 @@
         </section>
 
         <section class="section" id="architecture">
-            <div class="section-header">
+            <div class="section-header reveal">
                 <div class="section-label">Protocol</div>
                 <h2 class="section-title">A clearing house for inference</h2>
                 <p class="section-desc">
@@ -235,7 +216,7 @@
                 </p>
             </div>
             <div class="cycle">
-                <div class="cycle-row">
+                <div class="cycle-row reveal-stagger">
                     <div class="cycle-step">
                         <div class="n">01 / COLLATERAL</div>
                         <h3>Provider locks USDC</h3>
@@ -261,7 +242,7 @@
         </section>
 
         <section class="section" id="models">
-            <div class="section-header">
+            <div class="section-header reveal">
                 <div class="section-label">Model index</div>
                 <h2 class="section-title">Listed tModel classes</h2>
                 <p class="section-desc">
@@ -269,7 +250,8 @@
                     index, mirrored from the open inference market.
                 </p>
             </div>
-            <div class="index-table">
+            <div class="index-table reveal">
+                <div class="table-wrap">
                 <table class="data">
                     <thead>
                         <tr><th>Class</th><th>Underlying</th><th class="right">Index /1M</th><th class="right">Collateral</th></tr>
@@ -283,15 +265,16 @@
                         <tr><td class="model">tGPT56L</td><td>GPT-5.6 Luna</td><td class="right">$1.20</td><td class="right">≥150%</td></tr>
                     </tbody>
                 </table>
+                </div>
             </div>
         </section>
 
         <section class="section" id="features">
-            <div class="section-header">
+            <div class="section-header reveal">
                 <div class="section-label">Properties</div>
                 <h2 class="section-title">Why it holds</h2>
             </div>
-            <div class="features-list">
+            <div class="features-list reveal-stagger">
                 <div class="feature">
                     <h3>Fungible inference</h3>
                     <p>Inference from any provider standardizes into one ERC-20 per model. A tGLM5 token is a tGLM5 token, whoever served the compute.</p>
@@ -313,9 +296,11 @@
     </main>
 
     <section class="closer">
-        <h2>List a model.<br>Sell future inference.</h2>
-        <p>Turn committed compute capacity into settled, tradeable instruments.</p>
-        <a href="mailto:licensing@tai.markets?subject=Listing%20inquiry" class="btn btn-primary">Become a provider</a>
+        <div class="reveal">
+            <h2>List a model.<br>Sell future inference.</h2>
+            <p>Turn committed compute capacity into settled, tradeable instruments.</p>
+            <a href="mailto:licensing@tai.markets?subject=Listing%20inquiry" class="btn btn-primary">Become a provider</a>
+        </div>
     </section>
 
     <footer class="footer">
@@ -357,13 +342,8 @@
         </div>
     </footer>
 
+<script src="/assets/motion.js?v=1" defer></script>
 <script>
-function toggleMobileNav() {
-    const mobileNav = document.getElementById('mobileNav');
-    mobileNav.classList.toggle('active');
-    document.body.style.overflow = mobileNav.classList.contains('active') ? 'hidden' : '';
-}
-
 // $tModel tape — seamless loop: clone the group once, translate by exactly
 // one group width (incl. trailing gap), then reset — no drift, no blank gap.
 (function () {

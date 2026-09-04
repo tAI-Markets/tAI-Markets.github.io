@@ -12,7 +12,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16.png?v=3">
     <link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/favicon-48.png?v=3">
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png?v=3">
-    <link rel="stylesheet" href="/assets/theme.css?v=3">
+    <link rel="stylesheet" href="/assets/theme.css?v=4">
     <style>
         /* Page layout only — tokens/components from assets/theme.css */
         main { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 56px 24px 80px; }
@@ -37,7 +37,7 @@
         .tier li { font-size: 14px; padding: 6px 0 6px 20px; position: relative; color: var(--text-secondary); }
         .tier li::before { content: "—"; position: absolute; left: 0; color: var(--text-muted); }
         .tier li.no { color: var(--text-muted); }
-        .cta { display: block; text-align: center; padding: 11px; border-radius: 8px; font-size: 14px; font-weight: 500; text-decoration: none; border: 1px solid var(--border-color); color: var(--text-primary); transition: opacity .15s, border-color .15s; }
+        .cta { display: flex; align-items: center; justify-content: center; height: 44px; padding: 0 20px; border-radius: 8px; font-size: 14px; font-weight: 500; text-decoration: none; border: 1px solid var(--border-color); color: var(--text-primary); transition: opacity .15s, border-color .15s; }
         .cta:hover { border-color: var(--border-strong); }
         .cta.primary { background: var(--accent-primary); color: var(--text-on-inverse); border: none; }
         .cta.primary:hover { opacity: 0.88; }
@@ -55,19 +55,32 @@
 <body>
 <nav class="nav">
     <div class="nav-container">
-        <a href="/" class="logo">
-            <img src="/logo.jpg?v=3" alt="tAI Markets">
+        <a href="/" class="logo" aria-label="tAI Markets home">
+            <img src="/logo.jpg?v=3" alt="" width="28" height="28">
             <span>tAI Markets</span>
         </a>
         <div class="nav-links">
             <a href="/#architecture">Protocol</a>
             <a href="/#models">Models</a>
+            <a href="/docs/">Documentation</a>
+            <a href="https://github.com/tAI-Markets/tAI-contracts" target="_blank" rel="noopener">GitHub</a>
             <a href="/licensing.html" class="active">Licensing</a>
-            <a href="https://github.com/tAI-Markets/tAI-contracts" target="_blank">GitHub</a>
             <a href="/demo/" class="nav-cta">Live Demo</a>
         </div>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-drawer" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+    <div class="nav-drawer" id="nav-drawer">
+        <a href="/#architecture">Protocol</a>
+        <a href="/#models">Models</a>
+        <a href="/docs/">Documentation</a>
+        <a href="https://github.com/tAI-Markets/tAI-contracts" target="_blank" rel="noopener">GitHub</a>
+        <a href="/licensing.html">Licensing</a>
+        <a href="/demo/" class="nav-cta">Live Demo</a>
     </div>
 </nav>
+<script src="/assets/nav.js?v=1" defer></script>
 
 <main>
     <div class="page-head">

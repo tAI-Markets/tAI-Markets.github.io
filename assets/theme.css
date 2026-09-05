@@ -67,7 +67,7 @@ a { color: var(--accent-signal); }
     z-index: 100; padding: 0;
 }
 .nav-container {
-    max-width: 1200px; margin: 0 auto; padding: 0 24px;
+    max-width: 1180px; margin: 0 auto; padding: 0 24px;
     height: 59px;
     display: flex; justify-content: space-between; align-items: center;
 }
@@ -182,7 +182,7 @@ table.data tr:last-child td { border-bottom: none; }
     padding: 60px 24px 40px; position: relative; z-index: 10;
 }
 .footer-content {
-    max-width: 1200px; margin: 0 auto;
+    max-width: 1180px; margin: 0 auto;
     display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px;
 }
 .footer-brand { max-width: 300px; }
@@ -195,7 +195,7 @@ table.data tr:last-child td { border-bottom: none; }
 .footer-links a { font-size: 14px; color: var(--text-muted); text-decoration: none; transition: color 0.15s; }
 .footer-links a:hover { color: var(--text-primary); }
 .footer-bottom {
-    max-width: 1200px; margin: 60px auto 0; padding-top: 32px;
+    max-width: 1180px; margin: 60px auto 0; padding-top: 32px;
     border-top: 1px solid var(--border-color);
     display: flex; justify-content: space-between; align-items: center;
     font-size: 13px; color: var(--text-muted);
@@ -338,17 +338,6 @@ body.nav-locked { overflow: hidden; }
     animation: cta-sheen 300ms var(--motion-ease);
 }
 @keyframes cta-sheen { 0% { opacity: 0.9; } 100% { opacity: 0; } }
-
-/* ── Homepage rails (desktop ≥1080 only) ──────────────────────────────────── */
-.page-rails { position: relative; }
-@media (min-width: 1080px) {
-    .page-rails::before, .page-rails::after {
-        content: ""; position: absolute; top: 0; bottom: 0;
-        width: 1px; background: rgba(17, 17, 16, 0.10);
-    }
-    .page-rails::before { left: calc(50% - 551px); }
-    .page-rails::after { left: calc(50% + 550px); }
-}
 
 /* ── Scroll reveal (once; homepage only) ────────────────────────────────────
    Hidden state applies only when JS is present (html.js set inline in <head>),

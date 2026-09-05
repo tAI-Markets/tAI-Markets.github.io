@@ -22,25 +22,33 @@
         draw(0); // also serves as the reduced-motion still
     }
 
-    var ROWS = 26, COLS = 130;
+    var ROWS = 28, COLS = 130;
 
     function draw(t) {
         ctx.clearRect(0, 0, W, H);
+        // The sheet is drawn in its own rotated frame so the band rises
+        // diagonally from lower-left to upper-right, like the reference.
+        var SW = W * 1.5, SH = H * 1.3;
+        ctx.save();
+        ctx.translate(W * 0.52, H * 0.56);
+        ctx.rotate(-0.24);
         for (var r = 0; r < ROWS; r++) {
             var v = r / (ROWS - 1);
             var edge = Math.min(v, 1 - v) * 2; // first/last rows dissolve
             for (var c = 0; c < COLS; c++) {
                 var u = c / (COLS - 1);
-                var y = H * (0.14 + 0.64 * v)
-                    + H * 0.22 * (0.3 + 0.7 * Math.sin(v * Math.PI)) * Math.sin(u * 6.0 + t * 0.9 + v * 2.2)
-                    + H * 0.07 * Math.sin(u * 12.5 - t * 0.6 + v * 4.1)
-                    + H * 0.04 * Math.sin(u * 3.1 + t * 0.35 + v * 1.3);
-                var crest = (Math.sin(u * 6.0 + t * 0.9 + v * 2.2) + 1) / 2;
-                var alpha = (0.12 + 0.58 * crest) * (0.35 + 0.65 * edge);
+                var x = (u - 0.5) * SW;
+                var y = (v - 0.5) * SH
+                    + SW * 0.10 * (0.3 + 0.7 * Math.sin(v * Math.PI)) * Math.sin(u * 6.0 + t * 0.9 + v * 2.2)
+                    + SW * 0.03 * Math.sin(u * 12.5 - t * 0.6 + v * 4.1)
+                    + SW * 0.018 * Math.sin(u * 3.1 + t * 0.35 + v * 1.3);
+                var crest = Math.pow((Math.sin(u * 6.0 + t * 0.9 + v * 2.2) + 1) / 2, 2);
+                var alpha = (0.05 + 0.85 * crest) * (0.3 + 0.7 * edge);
                 ctx.fillStyle = 'rgba(' + INK + ',' + alpha.toFixed(3) + ')';
-                ctx.fillRect(u * W, y, 1.5, 1.5);
+                ctx.fillRect(x, y, 2, 2);
             }
         }
+        ctx.restore();
     }
 
     var running = false, rafId = 0, t0 = performance.now(), last = 0;

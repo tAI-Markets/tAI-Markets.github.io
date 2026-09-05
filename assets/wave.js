@@ -22,7 +22,7 @@
         draw(0); // also serves as the reduced-motion still
     }
 
-    var ROWS = 24, COLS = 120;
+    var ROWS = 26, COLS = 130;
 
     function draw(t) {
         ctx.clearRect(0, 0, W, H);
@@ -31,14 +31,14 @@
             var edge = Math.min(v, 1 - v) * 2; // first/last rows dissolve
             for (var c = 0; c < COLS; c++) {
                 var u = c / (COLS - 1);
-                var y = H * (0.16 + 0.62 * v)
-                    + H * 0.2 * (0.3 + 0.7 * Math.sin(v * Math.PI)) * Math.sin(u * 6.0 + t * 0.9 + v * 2.2)
-                    + H * 0.06 * Math.sin(u * 12.5 - t * 0.6 + v * 4.1)
-                    + H * 0.035 * Math.sin(u * 3.1 + t * 0.35 + v * 1.3);
+                var y = H * (0.14 + 0.64 * v)
+                    + H * 0.22 * (0.3 + 0.7 * Math.sin(v * Math.PI)) * Math.sin(u * 6.0 + t * 0.9 + v * 2.2)
+                    + H * 0.07 * Math.sin(u * 12.5 - t * 0.6 + v * 4.1)
+                    + H * 0.04 * Math.sin(u * 3.1 + t * 0.35 + v * 1.3);
                 var crest = (Math.sin(u * 6.0 + t * 0.9 + v * 2.2) + 1) / 2;
-                var alpha = (0.08 + 0.42 * crest) * (0.3 + 0.7 * edge);
+                var alpha = (0.12 + 0.58 * crest) * (0.35 + 0.65 * edge);
                 ctx.fillStyle = 'rgba(' + INK + ',' + alpha.toFixed(3) + ')';
-                ctx.fillRect(u * W, y, 1.3, 1.3);
+                ctx.fillRect(u * W, y, 1.5, 1.5);
             }
         }
     }

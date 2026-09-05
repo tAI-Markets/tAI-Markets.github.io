@@ -18,6 +18,26 @@
         /* Page layout only — tokens/components from assets/theme.css */
         main { position: relative; z-index: 1; }
 
+        /* ── Hero wave backdrop (corner particle field) ──
+           Ink-dot wave on a corner canvas; blur + mask dissolve it into the
+           page before it reaches the headline. Decorative only. */
+        .hero-wave {
+            position: absolute; z-index: -1;
+            top: 30px; right: 0;
+            width: min(50vw, 760px); height: 470px;
+            pointer-events: none;
+            filter: blur(1.8px);
+            -webkit-mask-image: radial-gradient(108% 128% at 100% 0%, #000 42%, transparent 78%);
+            mask-image: radial-gradient(108% 128% at 100% 0%, #000 42%, transparent 78%);
+        }
+        @media (max-width: 860px) {
+            .hero-wave {
+                width: 92vw; height: 300px; top: 0; opacity: 0.5;
+                -webkit-mask-image: radial-gradient(100% 100% at 100% 0%, #000 20%, transparent 60%);
+                mask-image: radial-gradient(100% 100% at 100% 0%, #000 20%, transparent 60%);
+            }
+        }
+
         /* ── Hero ── */
         .hero { max-width: 900px; margin: 0 auto; padding: 120px 24px 24px; }
         .hero-eyebrow {
@@ -175,6 +195,7 @@
     <script src="/assets/nav.js?v=1" defer></script>
 
     <main class="page-rails">
+        <canvas id="hero-wave" class="hero-wave" aria-hidden="true"></canvas>
         <section class="hero">
             <div class="hero-eyebrow">Inference credits · collateralized · live on Tempo</div>
             <h1>Buy inference now. Lock the price. Spend it&nbsp;later.</h1>
@@ -369,6 +390,7 @@
     </footer>
 
 <script src="/assets/motion.js?v=1" defer></script>
+<script src="/assets/wave.js?v=1" defer></script>
 <script>
 // Index tape — seamless loop: clone the group once, translate by exactly
 // one group width (incl. trailing gap), then reset — no drift, no blank gap.
